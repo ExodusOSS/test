@@ -243,7 +243,7 @@ if (
   }
 }
 
-const { setTimeout } = globalThis // we need non-overriden by fake timers one
+const { setTimeout, Deno } = globalThis
 
 const isServoBundle = process.env.EXODUS_TEST_ENGINE === 'servo:bundle' // we treat it as a barebone
 const isBarebone = process.env.EXODUS_TEST_IS_BAREBONE || isServoBundle
@@ -256,20 +256,20 @@ if (typeof process === 'undefined') {
     set exitCode(value) {
       process._exitCode = value
       if (globalThis.process) globalThis.process.exitCode = value
-      if (globalThis.Deno) globalThis.Deno.exitCode = value
+      if (Deno) Deno.exitCode = value
     },
     get exitCode() {
       return process._exitCode
     },
     exit: (code = 0) => {
-      globalThis.Deno?.exit?.(code)
+      Deno?.exit?.(code)
       globalThis.process?.exit?.(code)
       process.exitCode = code
       process._maybeProcessExitCode()
     },
     _exitHook: null,
     _maybeProcessExitCode: () => {
-      if (globalThis.Deno) return // has native exitCode support
+      if (Deno) return // has native exitCode support
       if (process._exitHook && !isServoBundle) return process._exitHook(process._exitCode)
       if (process._exitCode !== 0) {
         setTimeout(() => {
