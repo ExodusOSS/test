@@ -1,23 +1,25 @@
 /**
  * Type definitions for @exodus/test/jest
- * Re-exports types from @types/jest where possible
+ * Re-exports types from @jest/globals where possible
  */
-
-/// <reference types="jest" />
 
 import type { Expect } from './expect.d.ts'
 
-// Re-export Jest types from @types/jest
-export declare const jest: typeof globalThis.jest
-export declare const describe: typeof globalThis.describe
-export declare const test: typeof globalThis.test
-export declare const it: typeof globalThis.it
+// Re-export Jest types from @jest/globals
+export type {
+  describe,
+  test,
+  it,
+  beforeEach,
+  afterEach,
+  beforeAll,
+  afterAll,
+} from '@jest/globals'
 
-/** Lifecycle hooks */
-export declare const beforeEach: typeof globalThis.beforeEach
-export declare const afterEach: typeof globalThis.afterEach
-export declare const beforeAll: typeof globalThis.beforeAll
-export declare const afterAll: typeof globalThis.afterAll
+export { describe, test, it, beforeEach, afterEach, beforeAll, afterAll } from '@jest/globals'
+
+// Re-export jest object
+export declare const jest: typeof import('@jest/globals').jest
 
 /** Alias for test() */
 export declare function should(name: string, fn: () => void | Promise<void>, timeout?: number): void
