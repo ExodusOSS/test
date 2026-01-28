@@ -8,9 +8,12 @@
     "allowImportingTsExtensions": true,
     "noEmit": true,
     "paths": {
-      "@exodus/test/jest": ["./src/jest.js"],
-      "@exodus/test/node": ["./src/node.js"],
-      "@exodus/test/tape": ["./src/tape.js"]
+      "@exodus/test/jest": ["./src/jest.d.ts"],
+      "@exodus/test/node": ["./src/node.d.ts"],
+      "@exodus/test/tape": ["./src/tape.d.ts"],
+      "@exodus/test/expect": ["./src/expect.d.ts"],
+      "@exodus/test/mock": ["./src/mock.d.ts"],
+      "@exodus/test/benchmark": ["./src/benchmark.d.ts"]
     }
   },
   "include": ["**/*", ".*"],
