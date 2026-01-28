@@ -28,12 +28,28 @@
   "exports": {
     "./node-test-reporter": "./bin/reporter.js",
     "./loader/jest": "./loader/jest.js",
-    "./benchmark": "./src/benchmark.js",
-    "./expect": "./src/expect.cjs",
-    "./jest": "./src/jest.js",
-    "./mock": "./src/mock.js",
-    "./node": "./src/node.js",
+    "./benchmark": {
+      "types": "./src/benchmark.d.ts",
+      "default": "./src/benchmark.js"
+    },
+    "./expect": {
+      "types": "./src/expect.d.ts",
+      "default": "./src/expect.cjs"
+    },
+    "./jest": {
+      "types": "./src/jest.d.ts",
+      "default": "./src/jest.js"
+    },
+    "./mock": {
+      "types": "./src/mock.d.ts",
+      "default": "./src/mock.js"
+    },
+    "./node": {
+      "types": "./src/node.d.ts",
+      "default": "./src/node.js"
+    },
     "./tape": {
+      "types": "./src/tape.d.ts",
       "import": "./src/tape.js",
       "require": "./src/tape.cjs"
     }
@@ -57,6 +73,7 @@
     "loader/typescript.js",
     "loader/typescript.loader.js",
     "src/benchmark.js",
+    "src/benchmark.d.ts",
     "src/dark.cjs",
     "src/engine.js",
     "src/engine.node.cjs",
@@ -65,8 +82,10 @@
     "src/engine.select.cjs",
     "src/exodus.js",
     "src/expect.cjs",
+    "src/expect.d.ts",
     "src/glob.cjs",
     "src/jest.js",
+    "src/jest.d.ts",
     "src/jest.config.js",
     "src/jest.config.fs.js",
     "src/jest.environment.js",
@@ -76,10 +95,13 @@
     "src/jest.snapshot.js",
     "src/jest.timers.js",
     "src/mock.js",
+    "src/mock.d.ts",
     "src/node.js",
+    "src/node.d.ts",
     "src/pretty-format.cjs",
     "src/replay.js",
     "src/tape.js",
+    "src/tape.d.ts",
     "src/tape.cjs",
     "src/timers-track.js",
     "src/version.js",
