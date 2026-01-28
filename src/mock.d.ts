@@ -8,10 +8,18 @@
 /**
  * Network replay utilities
  */
-export declare function fetchReplay(url: string, options?: any): Promise<Response>
-export declare function websocketRecord(): void
-export declare function fetchRecord(): void
-export declare function websocketReplay(): void
+
+/** Records fetch calls and returns a fetch function */
+export declare function fetchRecord(options?: any): typeof fetch
+
+/** Replays fetch calls from recording and returns a fetch function */
+export declare function fetchReplay(): typeof fetch
+
+/** Records WebSocket calls and returns a WebSocket constructor */
+export declare function websocketRecord(options?: any): typeof WebSocket
+
+/** Replays WebSocket calls from recording and returns a WebSocket constructor */
+export declare function websocketReplay(options?: any): typeof WebSocket
 
 /**
  * Timer tracking and debugging utilities

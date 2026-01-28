@@ -137,15 +137,34 @@ export interface ModuleMockAPIs {
  * Exodus-specific extensions
  */
 export interface ExodusAPIs {
+  /** Platform name (e.g., 'node', 'hermes') */
+  platform: string
+
+  /** Engine name (e.g., 'node:test', 'hermes:bundle') */
+  engine: string
+
+  /** Implementation name (e.g., 'node:test', 'pure') */
+  implementation: string
+
+  /** Feature flags for current environment */
+  features: {
+    dynamicRequire: boolean
+    esmMocks: boolean
+    esmNamedBuiltinMocks: boolean
+    esmInterop: boolean
+    concurrency: boolean
+  }
+
+  /** Mocking utilities */
   mock: {
-    fetchReplay: (url: string) => void
-    websocketRecord: () => void
-    fetchRecord: () => void
-    websocketReplay: () => void
+    fetchReplay: () => typeof fetch
+    websocketRecord: () => typeof WebSocket
+    fetchRecord: () => typeof fetch
+    websocketReplay: () => typeof WebSocket
     timersSpeedup: (rate: number, options?: { apis?: string[] }) => void
     timersTrack: () => void
     timersDebug: () => void
-    timersList: () => void
+    timersList: () => any[]
     timersAssert: () => void
     fetchNoop: () => MockInstance
     websocketNoop: () => MockInstance

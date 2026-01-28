@@ -147,6 +147,9 @@ export interface TestFunction {
 
   /** Skip this test */
   skip: TestFunction
+
+  /** Register a callback to run after all tests finish */
+  onFinish(fn: () => void): void
 }
 
 declare const test: TestFunction
