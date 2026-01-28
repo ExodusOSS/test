@@ -4,7 +4,7 @@
  */
 
 export type { Expect } from 'expect'
-export { expect } from 'expect'
+export declare const expect: import('expect').Expect
 
 /** Load the expect library (for internal use) */
 export declare function loadExpect(reason?: string): import('expect').Expect
