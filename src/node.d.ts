@@ -9,12 +9,12 @@
  * Mock function interface
  */
 export interface MockFunctionContext {
-  calls: Array<{ arguments: any[]; result?: any; error?: any; target?: any; this?: any }>;
-  callCount(): number;
-  mockImplementation(implementation: Function): void;
-  mockImplementationOnce(implementation: Function, onCall?: number): void;
-  resetCalls(): void;
-  restore(): void;
+  calls: Array<{ arguments: any[]; result?: any; error?: any; target?: any; this?: any }>
+  callCount(): number
+  mockImplementation(implementation: Function): void
+  mockImplementationOnce(implementation: Function, onCall?: number): void
+  resetCalls(): void
+  restore(): void
 }
 
 /**
@@ -22,112 +22,137 @@ export interface MockFunctionContext {
  */
 export interface Mock {
   /** Creates a mock function */
-  fn<T extends Function = Function>(original?: T, options?: any): T & { mock: MockFunctionContext };
-  
+  fn<T extends Function = Function>(original?: T, options?: any): T & { mock: MockFunctionContext }
+
   /** Gets the mock context */
-  getter<T>(object: any, methodName: string, options?: any): T;
-  
+  getter<T>(object: any, methodName: string, options?: any): T
+
   /** Mock method */
-  method<T extends Function = Function>(object: any, methodName: string, implementation?: T, options?: any): T & { mock: MockFunctionContext };
-  
+  method<T extends Function = Function>(
+    object: any,
+    methodName: string,
+    implementation?: T,
+    options?: any
+  ): T & { mock: MockFunctionContext }
+
   /** Mock setter */
-  setter(object: any, methodName: string, options?: any): Function;
-  
+  setter(object: any, methodName: string, options?: any): Function
+
   /** Resets all mocks */
-  reset(): void;
-  
+  reset(): void
+
   /** Restores all mocks */
-  restoreAll(): void;
-  
+  restoreAll(): void
+
   /** Timer mocking */
   timers?: {
-    enable(options?: { apis?: string[] }): void;
-    reset(): void;
-    tick(milliseconds: number): void;
-    runAll(): void;
-  };
+    enable(options?: { apis?: string[] }): void
+    reset(): void
+    tick(milliseconds: number): void
+    runAll(): void
+  }
 }
 
-export const mock: Mock;
+export declare const mock: Mock
 
 /**
  * Test context passed to test functions
  */
 export interface TestContext {
   /** Test name */
-  readonly name: string;
-  
+  readonly name: string
+
   /** Full test name including parent describe blocks */
-  readonly fullName: string;
-  
+  readonly fullName: string
+
   /** Diagnostic function */
-  diagnostic(message: string): void;
-  
+  diagnostic(message: string): void
+
   /** Runs a hook */
-  runOnly(value: boolean): void;
-  
+  runOnly(value: boolean): void
+
   /** Skips the test */
-  skip(message?: string): void;
-  
+  skip(message?: string): void
+
   /** Marks test as todo */
-  todo(message?: string): void;
+  todo(message?: string): void
 }
 
 /**
  * Test function type
  */
-export type TestFn = (name: string, options?: { timeout?: number; skip?: boolean; todo?: boolean; concurrency?: number }, fn?: (t: TestContext) => void | Promise<void>) => void;
+export type TestFn = (
+  name: string,
+  options?: { timeout?: number; skip?: boolean; todo?: boolean; concurrency?: number },
+  fn?: (t: TestContext) => void | Promise<void>
+) => void
 
 /**
  * Test function with additional properties
  */
 export interface Test extends TestFn {
   /** Only run this test */
-  only: TestFn;
-  
+  only: TestFn
+
   /** Skip this test */
-  skip: TestFn;
-  
+  skip: TestFn
+
   /** Mark this test as todo */
-  todo: TestFn;
+  todo: TestFn
 }
 
 /**
  * Describe function type
  */
-export type DescribeFn = (name: string, options?: { timeout?: number; skip?: boolean; todo?: boolean; concurrency?: number }, fn?: () => void) => void;
+export type DescribeFn = (
+  name: string,
+  options?: { timeout?: number; skip?: boolean; todo?: boolean; concurrency?: number },
+  fn?: () => void
+) => void
 
 /**
  * Describe function with additional properties
  */
 export interface Describe extends DescribeFn {
   /** Only run this suite */
-  only: DescribeFn;
-  
+  only: DescribeFn
+
   /** Skip this suite */
-  skip: DescribeFn;
-  
+  skip: DescribeFn
+
   /** Mark this suite as todo */
-  todo: DescribeFn;
+  todo: DescribeFn
 }
 
-export const describe: Describe;
-export const test: Test;
-export const it: Test;
+export declare const describe: Describe
+export declare const test: Test
+export declare const it: Test
 
 /** Lifecycle hooks */
-export function beforeEach(fn: (t: TestContext) => void | Promise<void>, options?: { timeout?: number }): void;
-export function afterEach(fn: (t: TestContext) => void | Promise<void>, options?: { timeout?: number }): void;
-export function before(fn: (t: TestContext) => void | Promise<void>, options?: { timeout?: number }): void;
-export function after(fn: (t: TestContext) => void | Promise<void>, options?: { timeout?: number }): void;
+export declare function beforeEach(
+  fn: (t: TestContext) => void | Promise<void>,
+  options?: { timeout?: number }
+): void
+export declare function afterEach(
+  fn: (t: TestContext) => void | Promise<void>,
+  options?: { timeout?: number }
+): void
+export declare function before(
+  fn: (t: TestContext) => void | Promise<void>,
+  options?: { timeout?: number }
+): void
+export declare function after(
+  fn: (t: TestContext) => void | Promise<void>,
+  options?: { timeout?: number }
+): void
 
 /**
  * Snapshot utilities
  */
-export const snapshot: {
+export declare const snapshot: {
   /** Sets default snapshot serializers */
-  setDefaultSnapshotSerializers(serializers: any[]): void;
-  
+  setDefaultSnapshotSerializers(serializers: any[]): void
+
   /** Sets the snapshot path resolver (not supported) */
-  setResolveSnapshotPath(): never;
-};
+  setResolveSnapshotPath(): never
+}

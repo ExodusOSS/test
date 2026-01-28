@@ -10,13 +10,13 @@
  */
 export interface BenchmarkOptions {
   /** Array of arguments to pass to the benchmark function */
-  args?: any[];
-  
+  args?: any[]
+
   /** Timeout in milliseconds (default: 1000) */
-  timeout?: number;
-  
+  timeout?: number
+
   /** Skip this benchmark */
-  skip?: boolean;
+  skip?: boolean
 }
 
 /**
@@ -25,13 +25,13 @@ export interface BenchmarkOptions {
  * @param options - Benchmark options
  * @param fn - Function to benchmark
  */
-export function benchmark(
+export declare function benchmark(
   name: string,
   options: BenchmarkOptions,
   fn: (arg?: any) => any | Promise<any>
-): Promise<void>;
+): Promise<void>
 
-export function benchmark(
+export declare function benchmark(
   name: string,
   fn: (arg?: any) => any | Promise<any>
-): Promise<void>;
+): Promise<void>
