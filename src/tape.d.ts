@@ -153,5 +153,7 @@ export interface TestFunction {
 }
 
 declare const test: TestFunction
-export default test
+
 export { test }
+
+export default test

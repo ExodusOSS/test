@@ -6,16 +6,7 @@
 /// <reference types="node" />
 
 // Re-export from node:test module
-export {
-  mock,
-  describe,
-  test,
-  it,
-  beforeEach,
-  afterEach,
-  before,
-  after,
-} from 'node:test'
+export { mock, describe, test, it, beforeEach, afterEach, before, after } from 'node:test'
 
 /**
  * Snapshot utilities

@@ -6,15 +6,7 @@
 import type { Expect } from './expect.d.ts'
 
 // Re-export Jest types from @jest/globals
-export type {
-  describe,
-  test,
-  it,
-  beforeEach,
-  afterEach,
-  beforeAll,
-  afterAll,
-} from '@jest/globals'
+export type { describe, test, it, beforeEach, afterEach, beforeAll, afterAll } from '@jest/globals'
 
 export { describe, test, it, beforeEach, afterEach, beforeAll, afterAll } from '@jest/globals'
 
