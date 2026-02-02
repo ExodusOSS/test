@@ -105,8 +105,8 @@ importers:
   bundler:
     dependencies:
       '@exodus/bytes':
-        specifier: ^1.10.0
-        version: 1.10.0
+        specifier: ^1.11.0
+        version: 1.11.0
       '@ungap/url-search-params':
         specifier: ^0.2.2
         version: 0.2.2
@@ -629,8 +629,8 @@ packages:
     resolution: {integrity: sha512-Ys+3g2TaW7gADOJzPt83SJtCDhMjndcDMFVQ/Tj9iA1BfJzFKD9mAUXT3OenpuPHbI6P/myECxRJrofUsDx/5g==, tarball: https://registry.npmjs.org/@eslint/js/-/js-8.57.0.tgz}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
 
-  '@exodus/bytes@1.10.0':
-    resolution: {integrity: sha512-tf8YdcbirXdPnJ+Nd4UN1EXnz+IP2DI45YVEr3vvzcVTOyrApkmIB4zvOQVd3XPr7RXnfBtAx+PXImXOIU0Ajg==, tarball: https://registry.npmjs.org/@exodus/bytes/-/bytes-1.10.0.tgz}
+  '@exodus/bytes@1.11.0':
+    resolution: {integrity: sha512-wO3vd8nsEHdumsXrjGO/v4p6irbg7hy9kvIeR6i2AwylZSk4HJdWgL0FNaVquW1+AweJcdvU1IEpuIWk/WaPnA==, tarball: https://registry.npmjs.org/@exodus/bytes/-/bytes-1.11.0.tgz}
     engines: {node: ^20.19.0 || ^22.12.0 || >=24.0.0}
     peerDependencies:
       '@noble/hashes': ^1.8.0 || ^2.0.0
@@ -4508,7 +4508,7 @@ snapshots:
 
   '@eslint/js@8.57.0': {}
 
-  '@exodus/bytes@1.10.0': {}
+  '@exodus/bytes@1.11.0': {}
 
   '@exodus/eslint-config@5.24.0(@types/eslint@8.56.10)(@typescript-eslint/eslint-plugin@7.15.0(@typescript-eslint/parser@7.15.0(eslint@8.57.0)(typescript@5.5.3))(eslint@8.57.0)(typescript@5.5.3))(@typescript-eslint/parser@7.15.0(eslint@8.57.0)(typescript@5.5.3))(eslint@8.57.0)(jest@29.7.0(@types/node@24.0.11))(prettier@3.3.2)(typescript@5.5.3)':
     dependencies:
