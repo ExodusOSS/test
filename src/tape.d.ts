@@ -9,9 +9,6 @@
  * Tape test context/assertion object
  */
 export interface Test {
-  /** Test name */
-  name: string
-
   /** Plans the number of assertions */
   plan(count: number): void
 
