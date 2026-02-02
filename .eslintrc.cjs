@@ -1,6 +1,8 @@
 module.exports = {
   extends: ['@exodus/eslint-config/typescript'],
   rules: {
+    '@typescript-eslint/ban-types': 'off',
+    '@typescript-eslint/no-explicit-any': 'off',
     '@typescript-eslint/no-unnecessary-condition': 'off',
     'unicorn/consistent-function-scoping': 'off',
   },
