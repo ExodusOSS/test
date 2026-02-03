@@ -9,6 +9,8 @@ A runner for `node:test`, `jest`, and `tape` test suites on top of `node:test` (
 
 It can run your existing tests on [all runtimes and also browsers](#engines), with snapshots and module mocks.
 
+See [documentation](https://exodusoss.github.io/test).
+
 ## Features
 
 - Native ESM, including in Jest tests
