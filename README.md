@@ -45,7 +45,7 @@ See [documentation](https://exodusoss.github.io/test).
 - Native ESM, including in Jest tests
 - Esbuild on the fly for old faux-ESM interop (enable via `--esbuild`)
 - TypeScript support
-- Runs anywhere
+- Runs anywhere (including Hermes, the [React Native](https://reactnative.dev/) JavaScript engine)
 - Use snapshots to cross-compare between runtimes, browsers and barebones (including Hermes)
 - Testsuite-agnostic — can run any file as long as it sets exit code based on test results
 - Built-in [Jest](https://jestjs.io) compatibility (with `--jest`), including `jest.*` global
