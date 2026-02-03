@@ -116,8 +116,7 @@
     "jest.js",
     "mock.js",
     "node.js",
-    "tape.js",
-    "CHANGELOG.md"
+    "tape.js"
   ],
   "scripts": {
     "test:_bundle": "EXODUS_TEST_IGNORE='tests/{{jest-extended,inband}/**,jest-when/when.test.*,jest/jest.resetModules.*,jest/mock/jest.mock.mocks-dir.test.js}' npm run test --",

@@ -51,8 +51,7 @@
     "modules/url.cjs",
     "modules/util.cjs",
     "modules/util-format.cjs",
-    "modules/ws.cjs",
-    "CHANGELOG.md"
+    "modules/ws.cjs"
   ],
   "dependencies": {
     "@exodus/bytes": "^1.11.0",
