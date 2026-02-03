@@ -163,6 +163,7 @@
     "test:fetch": "node ./bin/index.js --jest --drop-network --engine node:pure 'tests/replay/*.test.js'",
     "test:jsdom": "EXODUS_TEST_JEST_CONFIG='{\"testMatch\":[\"**/*.jsdom-test.js\"],\"testEnvironment\":\"jsdom\", \"rootDir\": \".\"}' ./bin/index.js --jest",
     "coverage": "node ./bin/index.js --jest --esbuild --coverage",
+    "typedoc": "typedoc && mkdir -p doc/assets && cp -r theme/styles doc/assets/",
     "playwright": "node ./bin/index.js --playwright",
     "esvu": "esvu",
     "jsvu": "jsvu",
@@ -200,6 +201,7 @@
     "jsdom": "^26.1.0",
     "jsvu": "^3.0.3",
     "prettier": "^3.0.3",
+    "typedoc": "^0.28.16",
     "workerd": "^1.20251217.0"
   },
   "peerDependencies": {

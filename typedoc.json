@@ -1,0 +1,36 @@
+{
+  "excludeNotDocumented": true,
+  "excludeNotDocumentedKinds": ["Module"],
+  "includeHierarchySummary": false,
+  "excludeInternal": true,
+  "navigation": {
+    "includeFolders": false
+  },
+  "headings": {
+    "readme": false
+  },
+  "outputs": [
+    {
+      "name": "html",
+      "path": "./doc"
+    },
+    {
+      "name": "json",
+      "path": "./doc/index.json"
+    }
+  ],
+  "hostedBaseUrl": "https://exodusoss.github.io/test/",
+  "navigationLeaves": [
+    "@exodus/test/node",
+    "@exodus/test/jest",
+    "@exodus/test/expect",
+    "@exodus/test/tape"
+  ],
+  "navigationLinks": {
+    "npm": "https://www.npmjs.com/package/@exodus/test",
+    "GitHub": "https://github.com/ExodusOSS/test"
+  },
+  "hideGenerator": true,
+  "customCss": "./theme/custom.css",
+  "favicon": "./theme/favicon.ico"
+}
