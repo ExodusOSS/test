@@ -34,7 +34,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        node-version: ['24.10', '24.0.0', '22.20', '22.6.0', '20.19', '20.18.0']
+        node-version: ['25', '24', '24.0.0', '22.22.0', '22.12.0', '20', '20.19.0']
     steps:
       - uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29
       - uses: pnpm/action-setup@a7487c7e89a18df4991f7f222e4898a00d66ddda
@@ -61,7 +61,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        node-version: ['24.10', '24.0.0', '22.20', '22.6.0', '20.19', '20.18.0']
+        node-version: ['25', '24', '24.0.0', '22.22.0', '22.12.0', '20', '20.19.0']
     steps:
       - uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29
       - uses: pnpm/action-setup@a7487c7e89a18df4991f7f222e4898a00d66ddda
@@ -74,7 +74,7 @@ jobs:
           registry-url: 'https://registry.npmjs.org'
       - run: pnpm i --frozen-lockfile
       - run: EXODUS_TEST_DROP_NETWORK=1 pnpm test:all
-      - if: ${{ matrix.node-version >= '24' || matrix.node-version >= '22.13' && matrix.node-version < '22.3' }}
+      - if: ${{ matrix.node-version >= '24' || matrix.node-version >= '22.13' }}
         run: EXODUS_TEST_DROP_NETWORK=1 pnpm test:typescript
 
   jest:
