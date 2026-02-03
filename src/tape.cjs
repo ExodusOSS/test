@@ -9,6 +9,7 @@ const loadLib = async () => {
 const test = async (...args) => (await loadLib()).test(...args)
 test.skip = async (...args) => (await loadLib()).test.skip(...args)
 test.only = async (...args) => (await loadLib()).test.only(...args)
+test.onFinish = async (...args) => (await loadLib()).test.onFinish(...args)
 test.test = test
 /* eslint-enable unicorn/no-await-expression-member */
 
