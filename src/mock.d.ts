@@ -1,6 +1,11 @@
 /**
- * Type definitions for @exodus/test/mock
- * Provides mocking and testing utilities
+ * Extra mocking and testing utilities
+ *
+ * - Record / replay / inspect `fetch()` sessions
+ * - Record / replay / inspect `WebSocket` sessions
+ * - Speed up timers
+ * - Debug (or assert no) active timers
+ * @module @exodus/test/mock
  */
 
 /// <reference types="node" />

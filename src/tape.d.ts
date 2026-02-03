@@ -1,6 +1,16 @@
 /**
- * Type definitions for @exodus/test/tape
- * Provides tape-compatible testing APIs
+ * [tape](https://npmjs.com/package/tape)-compatible API
+ *
+ * Replace your tape imports with `@exodus/test/tape` and it will run on top of `node:test`.
+ *
+ * And will be runnable in browsers / barebone engines with `@exodus/test`.
+ *
+ * Example:
+ * ```js
+ * import test from '@exodus/test/tape' // ESM
+ * const test = require('@exodus/test/tape)' // CJS
+ * ```
+ * @module @exodus/test/tape
  */
 
 /// <reference types="node" />

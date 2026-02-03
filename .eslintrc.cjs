@@ -5,6 +5,7 @@ module.exports = {
     '@typescript-eslint/no-explicit-any': 'off',
     '@typescript-eslint/no-unnecessary-condition': 'off',
     'unicorn/consistent-function-scoping': 'off',
+    'jsdoc/check-tag-names': 'off',
   },
   overrides: [
     {
