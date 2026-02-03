@@ -13,11 +13,11 @@ It can run your existing tests on [all runtimes and also browsers](#engines), wi
 [![Deno](https://img.shields.io/badge/Deno-121417?style=flat-square&logo=Deno&logoColor=FFF)](https://deno.com/)
 [![Bun](https://img.shields.io/badge/Bun-F472B6?style=flat-square&logo=Bun&logoColor=FFF)](https://bun.sh/)
 [![Electron](https://img.shields.io/badge/Electron-2F3242?style=flat-square&logo=Electron&logoColor=A2ECFB)](http://electronjs.org/)\
-![Chrome](https://img.shields.io/badge/Chrome-4285F4?style=flat-square&logo=GoogleChrome&logoColor=FFF)
-![WebKit](https://img.shields.io/badge/WebKit-006CFF?style=flat-square&logo=Safari&logoColor=FFF)
-![Firefox](https://img.shields.io/badge/Firefox-FF7139?style=flat-square&logo=Firefox&logoColor=FFF)
-![Brave](https://img.shields.io/badge/Brave-F0F0F0?style=flat-square&logo=Brave)
-![Microsoft Edge](https://img.shields.io/badge/Edge-0078D7?style=flat-square)
+[![Chrome](https://img.shields.io/badge/Chrome-4285F4?style=flat-square&logo=GoogleChrome&logoColor=FFF)](https://www.chromium.org/Home/)
+[![WebKit](https://img.shields.io/badge/WebKit-006CFF?style=flat-square&logo=Safari&logoColor=FFF)](http://webkit.org/)
+[![Firefox](https://img.shields.io/badge/Firefox-FF7139?style=flat-square&logo=Firefox&logoColor=FFF)](https://github.com/mozilla-firefox)
+[![Brave](https://img.shields.io/badge/Brave-F0F0F0?style=flat-square&logo=Brave)](https://github.com/brave)
+[![Microsoft Edge](https://img.shields.io/badge/Edge-0078D7?style=flat-square)](https://github.com/microsoftedge)
 [![Servo](https://img.shields.io/badge/Servo-009D9A?style=flat-square)](https://servo.org/)\
 [![Hermes](https://img.shields.io/badge/Hermes-282C34?style=flat-square&logo=React)](https://hermesengine.dev)
 [![V8](https://img.shields.io/badge/V8-4285F4?style=flat-square&logo=V8&logoColor=white)](https://v8.dev/docs/d8)
@@ -35,9 +35,8 @@ See [documentation](https://exodusoss.github.io/test).
 ## Features
 
 - Native ESM, including in Jest tests
-- Esbuild on the fly for babelified ESM interop (enable via `--esbuild`)
-- TypeScript support in both transform (through [tsx](https://tsx.is/), enable via `--esbuild`)
-  and typestrip (via `--typescript`) modes
+- Esbuild on the fly for old faux-ESM interop (enable via `--esbuild`)
+- TypeScript support
 - Runs anywhere
 - Testsuite-agnostic — can run any file as long as it sets exit code based on test results
 - Built-in [Jest](https://jestjs.io) compatibility (with `--jest`), including `jest.*` global
@@ -159,25 +158,13 @@ Collapses test results per-file, like this:
 
 See live output in [CI](https://github.com/ExodusOSS/test/actions/workflows/checks.yaml)
 
-## Library
-
-### List of exports
-
-- `@exodus/test/node` — `node:test` API, working under non-Node.js platforms
-
-- `@exodus/test/jest` — `jest` implementation
-
-- `@exodus/test/tape` — `tape` mock (can also be helpful when moving from `tap`)
-
-## Binary
-
-Just use `"test": "exodus-test"`
-
-### Options
+## Options
 
 - `--jest` — register jest test helpers as global variables, also load `jest.config.*` configuration options
 
-- `--esbuild` — use esbuild loader, also enables Typescript support
+- `--esbuild` — use esbuild loader, also enables Typescript support on old Node.js
+
+- `--typescript` — enable Typescript type stripping (only needed on older Node.js versions which don't have it natively)
 
 - `--babel` — use babel loader (slower than `--esbuild`, makes sense if you have a special config)
 
