@@ -115,7 +115,7 @@ Use this in `package.json` scripts:
   "test": "exodus-test"
 ```
 
-Great! Now your tape tests run on top of `node:test`, and are also runnable in browsers / barebone engines.
+Great! Now your tape tests run on top of `node:test`, and are also runnable in browsers / barebone [engines](#engines).
 
 ## Engines
 
