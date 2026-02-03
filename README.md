@@ -7,7 +7,28 @@
 
 A runner for `node:test`, `jest`, and `tape` test suites on top of `node:test` (and any runtime).
 
-It can run your existing tests on [all runtimes and also browsers](#engines), with snapshots and module mocks.
+It can run your existing tests on [all runtimes and also browsers](#engines), with snapshots and module mocks:
+
+[![Node.js](https://img.shields.io/badge/Node.js-338750?style=flat-square&logo=Node.js&logoColor=FFF)](https://nodejs.org/api/test.html)
+[![Deno](https://img.shields.io/badge/Deno-121417?style=flat-square&logo=Deno&logoColor=FFF)](https://deno.com/)
+[![Bun](https://img.shields.io/badge/Bun-F472B6?style=flat-square&logo=Bun&logoColor=FFF)](https://bun.sh/)
+[![Electron](https://img.shields.io/badge/Electron-2F3242?style=flat-square&logo=Electron&logoColor=A2ECFB)](http://electronjs.org/)\
+![Chrome](https://img.shields.io/badge/Chrome-4285F4?style=flat-square&logo=GoogleChrome&logoColor=FFF)
+![WebKit](https://img.shields.io/badge/WebKit-006CFF?style=flat-square&logo=Safari&logoColor=FFF)
+![Firefox](https://img.shields.io/badge/Firefox-FF7139?style=flat-square&logo=Firefox&logoColor=FFF)
+![Brave](https://img.shields.io/badge/Brave-F0F0F0?style=flat-square&logo=Brave)
+![Microsoft Edge](https://img.shields.io/badge/Edge-0078D7?style=flat-square)
+[![Servo](https://img.shields.io/badge/Servo-009D9A?style=flat-square)](https://servo.org/)\
+[![Hermes](https://img.shields.io/badge/Hermes-282C34?style=flat-square&logo=React)](https://hermesengine.dev)
+[![V8](https://img.shields.io/badge/V8-4285F4?style=flat-square&logo=V8&logoColor=white)](https://v8.dev/docs/d8)
+[![JavaScriptCore](https://img.shields.io/badge/JavaScriptCore-006CFF?style=flat-square)](https://docs.webkit.org/Deep%20Dive/JSC/JavaScriptCore.html)
+[![SpiderMonkey](https://img.shields.io/badge/SpiderMonkey-FFD681?style=flat-square)](https://spidermonkey.dev/)
+[![QuickJS](https://img.shields.io/badge/QuickJS-E58200?style=flat-square)](https://github.com/quickjs-ng/quickjs)
+[![XS](https://img.shields.io/badge/XS-0B307A?style=flat-square)](https://github.com/Moddable-OpenSource/moddable-xst)
+[![GraalJS](https://img.shields.io/badge/GraalJS-C74634?style=flat-square)](https://github.com/oracle/graaljs)
+[![Boa](https://img.shields.io/badge/Boa-F3FF00?style=flat-square)](https://github.com/boa-dev/boa)
+[![Escargot](https://img.shields.io/badge/Escargot-1428A0?style=flat-square)](https://github.com/Samsung/escargot)
+[![engine262](https://img.shields.io/badge/engine262-f0db4f?style=flat-square&logo=javascript&logoColor=000)](https://github.com/engine262/engine262)
 
 See [documentation](https://exodusoss.github.io/test).
 
@@ -17,12 +38,7 @@ See [documentation](https://exodusoss.github.io/test).
 - Esbuild on the fly for babelified ESM interop (enable via `--esbuild`)
 - TypeScript support in both transform (through [tsx](https://tsx.is/), enable via `--esbuild`)
   and typestrip (via `--typescript`) modes
-- Runs on Node.js [node:test](https://nodejs.org/api/test.html), Bun, Deno, Electron,
-  [v8 CLI](https://v8.dev/docs/d8), JSC, [Hermes](https://hermesengine.dev), [SpiderMonkey](https://spidermonkey.dev/),
-  Chrome, Firefox, WebKit, Brave, Microsoft Edge, [Servo](https://servo.org/),
-  [QuickJS](https://github.com/quickjs-ng/quickjs), [XS](https://github.com/Moddable-OpenSource/moddable-xst),
-  [GraalJS](https://github.com/oracle/graaljs), [Escargot](https://github.com/Samsung/escargot),
-  [Boa](https://github.com/boa-dev/boa), and even [engine262](https://github.com/engine262/engine262).
+- Runs anywhere
 - Testsuite-agnostic — can run any file as long as it sets exit code based on test results
 - Built-in [Jest](https://jestjs.io) compatibility (with `--jest`), including `jest.*` global
   - Up to ~10x faster depending on the original setup
