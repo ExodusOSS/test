@@ -26,6 +26,10 @@
     "exodus-test": "bin/index.js"
   },
   "exports": {
+    ".": {
+      "types": "./src/index.d.ts",
+      "default": "./src/index.js"
+    },
     "./node-test-reporter": "./bin/reporter.js",
     "./loader/jest": "./loader/jest.js",
     "./benchmark": {
@@ -84,6 +88,8 @@
     "src/expect.cjs",
     "src/expect.d.ts",
     "src/glob.cjs",
+    "src/index.js",
+    "src/index.d.ts",
     "src/jest.js",
     "src/jest.d.ts",
     "src/jest.config.js",
