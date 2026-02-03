@@ -1,5 +1,10 @@
 # @exodus/test
 
+[![](https://flat.badgen.net/npm/v/@exodus/test)](https://npmjs.org/package/@exodus/test)
+[![](https://flat.badgen.net/github/release/ExodusOSS/test?icon=github)](https://github.com/ExodusOSS/test/releases)
+[![](https://flat.badgen.net/npm/license/@exodus/test)](https://github.com/ExodusOSS/test/blob/HEAD/LICENSE)
+[![](https://flat.badgen.net/github/checks/ExodusOSS/test/main?icon=github)](https://github.com/ExodusOSS/test/actions/workflows/checks.yml?query=branch%3Amain)
+
 A runner for `node:test`, `jest`, and `tape` test suites on top of `node:test` (and any runtime).
 
 It can run your existing tests on [all runtimes and also browsers](#engines), with snapshots and module mocks.
@@ -83,7 +88,9 @@ Use `--engine` (or `EXODUS_TEST_ENGINE=`) to specify one of:
 
 ## Reporter samples
 
-#### CLI (but uses colors when output supports them, e.g. in terminal):
+### CLI
+
+Uses colors when output supports them, e.g. in terminal.
 
 ```console
 # tests/jest/expect.mock.test.js
@@ -100,7 +107,9 @@ Use `--engine` (or `EXODUS_TEST_ENGINE=`) to specify one of:
 ✔ PASS mock.invocationCallOrder (4.221042ms)
 ```
 
-#### GitHub Actions collapses test results per-file, like this:
+### GitHub Actions
+
+Collapses test results per-file, like this:
 
 <details>
  <summary>✅ <strong>tests/jest/lifecycle.test.js</strong></summary>
