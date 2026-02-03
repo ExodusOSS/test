@@ -66,50 +66,6 @@ See [documentation](https://exodusoss.github.io/test).
   Bun leaks globals / side effects between test files ([ref](https://github.com/oven-sh/bun/issues/6024)),
   and has incompatible `test()` lifecycle / order
 
-## Engines
-
-Use `--engine` (or `EXODUS_TEST_ENGINE=`) to specify one of:
-
-- `node:test` — the default one, runs on top of modern Node.js [test runner API](https://nodejs.org/api/test.html)
-- `node:pure` — implementation in pure JS, runs on Node.js
-- `node:bundle` — same as `node:pure`, but bundles everything into a single file before launching
-- Other runtimes:
-  - `deno:pure` — Deno (requires Deno v2.4.0 or later, expects `deno` to be available)
-  - `deno:bundle` — Deno (v1 or v2, whichever `deno` is)
-  - `deno:test` — incomplete, lacks `--jest` support due to missing `afterEach` / `beforeEach` in Deno
-  - `bun:pure` / `bun:bundle` — Bun, expects `bun` to be available
-  - `electron-as-node:test` / `electron-as-node:pure` / `electron-as-node:bundle`\
-    Same as `node:*`, but uses `electron` binary.\
-    The usecase is mostly to test on BoringSSL instead of OpenSSL.
-  - `electron:bundle` — run tests in Electron [BrowserWindow](https://www.electronjs.org/docs/latest/api/browser-window)
-    without Node.js integration.
-- Browsers:
-  - Playwright builds (install Playwright-built engines with `exodus-test --playwright install`)
-    - `chromium:playwright` — Playwright-built Chromium
-    - `firefox:playwright` — Playwright-built Firefox
-    - `webkit:playwright` — Playwright-built WebKit, close to Safari
-    - `chrome:playwright` — Chrome (system-installed)
-    - `msedge:playwright` — Microsoft Edge (system-installed)
-  - Puppeteer (system-provided or upstream builds)
-    - `chrome:puppeteer` — Chrome
-    - `firefox:puppeteer` — Firefox
-    - `brave:puppeteer` — Brave
-    - `msedge:puppeteer` — Microsoft Edge
-  - Bundle
-    - `servo:bundle` — Servo (expects it to be installed in the system)
-- Barebone engines (system-provided or installed with `npx jsvu` / `npx esvu`):
-  - `v8:bundle` — [v8 CLI](https://v8.dev/docs/d8) (Chrome/Blink/Node.js JavaScript engine)
-  - `jsc:bundle` — [JavaScriptCore](https://docs.webkit.org/Deep%20Dive/JSC/JavaScriptCore.html) (Safari/WebKit JavaScript engine)
-  - `hermes:bundle` — [Hermes](https://hermesengine.dev) (React Native JavaScript engine)
-  - `spidermonkey:bundle` — [SpiderMonkey](https://spidermonkey.dev/) (Firefox/Gecko JavaScript engine)
-  - `quickjs:bundle` — [QuickJS](https://github.com/quickjs-ng/quickjs)
-  - `xs:bundle` — [XS](https://github.com/Moddable-OpenSource/moddable-xst)
-  - `graaljs:bundle` — [GraalJS](https://github.com/oracle/graaljs)
-  - `escargot:bundle` — [Escargot](https://github.com/Samsung/escargot)
-  - `boa:bundle` — [Boa](https://github.com/boa-dev/boa)
-  - `engine262:bundle` - [engine262](https://github.com/engine262/engine262), the per-spec implementation of ECMA-262
-    (install with [esvu](https://npmjs.com/package/esvu))
-
 ## Getting started
 
 First install with `npm install --save-dev @exodus/test` (or with your favorite package manager)
@@ -161,6 +117,50 @@ Use this in `package.json` scripts:
 
 Great! Now your tape tests run on top of `node:test`, and are also runnable in browsers / barebone engines.
 
+## Engines
+
+Use `--engine` (or `EXODUS_TEST_ENGINE=`) to specify one of:
+
+- `node:test` — the default one, runs on top of modern Node.js [test runner API](https://nodejs.org/api/test.html)
+- `node:pure` — implementation in pure JS, runs on Node.js
+- `node:bundle` — same as `node:pure`, but bundles everything into a single file before launching
+- Other runtimes:
+  - `deno:pure` — Deno (requires Deno v2.4.0 or later, expects `deno` to be available)
+  - `deno:bundle` — Deno (v1 or v2, whichever `deno` is)
+  - `deno:test` — incomplete, lacks `--jest` support due to missing `afterEach` / `beforeEach` in Deno
+  - `bun:pure` / `bun:bundle` — Bun, expects `bun` to be available
+  - `electron-as-node:test` / `electron-as-node:pure` / `electron-as-node:bundle`\
+    Same as `node:*`, but uses `electron` binary.\
+    The usecase is mostly to test on BoringSSL instead of OpenSSL.
+  - `electron:bundle` — run tests in Electron [BrowserWindow](https://www.electronjs.org/docs/latest/api/browser-window)
+    without Node.js integration.
+- Browsers:
+  - Playwright builds (install Playwright-built engines with `exodus-test --playwright install`)
+    - `chromium:playwright` — Playwright-built Chromium
+    - `firefox:playwright` — Playwright-built Firefox
+    - `webkit:playwright` — Playwright-built WebKit, close to Safari
+    - `chrome:playwright` — Chrome (system-installed)
+    - `msedge:playwright` — Microsoft Edge (system-installed)
+  - Puppeteer (system-provided or upstream builds)
+    - `chrome:puppeteer` — Chrome
+    - `firefox:puppeteer` — Firefox
+    - `brave:puppeteer` — Brave
+    - `msedge:puppeteer` — Microsoft Edge
+  - Bundle
+    - `servo:bundle` — Servo (expects it to be installed in the system)
+- Barebone engines (system-provided or installed with `npx jsvu` / `npx esvu`):
+  - `v8:bundle` — [v8 CLI](https://v8.dev/docs/d8) (Chrome/Blink/Node.js JavaScript engine)
+  - `jsc:bundle` — [JavaScriptCore](https://docs.webkit.org/Deep%20Dive/JSC/JavaScriptCore.html) (Safari/WebKit JavaScript engine)
+  - `hermes:bundle` — [Hermes](https://hermesengine.dev) (React Native JavaScript engine)
+  - `spidermonkey:bundle` — [SpiderMonkey](https://spidermonkey.dev/) (Firefox/Gecko JavaScript engine)
+  - `quickjs:bundle` — [QuickJS](https://github.com/quickjs-ng/quickjs)
+  - `xs:bundle` — [XS](https://github.com/Moddable-OpenSource/moddable-xst)
+  - `graaljs:bundle` — [GraalJS](https://github.com/oracle/graaljs)
+  - `escargot:bundle` — [Escargot](https://github.com/Samsung/escargot)
+  - `boa:bundle` — [Boa](https://github.com/boa-dev/boa)
+  - `engine262:bundle` - [engine262](https://github.com/engine262/engine262), the per-spec implementation of ECMA-262
+    (install with [esvu](https://npmjs.com/package/esvu))
+
 ## Options
 
 - `--jest` — register jest test helpers as global variables, also load `jest.config.*` configuration options
@@ -186,6 +186,8 @@ Great! Now your tape tests run on top of `node:test`, and are also runnable in b
 - `--write-snapshots` — write snapshots instead of verifying them (has `--test-update-snapshots` alias)
 
 - `--test-force-exit` — force exit after tests are done
+
+- `--engine` — specify one of [Engines](#engines) to run on
 
 ## Reporter samples
 
