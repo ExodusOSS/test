@@ -7,6 +7,8 @@
 
 A runner for `node:test`, `jest`, and `tape` test suites on top of `node:test` (and any runtime).
 
+---
+
 It can run your existing tests on [all runtimes and also browsers](#engines), with snapshots and module mocks:
 
 [![Node.js](https://img.shields.io/badge/Node.js-338750?style=flat-square&logo=Node.js&logoColor=FFF)](https://nodejs.org/api/test.html)
@@ -29,6 +31,12 @@ It can run your existing tests on [all runtimes and also browsers](#engines), wi
 [![Boa](https://img.shields.io/badge/Boa-F3FF00?style=flat-square)](https://github.com/boa-dev/boa)
 [![Escargot](https://img.shields.io/badge/Escargot-1428A0?style=flat-square)](https://github.com/Samsung/escargot)
 [![engine262](https://img.shields.io/badge/engine262-f0db4f?style=flat-square&logo=javascript&logoColor=000)](https://github.com/engine262/engine262)
+
+Compatible with tests written in:
+
+[![node:test](https://img.shields.io/badge/node:test-338750?style=flat-square&logo=Node.js&logoColor=FFF)](https://nodejs.org/api/test.html)
+[![Jest](https://img.shields.io/badge/Jest-C21325?style=flat-square&logo=jest&logoColor=fff)](https://jestjs.io)
+[![tape](https://img.shields.io/badge/tape-6c5353?style=flat-square)](https://github.com/tape-testing/tape)
 
 See [documentation](https://exodusoss.github.io/test).
 
@@ -57,7 +65,6 @@ See [documentation](https://exodusoss.github.io/test).
 - Unlike `bun:test`, it runs test files in isolated contexts \
   Bun leaks globals / side effects between test files ([ref](https://github.com/oven-sh/bun/issues/6024)),
   and has incompatible `test()` lifecycle / order
-- Also features a tape API for drop-in replacement
 
 ## Engines
 
@@ -102,6 +109,83 @@ Use `--engine` (or `EXODUS_TEST_ENGINE=`) to specify one of:
   - `boa:bundle` — [Boa](https://github.com/boa-dev/boa)
   - `engine262:bundle` - [engine262](https://github.com/engine262/engine262), the per-spec implementation of ECMA-262
     (install with [esvu](https://npmjs.com/package/esvu))
+
+## Getting started
+
+First install with `npm install --save-dev @exodus/test` (or with your favorite package manager)
+
+Then, add this to `package.json` scripts (or see [engines example](https://github.com/ExodusOSS/bytes/blob/v1.11.0/package.json#L25-L42)):
+
+```json
+  "test": "exodus-test"
+```
+
+That's it. It works zero-config.
+
+See [Options](#options) to change defaults, e.g. to enable Jest globals with `--jest`.
+
+To use [Engines](#engines) on CI, see e.g. GitHub CI config of [@exodus/bytes](https://github.com/ExodusOSS/bytes/blob/main/.github/workflows/test.yml).
+
+### Migrating from Jest
+
+Use this in `package.json` scripts:
+
+```json
+  "test": "exodus-test --jest"
+```
+
+If that doesn't work (e.g. some deps are faux-ESM), add `--esbuild` to transpile those:
+
+```json
+  "test": "exodus-test --jest --esbuild"
+```
+
+To adjust module mocks for native ESM support, see [Module mocking in ESM](#module-mocking-in-esm).
+
+Some complex setups with React Native don't work yet.
+
+### Migrating from tape
+
+Replace `tape` imports with `@exodus/test/tape`:
+
+```js
+import test from '@exodus/test/tape' // ESM
+const test = require('@exodus/test/tape') // CJS
+```
+
+Use this in `package.json` scripts:
+
+```json
+  "test": "exodus-test"
+```
+
+Great! Now your tape tests run on top of `node:test`, and are also runnable in browsers / barebone engines.
+
+## Options
+
+- `--jest` — register jest test helpers as global variables, also load `jest.config.*` configuration options
+
+- `--esbuild` — use esbuild loader, also enables Typescript support on old Node.js
+
+- `--typescript` — enable Typescript type stripping (only needed on older Node.js versions which don't have it natively)
+
+- `--babel` — use babel loader (slower than `--esbuild`, makes sense if you have a special config)
+
+- `--coverage` — enable coverage, prints coverage output (varies by coverage engine)
+
+- `--coverage-engine c8` — use c8 coverage engine (default), also generates `./coverage/` dirs
+
+- `--coverage-engine node` — use Node.js builtint coverage engine
+
+- `--watch` — operate in watch mode and re-run tests on file changes
+
+- `--only` — only run the tests marked with `test.only`
+
+- `--passWithNoTests` — do not error when no test files were found
+
+- `--write-snapshots` — write snapshots instead of verifying them (has `--test-update-snapshots` alias)
+
+- `--test-force-exit` — force exit after tests are done
 
 ## Reporter samples
 
@@ -157,32 +241,6 @@ Collapses test results per-file, like this:
 </details>
 
 See live output in [CI](https://github.com/ExodusOSS/test/actions/workflows/checks.yaml)
-
-## Options
-
-- `--jest` — register jest test helpers as global variables, also load `jest.config.*` configuration options
-
-- `--esbuild` — use esbuild loader, also enables Typescript support on old Node.js
-
-- `--typescript` — enable Typescript type stripping (only needed on older Node.js versions which don't have it natively)
-
-- `--babel` — use babel loader (slower than `--esbuild`, makes sense if you have a special config)
-
-- `--coverage` — enable coverage, prints coverage output (varies by coverage engine)
-
-- `--coverage-engine c8` — use c8 coverage engine (default), also generates `./coverage/` dirs
-
-- `--coverage-engine node` — use Node.js builtint coverage engine
-
-- `--watch` — operate in watch mode and re-run tests on file changes
-
-- `--only` — only run the tests marked with `test.only`
-
-- `--passWithNoTests` — do not error when no test files were found
-
-- `--write-snapshots` — write snapshots instead of verifying them (has `--test-update-snapshots` alias)
-
-- `--test-force-exit` — force exit after tests are done
 
 ## Module mocking in ESM
 
