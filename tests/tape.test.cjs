@@ -1,4 +1,25 @@
 const { test } = require('@exodus/test/tape')
+const tape = require('@exodus/test/tape')
+
+test('tape is test', (t) => {
+  // These mismatch inside --esbuild, which incorrectly remaps CJS to ESM require in this case
+  // Also mismatch on Bun
+
+  const execArgv = process.env.EXODUS_TEST_EXECARGV
+    ? JSON.parse(process.env.EXODUS_TEST_EXECARGV)
+    : process.execArgv
+  const esbuildLoaders = ['node_modules/tsx/dist/loader.mjs', '/loader/esbuild.js']
+  const insideEsbuildStatic = execArgv.some((x) => esbuildLoaders.some((y) => x.endsWith(y)))
+  const insideEsbuild = () => insideEsbuildStatic || globalThis.EXODUS_TEST_INSIDE_ESBUILD
+
+  if ((insideEsbuild() || globalThis.Bun) && tape !== test) {
+    // Do nothing
+  } else {
+    t.strictEqual(tape, test)
+  }
+
+  t.end()
+})
 
 const myThing = 5
 

@@ -1,4 +1,9 @@
-import test from '@exodus/test/tape'
+import tape, { test } from '@exodus/test/tape'
+
+test('tape is test', (t) => {
+  t.strictEqual(tape, test)
+  t.end()
+})
 
 const myThing = 5
 
