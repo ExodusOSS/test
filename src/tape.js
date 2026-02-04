@@ -155,6 +155,7 @@ function tapeWrap(test) {
   if (test.skip) tap.skip = tapeWrap(test.skip)
   if (test.only) tap.only = tapeWrap(test.only)
   tap.onFinish = (fn) => after(fn)
+  tap.test = tap // circular
   return tap
 }
 
