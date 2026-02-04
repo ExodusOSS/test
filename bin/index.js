@@ -491,7 +491,7 @@ async function glob(patterns, { ignore, cwd }) {
 
 if (patterns.length === 0) patterns.push(...DEFAULT_PATTERNS) // defaults
 const globbed = await glob(patterns, { ignore })
-const allfiles = filter ? globbed.filter(filter) : globbed
+const allfiles = (filter ? globbed.filter(filter) : globbed).sort()
 
 if (allfiles.length === 0) {
   if (options.passWithNoTests) {
