@@ -20,3 +20,7 @@ export { requireIsRelative, relativeRequire, baseFile, isTopLevelESM, mockModule
 
 const { readSnapshot, setSnapshotSerializers, setSnapshotResolver } = engine
 export { readSnapshot, setSnapshotSerializers, setSnapshotResolver }
+
+// Export run function for workerd (may be undefined for other platforms)
+const { run } = engine
+export { run }

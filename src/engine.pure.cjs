@@ -104,7 +104,14 @@ function enterContext(name, options) {
 function exitContext() {
   check(context !== context.root)
   context = context.parent
-  if (context === context.root) willstart = setTimeout(run, 0)
+  if (context === context.root) {
+    // For workerd, don't auto-run tests - let the wrapper call them manually
+    if (process.env.EXODUS_TEST_PLATFORM === 'workerd') {
+      // Don't schedule - workerd wrapper will call run() manually
+    } else {
+      willstart = setTimeout(run, 0)
+    }
+  }
 }
 
 async function runFunction(fn, context) {
@@ -192,7 +199,12 @@ async function run() {
     abstractProcess.exitCode = 1
   })
   // Let unhandled errors be processed (and set the error code)
-  setTimeout(() => abstractProcess._maybeProcessExitCode?.(), 0)
+  // For workerd, call _maybeProcessExitCode synchronously since setTimeout doesn't work reliably
+  if (process.env.EXODUS_TEST_PLATFORM === 'workerd') {
+    abstractProcess._maybeProcessExitCode?.()
+  } else {
+    setTimeout(() => abstractProcess._maybeProcessExitCode?.(), 0)
+  }
 }
 
 async function describe(...args) {
@@ -589,5 +601,12 @@ module.exports = {
   ...{ utilFormat, isPromise, nodeVersion, awaitForMicrotaskQueue },
   ...{ requireIsRelative, relativeRequire, baseFile, isTopLevelESM, mockModule: mock.module },
   ...{ readSnapshot, setSnapshotSerializers, setSnapshotResolver },
+  ...(process.env.EXODUS_TEST_PLATFORM === 'workerd' ? { run } : {}),
 }
 /* eslint-enable unicorn/no-useless-spread */
+
+// For workerd, expose run as a global so the wrapper can call it
+if (process.env.EXODUS_TEST_PLATFORM === 'workerd') {
+  globalThis.EXODUS_TEST_RUN = run
+}
+

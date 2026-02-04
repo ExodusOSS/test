@@ -57,6 +57,7 @@ const ENGINES = new Map(
     'jerryscript:bundle': { binary: 'jerryscript', ...bareboneOpts },
     // Special case: running a browser from CLI like a bundle
     'servo:bundle': { binary: 'servo', binaryArgs: ['--headless'], ...bundleOpts, html: true },
+    'workerd:bundle': { binary: 'workerd', binaryArgs: ['test'], ...bundleOpts, workerd: true },
     // Browser engines
     'chrome:puppeteer': { binary: 'chrome', browsers: 'puppeteer', ...bundleOpts },
     'firefox:puppeteer': { binary: 'firefox', browsers: 'puppeteer', ...bundleOpts },
@@ -288,7 +289,7 @@ const engineOptions = ENGINES.get(options.engine)
 assert(engineOptions, `Unknown engine: ${options.engine}`)
 Object.assign(options, engineOptions)
 options.platform = options.binary // binary can be overriden by c8 or electron
-const isBrowserLike = options.browsers || options.electron || options.html
+const isBrowserLike = options.browsers || options.electron || options.html || options.workerd
 setEnv('EXODUS_TEST_ENGINE', options.engine) // e.g. 'hermes:bundle', 'node:bundle', 'node:test', 'node:pure'
 setEnv('EXODUS_TEST_PLATFORM', options.binary === 'shermes' ? 'hermes' : options.binary) // e.g. 'hermes', 'node'
 setEnv('EXODUS_TEST_TIMEOUT', options.testTimeout)
@@ -706,7 +707,59 @@ if (options.pure) {
       await writeFile(bundled.fileHtml, `<script src="${bundled.file}"></script>`)
     }
 
-    const file = buildFile ? bundled.fileHtml ?? bundled.file : inputFile
+    if (bundled && options.workerd) {
+      // For workerd, create a wrapper that awaits EXODUS_TEST_PROMISE
+      // This promise is created when EXODUS_TEST_IS_BROWSER is set
+      bundled.fileWrapper = `${bundled.file}.wrapper.js`
+      bundled.fileConfig = `${bundled.file}.capnp`
+      assert(/^[a-z0-9/_.-]+\.js$/iu.test(bundled.file), bundled.file)
+      const jsRelativePath = basename(bundled.file)
+      const wrapperRelativePath = basename(bundled.fileWrapper)
+
+      // Create wrapper that imports the bundle and awaits test completion
+      const wrapperContent = `import './${jsRelativePath}';
+
+export default {
+  async test(ctrl, env, ctx) {
+    // For workerd, we export a global run function that manually triggers tests
+    // Check if it exists on globalThis
+    if (typeof globalThis.EXODUS_TEST_RUN === 'function') {
+      await globalThis.EXODUS_TEST_RUN();
+    } else {
+      throw new Error('EXODUS_TEST_RUN() function not found on globalThis');
+    }
+    
+    // After tests complete, check exit code
+    const exitCode = globalThis.EXODUS_TEST_PROCESS?._exitCode ?? 0;
+    if (exitCode !== 0) {
+      throw new Error(\`Tests failed with exit code \${exitCode}\`);
+    }
+  }
+};
+`
+      await writeFile(bundled.fileWrapper, wrapperContent)
+
+      // Create workerd config that references the wrapper
+      const configContent = `using Workerd = import "/workerd/workerd.capnp";
+
+const config :Workerd.Config = (
+  services = [
+    (name = "main", worker = .mainWorker),
+  ],
+);
+
+const mainWorker :Workerd.Worker = (
+  modules = [
+    (name = "${wrapperRelativePath}", esModule = embed "${wrapperRelativePath}"),
+    (name = "${jsRelativePath}", esModule = embed "${jsRelativePath}"),
+  ],
+  compatibilityDate = "2024-01-01",
+);
+`
+      await writeFile(bundled.fileConfig, configContent)
+    }
+
+    const file = buildFile ? (bundled.fileConfig ?? bundled.fileHtml ?? bundled.file) : inputFile
     const failedBare = 'EXODUS_TEST_FAILED_EXIT_CODE_1'
     const cleanOut = (out, ok) => {
       if (options.engine === 'ladybird-js:bundle') {
@@ -749,6 +802,8 @@ if (options.pure) {
     } finally {
       if (bundled) await unlink(bundled.file)
       if (bundled?.fileHtml) await unlink(bundled.fileHtml)
+      if (bundled?.fileWrapper) await unlink(bundled.fileWrapper)
+      if (bundled?.fileConfig) await unlink(bundled.fileConfig)
     }
   }
 

@@ -146,6 +146,7 @@
     "test:electron:node:pure": "EXODUS_TEST_ENGINE=electron-as-node:pure npm run test --",
     "test:electron:node:bundle": "EXODUS_TEST_ENGINE=electron-as-node:bundle npm run test:_bundle",
     "test:electron:bundle": "EXODUS_TEST_ENGINE=electron:bundle npm run test:_bundle --",
+    "test:workerd": "EXODUS_TEST_ENGINE=workerd:bundle npm run test:_bundle --",
     "test:chrome:puppeteer": "EXODUS_TEST_ENGINE=chrome:puppeteer npm run test:_bundle --",
     "test:firefox:puppeteer": "EXODUS_TEST_ENGINE=firefox:puppeteer npm run test:_bundle --",
     "test:chromium:playwright": "EXODUS_TEST_ENGINE=chromium:playwright npm run test:_bundle --",
