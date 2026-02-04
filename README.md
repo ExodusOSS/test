@@ -84,6 +84,20 @@ See [Options](#options) to change defaults, e.g. to enable Jest globals with `--
 
 To use [Engines](#engines) on CI, see e.g. GitHub CI config of [@exodus/bytes](https://github.com/ExodusOSS/bytes/blob/main/.github/workflows/test.yml).
 
+### Using with node:test tests
+
+You don't need to change the tests or any extra configuration on top of [Getting started](#getting-started).
+
+It just works out of the box, and on Node.js native `node:test` is used under the hood.
+
+Using this script is similar to `node --test`:
+
+```json
+  "test": "exodus-test"
+```
+
+But, unlike bare `node --test` it supports [engines](#engines) and the [GitHub CI reporter](#github-actions).
+
 ### Migrating from Jest
 
 Use this in `package.json` scripts:
