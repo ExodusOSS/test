@@ -122,7 +122,7 @@ Replace `tape` imports with `@exodus/test/tape`:
 
 ```js
 import test from '@exodus/test/tape' // ESM
-const test = require('@exodus/test/tape') // CJS
+const { test } = require('@exodus/test/tape') // CJS
 ```
 
 Use this in `package.json` scripts:

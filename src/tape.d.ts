@@ -8,7 +8,7 @@
  * Example:
  * ```js
  * import test from '@exodus/test/tape' // ESM
- * const test = require('@exodus/test/tape') // CJS
+ * const { test } = require('@exodus/test/tape') // CJS
  * ```
  * @module @exodus/test/tape
  */
