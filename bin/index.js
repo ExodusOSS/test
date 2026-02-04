@@ -57,7 +57,6 @@ const ENGINES = new Map(
     'jerryscript:bundle': { binary: 'jerryscript', ...bareboneOpts },
     // Special case: running a browser from CLI like a bundle
     'servo:bundle': { binary: 'servo', binaryArgs: ['--headless'], ...bundleOpts, html: true },
-    'workerd:bundle': { binary: 'workerd', binaryArgs: ['test'], ...bundleOpts, workerd: true },
     // Browser engines
     'chrome:puppeteer': { binary: 'chrome', browsers: 'puppeteer', ...bundleOpts },
     'firefox:puppeteer': { binary: 'firefox', browsers: 'puppeteer', ...bundleOpts },
@@ -707,48 +706,7 @@ if (options.pure) {
       await writeFile(bundled.fileHtml, `<script src="${bundled.file}"></script>`)
     }
 
-    if (bundled && options.workerd) {
-      // For workerd, we need to create a wrapper that exports a test function
-      // and imports the actual bundle
-      bundled.fileWrapper = `${bundled.file}.wrapper.js`
-      bundled.fileConfig = `${bundled.file}.capnp`
-      assert(/^[a-z0-9/_.-]+\.js$/iu.test(bundled.file), bundled.file)
-      const jsRelativePath = basename(bundled.file)
-      const wrapperRelativePath = basename(bundled.fileWrapper)
-
-      // Create wrapper that imports the bundle and exposes it as a workerd test
-      const wrapperContent = `import './${jsRelativePath}';
-
-export default {
-  async test(ctrl, env, ctx) {
-    // The imported test already ran, we just need to check if it passed
-    // workerd will handle the exit code
-  }
-};
-`
-      await writeFile(bundled.fileWrapper, wrapperContent)
-
-      // Create workerd config that references the wrapper
-      const configContent = `using Workerd = import "/workerd/workerd.capnp";
-
-const config :Workerd.Config = (
-  services = [
-    (name = "main", worker = .mainWorker),
-  ],
-);
-
-const mainWorker :Workerd.Worker = (
-  modules = [
-    (name = "${wrapperRelativePath}", esModule = embed "${wrapperRelativePath}"),
-    (name = "${jsRelativePath}", esModule = embed "${jsRelativePath}"),
-  ],
-  compatibilityDate = "2024-01-01",
-);
-`
-      await writeFile(bundled.fileConfig, configContent)
-    }
-
-    const file = buildFile ? (bundled.fileConfig ?? bundled.fileHtml ?? bundled.file) : inputFile
+    const file = buildFile ? bundled.fileHtml ?? bundled.file : inputFile
     const failedBare = 'EXODUS_TEST_FAILED_EXIT_CODE_1'
     const cleanOut = (out, ok) => {
       if (options.engine === 'ladybird-js:bundle') {
@@ -791,8 +749,6 @@ const mainWorker :Workerd.Worker = (
     } finally {
       if (bundled) await unlink(bundled.file)
       if (bundled?.fileHtml) await unlink(bundled.fileHtml)
-      if (bundled?.fileWrapper) await unlink(bundled.fileWrapper)
-      if (bundled?.fileConfig) await unlink(bundled.fileConfig)
     }
   }
 

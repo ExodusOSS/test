@@ -152,7 +152,6 @@ Use `--engine` (or `EXODUS_TEST_ENGINE=`) to specify one of:
     The usecase is mostly to test on BoringSSL instead of OpenSSL.
   - `electron:bundle` — run tests in Electron [BrowserWindow](https://www.electronjs.org/docs/latest/api/browser-window)
     without Node.js integration.
-  - `workerd:bundle` — [Cloudflare Workers runtime (workerd)](https://github.com/cloudflare/workerd), expects `workerd` package to be installed
 - Browsers:
   - Playwright builds (install Playwright-built engines with `exodus-test --playwright install`)
     - `chromium:playwright` — Playwright-built Chromium
