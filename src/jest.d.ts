@@ -1,7 +1,7 @@
 /**
  * [Jest](https://jestjs.io/)-compatible API, but much faster, ESM friendly, and based on `node:test`
  *
- * If you are using Jest globals, you don't have to import this manually.
+ * You likely don't have to import this manually.
  *
  * Just run `@exodus/test` with `--jest` flag.
  *

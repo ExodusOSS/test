@@ -118,13 +118,6 @@ Some complex setups with React Native don't work yet.
 
 ### Migrating from tape
 
-Replace `tape` imports with `@exodus/test/tape`:
-
-```js
-import test from '@exodus/test/tape' // ESM
-const test = require('@exodus/test/tape') // CJS
-```
-
 Use this in `package.json` scripts:
 
 ```json
@@ -132,6 +125,15 @@ Use this in `package.json` scripts:
 ```
 
 Great! Now your tape tests run on top of `node:test`, and are also runnable in browsers / barebone [engines](#engines).
+
+> [!TIP]
+> You can optionally replace `tape` imports with `@exodus/test/tape`
+> to be able to be individually run them with just `node ./path-to-file.js`:
+>
+> ```js
+> import test from '@exodus/test/tape' // ESM
+> const test = require('@exodus/test/tape') // CJS
+> ```
 
 ## Engines
 
