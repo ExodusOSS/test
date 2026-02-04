@@ -106,9 +106,7 @@ function exitContext() {
   context = context.parent
   if (context === context.root) {
     // For workerd, don't auto-run tests - let the wrapper call them manually
-    if (process.env.EXODUS_TEST_PLATFORM === 'workerd') {
-      // Don't schedule - workerd wrapper will call run() manually
-    } else {
+    if (process.env.EXODUS_TEST_PLATFORM !== 'workerd') {
       willstart = setTimeout(run, 0)
     }
   }
