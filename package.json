@@ -69,6 +69,7 @@
     "bin/reporter.js",
     "loader/babel.cjs",
     "loader/deno-import-map.json",
+    "loader/deno-import-map.pure.json",
     "loader/esbuild.js",
     "loader/esbuild.optional.js",
     "loader/flow.js",

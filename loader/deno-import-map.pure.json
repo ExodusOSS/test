@@ -1,5 +1,6 @@
 {
   "imports": {
+    "node:test": "../src/node.js",
     "@jest/globals": "../src/jest.js",
     "tape": "../src/tape.js",
     "tape-promise/tape": "../src/tape.js",
