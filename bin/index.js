@@ -703,7 +703,7 @@ if (options.pure) {
 
     const file = buildFile ? bundled.fileHtml ?? bundled.file : inputFile
     const failedBare = 'EXODUS_TEST_FAILED_EXIT_CODE_1'
-    const cleanOut = (out) => {
+    const cleanOut = (out, ok) => {
       if (options.engine === 'ladybird-js:bundle') {
         // It wrapps all prints/console.log in double quotes for strings, and escapes \b \n \v \f \r \, but does not wrap "
         const unmap = { __proto__: null, b: '\b', n: '\n', v: '\v', f: '\f', r: '\r' }
@@ -712,7 +712,8 @@ if (options.pure) {
         out = out.split('\n').map(lineMapper).join('\n')
       }
 
-      return out.replaceAll(`\n${failedBare}\n`, '\n').replaceAll(failedBare, '')
+      out = out.replaceAll(`\n${failedBare}\n`, '\n').replaceAll(failedBare, '')
+      return out || (ok ? `✔ PASS ${file}` : `✖ FAIL ${file}`)
     }
 
     // Timeout is fallback if timeout in script hangs, 50x as it can be adjusted per-script inside them
@@ -725,11 +726,11 @@ if (options.pure) {
       const ms = Number(process.hrtime.bigint() - start) / 1e6
       if (stdout.includes(failedBare)) return { ok: false, output: [cleanOut(stdout), stderr], ms }
       const ok = code === 0 && !/^(✖ FAIL|‼ FATAL) /mu.test(stdout)
-      return { ok, output: [cleanOut(stdout), stderr], ms }
+      return { ok, output: [cleanOut(stdout, ok), stderr], ms }
     } catch (err) {
       const ms = Number(process.hrtime.bigint() - start) / 1e6
       const { code, stderr = '', signal, killed } = err
-      const stdout = cleanOut(err.stdout || '')
+      const stdout = cleanOut(err.stdout || '', false)
       if (code === null) {
         assert(signal)
         const message = `  ${signal}${killed ? ' (killed)' : ''}`
