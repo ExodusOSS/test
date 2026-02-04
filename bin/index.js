@@ -355,12 +355,13 @@ if (process.env.EXODUS_TEST_IGNORE) {
 
 // This might be used in presets, so has to be loaded before jest
 if (options.flow && !options.bundle) args.push('--import', import.meta.resolve('../loader/flow.js'))
-if (['node:test', 'electron-as-node:test'].includes(options.engine)) {
-  // Do not need node:test override
-} else if (options.engine === 'deno:test') {
-  args.push('--import-map', import.meta.resolve('../loader/deno-import-map.json'))
-} else if (options.engine === 'deno:pure') {
-  args.push('--import-map', import.meta.resolve('../loader/deno-import-map.pure.json'))
+if (['node:test', 'electron-as-node:test', 'deno:test', 'deno:pure'].includes(options.engine)) {
+  args.push('--import', import.meta.resolve('../loader/remap.cjs'))
+  if (options.engine === 'deno:test') {
+    args.push('--import-map', import.meta.resolve('../loader/deno-import-map.json'))
+  } else if (options.engine === 'deno:pure') {
+    args.push('--import-map', import.meta.resolve('../loader/deno-import-map.pure.json'))
+  }
 } else if (!options.bundle) {
   args.push(options.loader ?? '-r', import.meta.resolve('../loader/node-test.js'))
 }
