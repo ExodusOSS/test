@@ -35,9 +35,9 @@ It can run your existing tests on [all runtimes and also browsers](#engines), wi
 
 Compatible with tests written in:
 
-[![node:test](https://img.shields.io/badge/node:test-338750?style=flat-square&logo=Node.js&logoColor=FFF)](https://nodejs.org/api/test.html)
-[![Jest](https://img.shields.io/badge/Jest-C21325?style=flat-square&logo=jest&logoColor=fff)](https://jestjs.io)
-[![tape](https://img.shields.io/badge/tape-6c5353?style=flat-square)](https://github.com/tape-testing/tape)
+[![node:test](https://img.shields.io/badge/node:test-338750?style=for-the-badge&logo=Node.js&logoColor=FFF)](https://nodejs.org/api/test.html)
+[![Jest](https://img.shields.io/badge/Jest-C21325?style=for-the-badge&logo=jest&logoColor=fff)](https://jestjs.io)
+[![tape](https://img.shields.io/badge/tape-6c5353?style=for-the-badge)](https://github.com/tape-testing/tape)
 
 See [documentation](https://exodusoss.github.io/test).
 
