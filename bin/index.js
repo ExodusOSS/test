@@ -715,7 +715,7 @@ if (options.pure) {
       assert(/^[a-z0-9/_.-]+\.js$/iu.test(bundled.file), bundled.file)
       const jsRelativePath = basename(bundled.file)
       const wrapperRelativePath = basename(bundled.fileWrapper)
-      
+
       // Create wrapper that imports the bundle and exposes it as a workerd test
       const wrapperContent = `import './${jsRelativePath}';
 
@@ -727,7 +727,7 @@ export default {
 };
 `
       await writeFile(bundled.fileWrapper, wrapperContent)
-      
+
       // Create workerd config that references the wrapper
       const configContent = `using Workerd = import "/workerd/workerd.capnp";
 
@@ -748,7 +748,7 @@ const mainWorker :Workerd.Worker = (
       await writeFile(bundled.fileConfig, configContent)
     }
 
-    const file = buildFile ? bundled.fileConfig ?? bundled.fileHtml ?? bundled.file : inputFile
+    const file = buildFile ? (bundled.fileConfig ?? bundled.fileHtml ?? bundled.file) : inputFile
     const failedBare = 'EXODUS_TEST_FAILED_EXIT_CODE_1'
     const cleanOut = (out, ok) => {
       if (options.engine === 'ladybird-js:bundle') {
