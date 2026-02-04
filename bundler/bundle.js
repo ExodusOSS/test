@@ -403,6 +403,25 @@ export const build = async (...files) => {
     if (require.resolve('crypto-browserify')) nodeUnprefixed.crypto = api('crypto.cjs')
   } catch {}
 
+  let wrapFiles = stringify
+  if (options.platform === 'xs') {
+    const maxXS = 64 * 1024 // XS has max literal string length at 64 KiB, including quotes and escapes
+    const wrap = (s) => {
+      if (s.length <= maxXS) return s
+      const res = []
+      for (let raw = JSON.parse(s); raw.length > 0; raw = raw.slice(maxXS / 2)) {
+        res.push(raw.slice(0, maxXS / 2)) // have to use half to account for escapes
+      }
+
+      return JSON.stringify(res)
+    }
+
+    wrapFiles = (x) =>
+      [undefined, null].includes(x)
+        ? `${x}`
+        : JSON.stringify(x, null, 1).replaceAll(/^ *(".+")(,?)$/gmu, (_, s, c) => `${wrap(s)}${c}`)
+  }
+
   const config = {
     logLevel: 'silent',
     stdin: {
@@ -426,10 +445,10 @@ export const build = async (...files) => {
       'process.versions.node': stringify('22.15.0'), // see line above
       EXODUS_TEST_PROCESS_CWD: stringify(process.cwd()),
       EXODUS_TEST_FILES: stringify(files.map((f) => [dirname(f), basename(f)])),
-      EXODUS_TEST_SNAPSHOTS: stringify(emptyToUndefined(EXODUS_TEST_SNAPSHOTS)),
-      EXODUS_TEST_RECORDINGS: stringify(emptyToUndefined(EXODUS_TEST_RECORDINGS)),
+      EXODUS_TEST_SNAPSHOTS: wrapFiles(emptyToUndefined(EXODUS_TEST_SNAPSHOTS)),
+      EXODUS_TEST_RECORDINGS: wrapFiles(emptyToUndefined(EXODUS_TEST_RECORDINGS)),
       EXODUS_TEST_FSFILES: stringify(emptyToUndefined(fsfiles)), // TODO: can we safely use relative paths?
-      EXODUS_TEST_FSFILES_CONTENTS: stringify(emptyToUndefined([...fsFilesContents.entries()])),
+      EXODUS_TEST_FSFILES_CONTENTS: wrapFiles(emptyToUndefined([...fsFilesContents.entries()])),
       EXODUS_TEST_FSDIRS: stringify(emptyToUndefined([...fsFilesDirs.entries()])),
       EXODUS_TEST_LOAD_EXPECT: stringify(haveJestAPIs.expect),
       EXODUS_TEST_LOAD_JESTEXODUS: stringify(haveJestAPIs.exodus),
@@ -573,7 +592,7 @@ export const build = async (...files) => {
   let needRerun = false
   if (fsFilesContents.size > 0 || fsFilesDirs.size > 0) {
     // re-run as we detected that tests depend on fsReadFileSync contents
-    config.define.EXODUS_TEST_FSFILES_CONTENTS = stringify([...fsFilesContents.entries()])
+    config.define.EXODUS_TEST_FSFILES_CONTENTS = wrapFiles([...fsFilesContents.entries()])
     config.define.EXODUS_TEST_FSDIRS = stringify([...fsFilesDirs.entries()])
     needRerun = true
   }

@@ -129,6 +129,14 @@ if (process.env.EXODUS_TEST_PLATFORM === 'hermes') {
   }
 }
 
+// XS has maximum literal string length at 64 KiB and needs unwrapping
+if (process.env.EXODUS_TEST_PLATFORM === 'xs') {
+  // eslint-disable-next-line no-undef
+  for (const a of [EXODUS_TEST_FSFILES, EXODUS_TEST_SNAPSHOTS, EXODUS_TEST_RECORDINGS]) {
+    if (a) for (const x of a) if (Array.isArray(x[1])) x[1] = x[1].join('')
+  }
+}
+
 if (process.env.EXODUS_TEST_PLATFORM === 'quickjs' && globalThis.os) {
   const { setTimeout, setInterval, clearTimeout, clearInterval } = globalThis.os
   Object.assign(globalThis, { setTimeout, setInterval, clearTimeout, clearInterval })
