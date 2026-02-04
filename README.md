@@ -4,6 +4,7 @@
 [![](https://flat.badgen.net/github/release/ExodusOSS/test?icon=github)](https://github.com/ExodusOSS/test/releases)
 [![](https://flat.badgen.net/npm/license/@exodus/test)](https://github.com/ExodusOSS/test/blob/HEAD/LICENSE)
 [![](https://flat.badgen.net/github/checks/ExodusOSS/test/main?icon=github)](https://github.com/ExodusOSS/test/actions/workflows/checks.yml?query=branch%3Amain)
+[![](https://img.shields.io/github/stars/ExodusOSS/test)](https://github.com/ExodusOSS/test/stargazers)
 
 A runner for `node:test`, `jest`, and `tape` test suites on top of `node:test` (and any runtime).
 
