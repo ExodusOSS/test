@@ -205,12 +205,13 @@
     "jsvu": "^3.0.3",
     "prettier": "^3.0.3",
     "typedoc": "^0.28.16",
-    "workerd": "^1.20251217.0"
+    "workerd": "^1.20260205.0"
   },
   "peerDependencies": {
     "@babel/register": "^7.0.0",
     "electron": "*",
-    "jsdom": "*"
+    "jsdom": "*",
+    "workerd": "*"
   },
   "peerDependenciesMeta": {
     "@babel/register": {
@@ -220,6 +221,9 @@
       "optional": true
     },
     "jsdom": {
+      "optional": true
+    },
+    "workerd": {
       "optional": true
     }
   },
