@@ -53,6 +53,7 @@ const ENGINES = new Map(
     'graaljs:bundle': { binary: 'graaljs', ...bareboneOpts },
     'escargot:bundle': { binary: 'escargot', ...bareboneOpts },
     'boa:bundle': { binary: 'boa', binaryArgs: ['-m'], ...bareboneOpts },
+    'nova:bundle': { binary: 'nova', binaryArgs: ['eval'], ...bareboneOpts },
     'jerryscript:bundle': { binary: 'jerryscript', ...bareboneOpts },
     // Special case: running a browser from CLI like a bundle
     'servo:bundle': { binary: 'servo', binaryArgs: ['--headless'], ...bundleOpts, html: true },
@@ -70,7 +71,7 @@ const ENGINES = new Map(
 )
 const bareOk = ['v8', 'd8', 'spidermonkey', 'quickjs', 'xs', 'hermes', 'shermes']
 const bareUnhandled = ['jsc', 'escargot', 'boa', 'graaljs', 'jerry', 'engine262', 'servo']
-const bareIncomplete = ['ladybird-js', 'duk']
+const bareIncomplete = ['ladybird-js', 'nova', 'duk']
 
 const getEnvFlag = (name) => {
   if (!Object.hasOwn(process.env, name)) return
