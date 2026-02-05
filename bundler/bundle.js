@@ -291,7 +291,7 @@ export const build = async (...files) => {
   const exit = `EXODUS_TEST_PROCESS.exitCode = 1; EXODUS_TEST_PROCESS._maybeProcessExitCode();`
   if (process.env.EXODUS_TEST_IS_BAREBONE) {
     main = `try {\n${main}\n} catch (err) { print(err); ${exit} }`
-  } else if (process.env.EXODUS_TEST_IS_BROWSER) {
+  } else if (process.env.EXODUS_TEST_IS_BROWSER || process.env.EXODUS_TEST_PLATFORM === 'workerd') {
     main = `try {\n${main}\n} catch (err) { console.error(err); ${exit} }`
   }
 
