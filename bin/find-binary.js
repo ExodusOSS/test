@@ -58,6 +58,7 @@ function findBinaryOnce(name) {
     case 'escargot':
     case 'boa': // not present in jsvu, esvu lacks aarch64-apple-darwin platform (as it's only in nightly)
     case 'ladybird-js': // naming by esvu
+    case 'duk':
     case 'engine262':
       return findFile([jsvu, esvu])
     case 'shermes': // our temporary name for static hermes

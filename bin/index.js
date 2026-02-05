@@ -46,6 +46,7 @@ const ENGINES = new Map(
     'shermes:bundle': { binary: 'shermes', binaryArgs: hermesS, target: 'es2018', ...bareboneOpts },
     'spidermonkey:bundle': { binary: 'spidermonkey', ...bareboneOpts },
     'ladybird-js:bundle': { binary: 'ladybird-js', binaryArgs: ['-i'], ...bareboneOpts },
+    'duktape:bundle': { binary: 'duk', ...bareboneOpts },
     'engine262:bundle': { binary: 'engine262', ...bareboneOpts },
     'quickjs:bundle': { binary: 'quickjs', binaryArgs: ['--std'], ...bareboneOpts },
     'xs:bundle': { binary: 'xs', ...bareboneOpts },
@@ -69,7 +70,7 @@ const ENGINES = new Map(
 )
 const bareOk = ['v8', 'd8', 'spidermonkey', 'quickjs', 'xs', 'hermes', 'shermes']
 const bareUnhandled = ['jsc', 'escargot', 'boa', 'graaljs', 'jerry', 'engine262', 'servo']
-const bareIncomplete = ['ladybird-js']
+const bareIncomplete = ['ladybird-js', 'duk']
 
 const getEnvFlag = (name) => {
   if (!Object.hasOwn(process.env, name)) return
