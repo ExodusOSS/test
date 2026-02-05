@@ -78,8 +78,8 @@ importers:
         specifier: ^1.0.1
         version: 1.0.1
       '@exodus/replay':
-        specifier: ^1.0.0-rc.9
-        version: 1.0.0-rc.9
+        specifier: ^1.0.0-rc.10
+        version: 1.0.0-rc.10
       '@exodus/test-bundler':
         specifier: 1.0.0-rc.12
         version: link:bundler
@@ -665,8 +665,8 @@ packages:
     peerDependencies:
       prettier: ^3.0.3
 
-  '@exodus/replay@1.0.0-rc.9':
-    resolution: {integrity: sha512-16nwUaYRg00/50MF+RDlEqymBQIq6xUEfskCbOmXqqbzylZDErfMHN1ApNWB3yxeFVZaHRSpA49e9mOQ10y0dg==, tarball: https://registry.npmjs.org/@exodus/replay/-/replay-1.0.0-rc.9.tgz}
+  '@exodus/replay@1.0.0-rc.10':
+    resolution: {integrity: sha512-xwwAjBmZNYHtQPZ8nPgeI11sGJLNw1ZHimGOukfkl9L8jcBdElxgBN1E1qUiACQc90Vil60OxDt6wOWQx8HgVQ==, tarball: https://registry.npmjs.org/@exodus/replay/-/replay-1.0.0-rc.10.tgz}
 
   '@gerrit0/mini-shiki@3.22.0':
     resolution: {integrity: sha512-jMpciqEVUBKE1QwU64S4saNMzpsSza6diNCk4MWAeCxO2+LFi2FIFmL2S0VDLzEJCxuvCbU783xi8Hp/gkM5CQ==, tarball: https://registry.npmjs.org/@gerrit0/mini-shiki/-/mini-shiki-3.22.0.tgz}
@@ -4699,7 +4699,7 @@ snapshots:
     dependencies:
       prettier: 3.3.2
 
-  '@exodus/replay@1.0.0-rc.9':
+  '@exodus/replay@1.0.0-rc.10':
     optional: true
 
   '@gerrit0/mini-shiki@3.22.0':
