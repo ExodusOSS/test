@@ -25,6 +25,9 @@
   "bin": {
     "exodus-test": "bin/index.js"
   },
+  "main": "index.js",
+  "module": "index.js",
+  "types": "index.d.ts",
   "exports": {
     ".": {
       "types": "./src/index.d.ts",
