@@ -497,7 +497,7 @@ async function glob(patterns, { ignore, cwd }) {
 
 if (patterns.length === 0) patterns.push(...DEFAULT_PATTERNS) // defaults
 const globbed = await glob(patterns, { ignore })
-const allfiles = (filter ? globbed.filter(filter) : globbed).sort()
+const allfiles = filter ? globbed.filter(filter) : globbed
 
 if (allfiles.length === 0) {
   if (options.passWithNoTests) {
@@ -536,7 +536,7 @@ files.sort((a, b) => {
   }
 
   // First process each file in dir, then subdirs
-  if (al.length < 2) return -1
+  if (al.length < 2) return bl.length < 2 && al > bl ? 1 : -1
   if (bl.length < 2) return 1
   // Prefer example/ over example-something/
   const [an, bn] = [al, bl].map((list) => list.join(String.fromCodePoint(0)))
