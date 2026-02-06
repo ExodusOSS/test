@@ -66,6 +66,12 @@ const loadPipeline = [
         res = res.replace('.substr(i * 2, 2)', '.substring(i * 2, i * 2 + 2)')
       }
     } else if (options.platform === 'nova') {
+      const fixupMethod = (x) => {
+        // See https://github.com/trynova/nova/issues/932
+        res = res.replace(`function ${x}(`, `var ${x} = function(`) // Once per name
+      }
+
+      fixupMethod('_interopRequireWildcard')
       if (filepath.endsWith('/node_modules/get-intrinsic/index.js')) {
         // See https://github.com/trynova/nova/issues/933. Hacky, but should cover usage
         res = res.replace(
@@ -78,10 +84,7 @@ const loadPipeline = [
         filepath.endsWith('/node_modules/assert/build/internal/errors.js') ||
         filepath.endsWith('/node_modules/assert/build/internal/util/comparisons.js')
       ) {
-        // See https://github.com/trynova/nova/issues/932
-        for (const x of ['_setPrototypeOf', '_wrapNativeSuper', '_typeof']) {
-          res = res.replace(`function ${x}(`, `var ${x} = function(`) // Once per name
-        }
+        for (const x of ['_setPrototypeOf', '_wrapNativeSuper', '_typeof']) fixupMethod(x)
       }
     }
 
