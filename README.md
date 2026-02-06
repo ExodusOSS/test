@@ -15,7 +15,8 @@ It can run your existing tests on [all runtimes and also browsers](#engines), wi
 [![Node.js](https://img.shields.io/badge/Node.js-338750?style=flat-square&logo=Node.js&logoColor=FFF)](https://nodejs.org/api/test.html)
 [![Deno](https://img.shields.io/badge/Deno-121417?style=flat-square&logo=Deno&logoColor=FFF)](https://deno.com/)
 [![Bun](https://img.shields.io/badge/Bun-F472B6?style=flat-square&logo=Bun&logoColor=FFF)](https://bun.sh/)
-[![Electron](https://img.shields.io/badge/Electron-2F3242?style=flat-square&logo=Electron&logoColor=A2ECFB)](http://electronjs.org/)\
+[![Electron](https://img.shields.io/badge/Electron-2F3242?style=flat-square&logo=Electron&logoColor=A2ECFB)](http://electronjs.org/)
+[![workerd](https://img.shields.io/badge/workerd-F38020?style=flat-square&logo=cloudflareworkers&logoColor=FFF)](https://github.com/cloudflare/workerd)\
 [![Chrome](https://img.shields.io/badge/Chrome-4285F4?style=flat-square&logo=GoogleChrome&logoColor=FFF)](https://www.chromium.org/Home/)
 [![WebKit](https://img.shields.io/badge/WebKit-006CFF?style=flat-square&logo=Safari&logoColor=FFF)](http://webkit.org/)
 [![Firefox](https://img.shields.io/badge/Firefox-FF7139?style=flat-square&logo=Firefox&logoColor=FFF)](https://github.com/mozilla-firefox)
