@@ -716,12 +716,15 @@ if (options.pure) {
       const wrapperContent = `
 export default {
   async test(ctrl, env, ctx) {
-    await import('./' + ${JSON.stringify(jsRelativePath)});
-    if (typeof globalThis.EXODUS_TEST_RUN !== 'function') throw new Error('node:test not loaded');
-    const exitCode = await globalThis.EXODUS_TEST_RUN();
-    if (exitCode !== 0) throw new Error(\`Tests failed with exit code \${exitCode}\`);
+    await import('./' + ${JSON.stringify(jsRelativePath)})
+    let exitCode = EXODUS_TEST_PROCESS.exitCode // can fail early
+    if (exitCode === 0) {
+      if (typeof globalThis.EXODUS_TEST_RUN !== 'function') throw new Error('node:test not loaded')
+      exitCode = await globalThis.EXODUS_TEST_RUN()
+    }
+    if (exitCode !== 0) throw new Error(\`Tests failed with exit code \${exitCode}\`)
   }
-};`
+}`
       await writeFile(bundled.fileWrapper, wrapperContent)
       const configContent = `
 using Workerd = import "/workerd/workerd.capnp";
