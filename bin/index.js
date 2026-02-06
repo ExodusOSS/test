@@ -711,6 +711,7 @@ if (options.pure) {
       bundled.fileWrapper = `${bundled.file}.wrapper.js`
       bundled.fileConfig = `${bundled.file}.capnp`
       assert(/^[a-z0-9/_.-]+\.js$/iu.test(bundled.file), bundled.file)
+      const { compatibilityDate } = await import('workerd')
       const jsRelativePath = basename(bundled.file)
       const wrapperRelativePath = basename(bundled.fileWrapper)
       const wrapperContent = `
@@ -734,7 +735,7 @@ const mainWorker :Workerd.Worker = (
     (name = ${JSON.stringify(wrapperRelativePath)}, esModule = embed ${JSON.stringify(wrapperRelativePath)}),
     (name = ${JSON.stringify(jsRelativePath)}, esModule = embed ${JSON.stringify(jsRelativePath)}),
   ],
-  compatibilityDate = "2024-01-01",
+  compatibilityDate = ${JSON.stringify(compatibilityDate)},
 );`
       await writeFile(bundled.fileConfig, configContent)
     }

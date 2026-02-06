@@ -491,7 +491,7 @@ function getMacrotick() {
   const { scheduler, MessageChannel } = globalThis
   if (scheduler?.yield) return () => scheduler.yield()
   if (setImmediate) return () => new Promise((resolve) => setImmediate(resolve))
-  if (MessageChannel) {
+  if (MessageChannel && !globalThis.Cloudflare) {
     return async () => {
       const { port1, port2 } = new MessageChannel()
       await new Promise((resolve) => {
