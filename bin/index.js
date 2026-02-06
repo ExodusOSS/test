@@ -57,6 +57,7 @@ const ENGINES = new Map(
     'jerryscript:bundle': { binary: 'jerryscript', ...bareboneOpts },
     // Special case: running a browser from CLI like a bundle
     'servo:bundle': { binary: 'servo', binaryArgs: ['--headless'], ...bundleOpts, html: true },
+    'workerd:bundle': { binary: 'workerd', binaryArgs: ['test'], ...bundleOpts, workerd: true },
     // Browser engines
     'chrome:puppeteer': { binary: 'chrome', browsers: 'puppeteer', ...bundleOpts },
     'firefox:puppeteer': { binary: 'firefox', browsers: 'puppeteer', ...bundleOpts },
@@ -706,7 +707,36 @@ if (options.pure) {
       await writeFile(bundled.fileHtml, `<script src="${bundled.file}"></script>`)
     }
 
-    const file = buildFile ? bundled.fileHtml ?? bundled.file : inputFile
+    if (bundled && options.workerd) {
+      bundled.fileWrapper = `${bundled.file}.wrapper.js`
+      bundled.fileConfig = `${bundled.file}.capnp`
+      assert(/^[a-z0-9/_.-]+\.js$/iu.test(bundled.file), bundled.file)
+      const jsRelativePath = basename(bundled.file)
+      const wrapperRelativePath = basename(bundled.fileWrapper)
+      const wrapperContent = `
+export default {
+  async test(ctrl, env, ctx) {
+    await import('./' + ${JSON.stringify(jsRelativePath)});
+    if (typeof globalThis.EXODUS_TEST_RUN !== 'function') throw new Error('node:test not loaded');
+    const exitCode = await globalThis.EXODUS_TEST_RUN();
+    if (exitCode !== 0) throw new Error(\`Tests failed with exit code \${exitCode}\`);
+  }
+};`
+      await writeFile(bundled.fileWrapper, wrapperContent)
+      const configContent = `
+using Workerd = import "/workerd/workerd.capnp";
+const config :Workerd.Config = ( services = [ (name = "main", worker = .mainWorker) ] );
+const mainWorker :Workerd.Worker = (
+  modules = [
+    (name = ${JSON.stringify(wrapperRelativePath)}, esModule = embed ${JSON.stringify(wrapperRelativePath)}),
+    (name = ${JSON.stringify(jsRelativePath)}, esModule = embed ${JSON.stringify(jsRelativePath)}),
+  ],
+  compatibilityDate = "2024-01-01",
+);`
+      await writeFile(bundled.fileConfig, configContent)
+    }
+
+    const file = buildFile ? bundled.fileConfig ?? bundled.fileHtml ?? bundled.file : inputFile
     const failedBare = 'EXODUS_TEST_FAILED_EXIT_CODE_1'
     const cleanOut = (out, ok) => {
       if (options.engine === 'ladybird-js:bundle') {
@@ -749,6 +779,8 @@ if (options.pure) {
     } finally {
       if (bundled) await unlink(bundled.file)
       if (bundled?.fileHtml) await unlink(bundled.fileHtml)
+      if (bundled?.fileWrapper) await unlink(bundled.fileWrapper)
+      if (bundled?.fileConfig) await unlink(bundled.fileConfig)
     }
   }
 
