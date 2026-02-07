@@ -128,9 +128,8 @@ jobs:
       fail-fast: false
       matrix:
         # esvu hermes is 0.11 and even fails to install
-        # boa 0.20 seems to crash with OOM, but nightly works, so it can be added on next boa release
         # quickjs fails and is unavailable on macOS (quickjs-ng from jsvu works)
-        engine: ['v8', 'javascriptcore', 'spidermonkey', 'xs', 'engine262']
+        engine: ['v8', 'javascriptcore', 'spidermonkey', 'xs', 'engine262', 'boa']
     steps:
       - uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29
       - uses: pnpm/action-setup@a7487c7e89a18df4991f7f222e4898a00d66ddda
@@ -146,7 +145,11 @@ jobs:
         with:
           path: ~/.esvu
           key: barebone-esvu-${{ matrix.engine }}-${{ runner.os }}
+      - if: ${{ matrix.engine == 'boa' }}
+        run: pnpm i esvu@devsnek/esvu#3852bf2c67a47e001b5eef926d53574a37149b92
       - run: node --run esvu -- install "${{ matrix.engine }}"
+      - if: ${{ matrix.engine == 'boa' }}
+        run: git checkout . && pnpm i --frozen-lockfile
       - run: EXODUS_TEST_DROP_NETWORK=1 node --run "test:${{ matrix.engine }}"
 
   puppeteer:
