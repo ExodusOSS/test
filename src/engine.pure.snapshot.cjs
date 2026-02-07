@@ -2,6 +2,7 @@ const nameCounts = new Map()
 let snapshotText, snapshotTextClean
 
 const escapeSnapshot = (str) => str.replaceAll(/([\\`]|\$\{)/gu, '\\$1')
+const escapeSnapshotKey = (s) => escapeSnapshot(s).replaceAll('\n', '\\n').replaceAll('"', '\\"')
 
 function matchSnapshot(readSnapshot, assert, name, serialized) {
   // We don't have native snapshots, polyfill reading
@@ -25,12 +26,16 @@ function matchSnapshot(readSnapshot, assert, name, serialized) {
   nameCounts.set(name, count)
   const escaped = escapeSnapshot(serialized)
   const key = `${name} ${count}`
-  const makeEntry = (x) => `\nexports[\`${escapeSnapshot(key)}\`] = \`${x}\`;\n`
-  const fixedText = escaped.includes('\r') ? snapshotText : snapshotTextClean // well, if we expect \r let's preserve them
-  const final = escaped.includes('\n') ? `\n${escaped}\n` : escaped
-  if (fixedText.includes(makeEntry(final))) return
-  // Perhaps wrapped with newlines from Node.js snapshots?
-  if (!final.includes('\n') && fixedText.includes(makeEntry(`\n${final}\n`))) return
+  // Node.js and jest escape keys differently, both result to same strings, accept both
+  for (const keyfun of [escapeSnapshot, escapeSnapshotKey]) {
+    const makeEntry = (x) => `\nexports[\`${keyfun(key)}\`] = \`${x}\`;\n`
+    const fixedText = escaped.includes('\r') ? snapshotText : snapshotTextClean // well, if we expect \r let's preserve them
+    const final = escaped.includes('\n') ? `\n${escaped}\n` : escaped
+    if (fixedText.includes(makeEntry(final))) return
+    // Perhaps wrapped with newlines from Node.js snapshots?
+    if (!final.includes('\n') && fixedText.includes(makeEntry(`\n${final}\n`))) return
+  }
+
   return assert.fail(`Could not match "${key}" in snapshot. ${addFail}`)
 }
 

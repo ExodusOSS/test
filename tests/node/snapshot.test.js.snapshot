@@ -1,0 +1,429 @@
+exports[`<anonymous> > <anonymous> 1`] = `
+"empty names test"
+`;
+
+exports[`<anonymous> > <anonymous> 10`] = `
+"<anonymous>"
+`;
+
+exports[`<anonymous> > <anonymous> 11`] = `
+"<anonymous> > <anonymous>"
+`;
+
+exports[`<anonymous> > <anonymous> 12`] = `
+"<anonymous>"
+`;
+
+exports[`<anonymous> > <anonymous> 13`] = `
+"<anonymous> > <anonymous>"
+`;
+
+exports[`<anonymous> > <anonymous> 14`] = `
+"<anonymous>"
+`;
+
+exports[`<anonymous> > <anonymous> 15`] = `
+"<anonymous> > <anonymous>"
+`;
+
+exports[`<anonymous> > <anonymous> 16`] = `
+"<anonymous>"
+`;
+
+exports[`<anonymous> > <anonymous> 17`] = `
+"<anonymous> > <anonymous>"
+`;
+
+exports[`<anonymous> > <anonymous> 18`] = `
+"<anonymous>"
+`;
+
+exports[`<anonymous> > <anonymous> 19`] = `
+"<anonymous> > <anonymous>"
+`;
+
+exports[`<anonymous> > <anonymous> 2`] = `
+"<anonymous> > <anonymous>"
+`;
+
+exports[`<anonymous> > <anonymous> 20`] = `
+"<anonymous>"
+`;
+
+exports[`<anonymous> > <anonymous> 21`] = `
+"<anonymous> > <anonymous>"
+`;
+
+exports[`<anonymous> > <anonymous> 22`] = `
+"<anonymous>"
+`;
+
+exports[`<anonymous> > <anonymous> 3`] = `
+"<anonymous>"
+`;
+
+exports[`<anonymous> > <anonymous> 4`] = `
+"no name test"
+`;
+
+exports[`<anonymous> > <anonymous> 5`] = `
+"<anonymous> > <anonymous>"
+`;
+
+exports[`<anonymous> > <anonymous> 6`] = `
+"<anonymous>"
+`;
+
+exports[`<anonymous> > <anonymous> 7`] = `
+"<anonymous> > <anonymous>"
+`;
+
+exports[`<anonymous> > <anonymous> 8`] = `
+"<anonymous>"
+`;
+
+exports[`<anonymous> > <anonymous> 9`] = `
+"<anonymous> > <anonymous>"
+`;
+
+exports[`<anonymous> > str 1`] = `
+"<anonymous> > str"
+`;
+
+exports[`<anonymous> > str 2`] = `
+"str"
+`;
+
+exports[`complex 1`] = `
+[
+  10
+]
+`;
+
+exports[`complex 2`] = `
+[
+  {
+    "a": 10
+  }
+]
+`;
+
+exports[`complex 3`] = `
+{
+  "a": 10
+}
+`;
+
+exports[`complex 4`] = `
+{
+  "a": 10,
+  "b": 20
+}
+`;
+
+exports[`complex 5`] = `
+{
+  "type": "Buffer",
+  "data": []
+}
+`;
+
+exports[`escape 1`] = `
+"\\\\"
+`;
+
+exports[`escape 2`] = `
+"\${"
+`;
+
+exports[`escape 3`] = `
+"$$\\\\\${"
+`;
+
+exports[`mixed 1`] = `
+true
+`;
+
+exports[`mixed 10`] = `
+41
+`;
+
+exports[`mixed 11`] = `
+{
+  "bar": "buz"
+}
+`;
+
+exports[`mixed 12`] = `
+{}
+`;
+
+exports[`mixed 2`] = `
+[
+  1,
+  2,
+  3
+]
+`;
+
+exports[`mixed 3`] = `
+{
+  "foo": "bar"
+}
+`;
+
+exports[`mixed 4`] = `
+43
+`;
+
+exports[`mixed 5`] = `
+{}
+`;
+
+exports[`mixed 6`] = `
+[]
+`;
+
+exports[`mixed 7`] = `
+[
+  5,
+  4,
+  3
+]
+`;
+
+exports[`mixed 8`] = `
+[]
+`;
+
+exports[`mixed 9`] = `
+false
+`;
+
+exports[`nested test > nested test one 1`] = `
+{
+  "a": 20,
+  "d": {
+    "type": "Buffer",
+    "data": [
+      102,
+      111,
+      111
+    ]
+  },
+  "b": [
+    1,
+    2,
+    "bar",
+    5
+  ],
+  "e": {
+    "foo": "bar"
+  }
+}
+`;
+
+exports[`nested test > test A 1`] = `
+{
+  "__proto__": [],
+  "b": [
+    1,
+    2,
+    null,
+    null,
+    5
+  ],
+  "e": {
+    "foo": "bar"
+  },
+  "f": null
+}
+`;
+
+exports[`nested test > test A 2`] = `
+[
+  {},
+  {},
+  {
+    "0": 4,
+    "1": 2,
+    "2": 65123
+  },
+  null
+]
+`;
+
+exports[`simple 1`] = `
+10
+`;
+
+exports[`simple 10`] = `
+{}
+`;
+
+exports[`simple 11`] = `
+true
+`;
+
+exports[`simple 12`] = `
+null
+`;
+
+exports[`simple 13`] = `
+{}
+`;
+
+exports[`simple 14`] = `
+42
+`;
+
+exports[`simple 15`] = `
+[]
+`;
+
+exports[`simple 16`] = `
+null
+`;
+
+exports[`simple 2`] = `
+null
+`;
+
+exports[`simple 3`] = `
+undefined
+`;
+
+exports[`simple 4`] = `
+[]
+`;
+
+exports[`simple 5`] = `
+{}
+`;
+
+exports[`simple 6`] = `
+null
+`;
+
+exports[`simple 7`] = `
+false
+`;
+
+exports[`simple 8`] = `
+true
+`;
+
+exports[`simple 9`] = `
+{}
+`;
+
+exports[`test A 1`] = `
+{
+  "a": 20,
+  "d": {
+    "type": "Buffer",
+    "data": [
+      102,
+      111,
+      111
+    ]
+  },
+  "b": [
+    1,
+    2,
+    "bar",
+    5
+  ],
+  "e": {
+    "foo": "bar"
+  }
+}
+`;
+
+exports[`test B 1`] = `
+{
+  "__proto__": [],
+  "b": [
+    1,
+    2,
+    null,
+    null,
+    5
+  ],
+  "e": {
+    "foo": "bar"
+  },
+  "f": null
+}
+`;
+
+exports[`test B 2`] = `
+[
+  {},
+  {},
+  {
+    "0": 4,
+    "1": 2,
+    "2": 65123
+  },
+  null
+]
+`;
+
+exports[`test B 3`] = `
+{
+  "x": 1337
+}
+`;
+
+exports[`weird  names >  !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_\`abcdefghijklmnopqrstuvwxyz{|}~ 1`] = `
+" !\\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\\\]^_\`abcdefghijklmnopqrstuvwxyz{|}~"
+`;
+
+exports[`weird  names > $ 1`] = `
+"$"
+`;
+
+exports[`weird  names > > 1`] = `
+">"
+`;
+
+exports[`weird  names > \${ 1`] = `
+"\${"
+`;
+
+exports[`weird  names > \\ 1`] = `
+"\\\\"
+`;
+
+exports[`weird  names > \\\n\`\n\\\`\` 1`] = `
+"\\\\\\n\`\\n\\\\\`\`"
+`;
+
+exports[`weird  names > \` 1`] = `
+"\`"
+`;
+
+exports[`weird  names > \` \` \` 1`] = `
+"\` \` \`"
+`;
+
+exports[`weird  names > \` \`\n \` 1`] = `
+"\` \`\\n \`"
+`;
+
+exports[`weird  names > \n 1`] = `
+"\\n"
+`;
+
+exports[`weird  names > multi\nline 1`] = `
+0
+`;
+
+exports[`weird  names > with \` 1`] = `
+42
+`;
+
+exports[`weird  names > {} 1`] = `
+"{}"
+`;

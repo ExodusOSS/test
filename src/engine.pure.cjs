@@ -564,7 +564,7 @@ if (process.env.EXODUS_TEST_ENVIRONMENT === 'bundle') {
 
 // eslint-disable-next-line no-undef
 let snapshotResolver = (dir, name) => [dir, `${name}.snapshot`] // default per Node.js docs
-let snapshotSerializers = [(obj) => JSON.stringify(obj, null, 2)]
+let snapshotSerializers = [(obj) => (obj === undefined ? `${obj}` : JSON.stringify(obj, null, 2))]
 const serializeSnapshot = (obj) => {
   let val = obj
   for (const fn of snapshotSerializers) val = fn(val)
