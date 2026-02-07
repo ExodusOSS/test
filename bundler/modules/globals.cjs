@@ -326,11 +326,19 @@ This activity created errors and would have caused tests to fail, but instead tr
     }
 
     globalThis.HermesInternal?.enablePromiseRejectionTracker({ allRejections: true, onUnhandled })
-  } else if (process.env.EXODUS_TEST_IS_BROWSER || process.env.EXODUS_TEST_PLATFORM === 'workerd') {
+  } else if (process.env.EXODUS_TEST_IS_BROWSER) {
     // Won't catch all errors, as we might still be running, but better than nothing
     // We also don't print anything except the header, as browsers already print that
     // Cancelling the default behavior is less robust as we want to treat this as error
     globalThis.addEventListener('unhandledrejection', () => logHeader())
+  } else if (process.env.EXODUS_TEST_PLATFORM === 'workerd') {
+    // We can't enable this yet, it misfires a lot. See https://github.com/cloudflare/workerd/issues/6020
+    /*
+    globalThis.addEventListener('unhandledrejection', ({ reason }) => {
+      logHeader()
+      print(`Uncaught error: ${reason}`)
+    })
+    */
   }
 }
 

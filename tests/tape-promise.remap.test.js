@@ -35,9 +35,7 @@ const asyncFunction = async () => {
   throw new Error('this function rejects')
 }
 
-// workerd bug: https://github.com/cloudflare/workerd/issues/6020
-const testReject = process.env.EXODUS_TEST_PLATFORM === 'workerd' ? test.skip : test
-testReject('reject and doesNotReject example', async (t) => {
+test('reject and doesNotReject example', async (t) => {
   await t.rejects(asyncFunction)
   await t.rejects(asyncFunction())
   await t.doesNotReject(Promise.resolve())
