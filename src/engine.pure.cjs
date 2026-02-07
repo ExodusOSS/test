@@ -30,7 +30,7 @@ const check = (condition, message) => {
 
 function parseArgs(args) {
   check(args.length <= 3)
-  const name = typeof args[0] === 'string' ? args.shift() : 'test'
+  const name = typeof args[0] === 'string' ? args.shift() : undefined
   const fn = args.pop()
   const options = args.pop() || {}
   return { name, options, fn }
@@ -46,6 +46,7 @@ class Context {
   #hooks
 
   constructor(parent, name, options = {}) {
+    if (!name || typeof name !== 'string') name = '<anonymous>'
     Object.assign(this, { root: parent?.root, parent, name, options })
     this.#fullName = parent && parent !== parent.root ? `${parent.fullName} > ${name}` : name
     if (this.#fullName === name) this.#fullName = this.#fullName.replace(INBAND_PREFIX_REGEX, '')
