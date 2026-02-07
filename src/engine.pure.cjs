@@ -15,7 +15,7 @@ let willstart
 
 const abstractProcess = globalThis.process || globalThis.EXODUS_TEST_PROCESS
 
-if (process.env.EXODUS_TEST_IS_BROWSER) {
+if (process.env.EXODUS_TEST_IS_BROWSER || process.env.EXODUS_TEST_PLATFORM === 'workerd') {
   globalThis.EXODUS_TEST_PROMISE = new Promise((resolve) => (abstractProcess._exitHook = resolve))
   if (!abstractProcess._maybeProcessExitCode && abstractProcess === globalThis.process) {
     // Electron with Node.js integration has real process
@@ -104,7 +104,7 @@ function enterContext(name, options) {
 function exitContext() {
   check(context !== context.root)
   context = context.parent
-  if (context === context.root && run !== globalThis.EXODUS_TEST_RUN) willstart = setTimeout(run, 0)
+  if (context === context.root) willstart = setTimeout(run, 0)
 }
 
 async function runFunction(fn, context) {
@@ -185,8 +185,6 @@ async function runContext(context) {
 async function run() {
   check(!running)
   running = true
-  const manual = globalThis.EXODUS_TEST_RUN === run
-  const res = manual ? new Promise((resolve) => (abstractProcess._exitHook = resolve)) : undefined
   check(context === context.root)
   await runContext(context).catch((error) => {
     // Should not throw under regular circumstances
@@ -195,11 +193,7 @@ async function run() {
   })
   // Let unhandled errors be processed (and set the error code)
   setTimeout(() => abstractProcess._maybeProcessExitCode?.(), 0)
-  return res
 }
-
-// For workerd, expose run as a global so the wrapper can call it
-if (process.env.EXODUS_TEST_PLATFORM === 'workerd') globalThis.EXODUS_TEST_RUN = run
 
 async function describe(...args) {
   const { name, options, fn } = parseArgs(args)
