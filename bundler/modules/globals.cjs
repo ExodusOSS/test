@@ -332,13 +332,17 @@ This activity created errors and would have caused tests to fail, but instead tr
     // Cancelling the default behavior is less robust as we want to treat this as error
     globalThis.addEventListener('unhandledrejection', () => logHeader())
   } else if (process.env.EXODUS_TEST_PLATFORM === 'workerd') {
-    // We can't enable this yet, it misfires a lot. See https://github.com/cloudflare/workerd/issues/6020
-    /*
-    globalThis.addEventListener('unhandledrejection', ({ reason }) => {
-      logHeader()
-      print(`Uncaught error: ${reason}`)
+    // See https://github.com/cloudflare/workerd/issues/6020
+    const rejections = new Map()
+    globalThis.addEventListener('rejectionhandled', (e) => clearTimeout(rejections.get(e.promise)))
+    globalThis.addEventListener('unhandledrejection', (e) => {
+      const timeout = setTimeout(() => {
+        rejections.delete(e.promise)
+        logHeader()
+        print(`Uncaught error: ${e.reason}`)
+      }, 0)
+      rejections.set(e.promise, timeout)
     })
-    */
   }
 }
 
