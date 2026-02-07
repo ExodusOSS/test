@@ -155,7 +155,6 @@ if (process.env.EXODUS_TEST_PLATFORM === 'boa') {
 
 if (
   process.env.EXODUS_TEST_PLATFORM === 'hermes' ||
-  process.env.EXODUS_TEST_PLATFORM === 'workerd' || // FIXME: perhaps we want to not mask the workerd issue? https://github.com/cloudflare/workerd/issues/6019
   (process.env.EXODUS_TEST_IS_BAREBONE && !globalThis.clearTimeout)
 ) {
   // Ok, we have broken timers, let's hack them around
