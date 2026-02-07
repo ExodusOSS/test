@@ -45,7 +45,9 @@ describe('fetch replay', () => {
     expect(new Map(res.headers).get('content-type')).toBe('application/json; charset=utf-8')
   })
 
-  const testHeaders = typeof Headers === 'undefined' ? test.skip : test
+  // boa has broken Headers: https://github.com/boa-dev/boa/issues/4611
+  const testHeaders =
+    typeof Headers === 'undefined' || process.env.EXODUS_TEST_PLATFORM === 'boa' ? test.skip : test
   testHeaders('https://jsonplaceholder.typicode.com/users/2 with headers in Headers', async () => {
     const headers = new Headers()
     headers.append('accept', 'application/json')
