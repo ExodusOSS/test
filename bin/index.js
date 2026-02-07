@@ -55,6 +55,7 @@ const ENGINES = new Map(
     'boa:bundle': { binary: 'boa', binaryArgs: ['-m'], ...bareboneOpts },
     'nova:bundle': { binary: 'nova', binaryArgs: ['eval'], ...bareboneOpts },
     'jerryscript:bundle': { binary: 'jerryscript', ...bareboneOpts },
+    'porffor:bundle': { binary: 'porffor', ...bareboneOpts }, // blocked on https://github.com/CanadaHonk/porffor/issues/176
     // Special case: running a browser from CLI like a bundle
     'servo:bundle': { binary: 'servo', binaryArgs: ['--headless'], ...bundleOpts, html: true },
     'workerd:bundle': { binary: 'workerd', binaryArgs: ['test'], ...bundleOpts, workerd: true },
