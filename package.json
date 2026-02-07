@@ -1,6 +1,6 @@
 {
   "name": "@exodus/test",
-  "version": "1.0.0-rc.112",
+  "version": "1.0.0-rc.113",
   "author": "Exodus Movement, Inc.",
   "description": "A test suite runner",
   "homepage": "https://github.com/ExodusOSS/test",
@@ -182,7 +182,7 @@
   "optionalDependencies": {
     "@chalker/queue": "^1.0.1",
     "@exodus/replay": "^1.0.0-rc.10",
-    "@exodus/test-bundler": "1.0.0-rc.13",
+    "@exodus/test-bundler": "1.0.0-rc.14",
     "c8": "^9.1.0",
     "expect": "^30.2.0",
     "fast-glob": "^3.2.11",
