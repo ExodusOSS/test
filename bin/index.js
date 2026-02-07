@@ -71,8 +71,8 @@ const ENGINES = new Map(
   })
 )
 const bareOk = ['v8', 'd8', 'spidermonkey', 'quickjs', 'xs', 'hermes', 'shermes']
-const bareNotrack = ['jsc', 'escargot', 'boa', 'graaljs', 'jerry', 'engine262', 'servo', 'workerd']
-const bareIncomplete = ['ladybird-js', 'nova', 'duk']
+const bareNotrack = ['jsc', 'escargot', 'boa', 'graaljs', 'jerryscript', 'engine262', 'servo']
+const bareIncomplete = ['ladybird-js', 'nova', 'duktape']
 
 const getEnvFlag = (name) => {
   if (!Object.hasOwn(process.env, name)) return
@@ -662,7 +662,7 @@ async function launch(binary, args, opts = {}, buffering = false) {
   }
 
   const barebones = [...bareOk, ...bareNotrack, ...bareIncomplete]
-  assertBinary(binary, ['node', 'bun', 'deno', 'electron', 'workerd', ...barebones])
+  assertBinary(binary, ['node', 'bun', 'deno', 'electron', 'workerd', 'jerry', 'duk', ...barebones])
   if (binary === c8 && process.platform === 'win32') {
     ;[binary, args] = ['node', [binary, ...args]]
   }
@@ -693,7 +693,7 @@ if (options.pure) {
 
   setEnv('EXODUS_TEST_CONTEXT', 'pure')
   const missUnhandled = bareNotrack.includes(options.platform) || isBrowserLike
-  const isIncomplete = bareIncomplete.includes(options.platform)
+  const isIncomplete = bareIncomplete.includes(options.platform) || options.platform === 'workerd'
   if (missUnhandled) warnHuman(`Warning: ${engineName} does not have unhandled rejections tracking`)
   if (isIncomplete) warnHuman(`Warning: ${engineName} support is incomplete`)
 
