@@ -253,13 +253,18 @@ test.todo = (...args) => {
   return test(name, { ...options, todo: true }, fn)
 }
 
+const codeError = (msg, code) => Object.assign(new Error(msg), { code })
+
+let mockTimersEnabled = false
+
 class MockTimers {
   #enabled = false
   #base = 0
   #elapsed = 0
   #queue = []
   enable({ now = 0, apis = ['setInterval', 'setTimeout', 'setImmediate', 'Date'] } = {}) {
-    check(!this.#enabled, 'MockTimers is already enabled!')
+    if (mockTimersEnabled) throw codeError('MockTimers is already enabled!', 'ERR_INVALID_STATE')
+    mockTimersEnabled = this.#enabled = true
     this.#base = +now
     this.#elapsed = 0
     if (apis.includes('setInterval')) {
@@ -302,7 +307,8 @@ class MockTimers {
   }
 
   reset() {
-    this.#enabled = false
+    if (!this.#enabled) return
+    mockTimersEnabled = this.#enabled = false
     Object.assign(globalThis, { setTimeout, setInterval, setImmediate, Date })
     Object.assign(globalThis, { clearTimeout, clearInterval, clearImmediate })
   }
