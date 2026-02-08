@@ -47,7 +47,6 @@ export const jestModuleMocks = {
 jestModuleMocks.dontMock = jestModuleMocks.unmock
 
 if (process.env.EXODUS_TEST_ENVIRONMENT === 'bundle') {
-  globalThis.EXODUS_TEST_MOCK_BUILTINS = new Map()
   Object.assign(jestModuleMocks, {
     __mockBundle(name, builtin, actual, mock) {
       jestmock(name, mock, { actual, builtin, override: true })

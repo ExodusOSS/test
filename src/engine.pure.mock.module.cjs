@@ -32,6 +32,8 @@ if (
     const nodeTest = require('node:test')
     mockModule = nodeTest.mock.module.bind(nodeTest.mock)
   } catch {}
+} else if (process.env.EXODUS_TEST_ENVIRONMENT === 'bundle') {
+  globalThis.EXODUS_TEST_MOCK_BUILTINS = new Map()
 }
 
 /* eslint-disable unicorn/no-useless-spread */
