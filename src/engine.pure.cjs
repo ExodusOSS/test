@@ -1,6 +1,7 @@
 const assert = require('node:assert/strict')
 const assertLoose = require('node:assert')
 const { matchSnapshot } = require('./engine.pure.snapshot.cjs')
+const { mockModule, baseFile, ...mockModuleMethods } = require('./engine.pure.mock.module.cjs')
 
 const { setTimeout, setInterval, setImmediate, Date } = globalThis
 const { clearTimeout, clearInterval, clearImmediate } = globalThis
@@ -382,7 +383,7 @@ class MockTimers {
 }
 
 const mock = {
-  module: undefined,
+  module: mockModule,
   timers: new MockTimers(),
   fn: (original = () => {}, implementation = original) => {
     let impl = implementation
@@ -463,17 +464,6 @@ const mock = {
   },
 }
 
-if (
-  process.env.EXODUS_TEST_ENGINE === 'node:pure' ||
-  process.env.EXODUS_TEST_ENGINE === 'electron-as-node:pure'
-) {
-  // Try load module mocks from node:test, if present
-  try {
-    const nodeTest = require('node:test')
-    mock.module = nodeTest.mock.module.bind(nodeTest.mock)
-  } catch {}
-}
-
 const beforeEach = (fn) => context.addHook('beforeEach', fn)
 const afterEach = (fn) => context.addHook('afterEach', fn)
 const before = (fn) => context.addHook('before', fn)
@@ -530,35 +520,18 @@ const awaitForMicrotaskQueue = async () => {
   for (let i = 0; i < tickPromiseRounds; i++) await promise
 }
 
-let builtinModules = []
-let requireIsRelative = false
-let relativeRequire, baseFile, isTopLevelESM, syncBuiltinESMExports, readSnapshot, utilFormat
+let readSnapshot, utilFormat
 if (process.env.EXODUS_TEST_ENVIRONMENT === 'bundle') {
-  // eslint-disable-next-line no-undef
-  const files = EXODUS_TEST_FILES
-  baseFile = files.length === 1 ? files[0] : undefined
-  isTopLevelESM = () => false
   // eslint-disable-next-line no-undef
   const bundleSnaps = typeof EXODUS_TEST_SNAPSHOTS !== 'undefined' && new Map(EXODUS_TEST_SNAPSHOTS)
   const resolveSnapshot = (f) => snapshotResolver(f[0], f[1]).join('/')
   readSnapshot = (f = baseFile) => (f && bundleSnaps?.get(resolveSnapshot(f))) || null
   utilFormat = require('exodus-test:util-format')
 } else {
-  const { existsSync, readFileSync } = require('node:fs')
-  const { dirname, basename, normalize, join } = require('node:path')
-  const nodeModule = require('node:module')
-  const files = process.argv.slice(1)
-  baseFile = files.length === 1 && existsSync(files[0]) ? normalize(files[0]) : undefined
-  requireIsRelative = Boolean(baseFile)
-  relativeRequire = baseFile ? nodeModule.createRequire(baseFile) : require
-  isTopLevelESM = () =>
-    !baseFile || // assume ESM otherwise
-    !Object.hasOwn(relativeRequire.cache, baseFile) || // node esm
-    relativeRequire.cache[baseFile].exports[Symbol.toStringTag] === 'Module' // bun esm
+  const { readFileSync } = require('node:fs')
+  const { dirname, basename, join } = require('node:path')
   const resolveSnapshot = (f) => join(...snapshotResolver(dirname(f), basename(f)))
   readSnapshot = (f = baseFile) => (f ? readFileSync(resolveSnapshot(f), 'utf8') : null)
-  builtinModules = nodeModule.builtinModules
-  syncBuiltinESMExports = nodeModule.syncBuiltinESMExports || nodeModule.syncBuiltinExports // bun has it under a different name (also a no-op and always synced atm)
   utilFormat = require('node:util').format
 }
 
@@ -586,9 +559,8 @@ module.exports = {
   engine: 'pure',
   ...{ assert, assertLoose },
   ...{ mock, describe, test, beforeEach, afterEach, before, after },
-  ...{ builtinModules, syncBuiltinESMExports },
   ...{ utilFormat, isPromise, nodeVersion, awaitForMicrotaskQueue },
-  ...{ requireIsRelative, relativeRequire, baseFile, isTopLevelESM, mockModule: mock.module },
+  ...{ mockModule, baseFile, ...mockModuleMethods },
   ...{ readSnapshot, setSnapshotSerializers, setSnapshotResolver },
 }
 /* eslint-enable unicorn/no-useless-spread */
