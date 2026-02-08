@@ -5,7 +5,6 @@ tests/vendor/
 tests/tape/
 tests/jest/jest-repo/
 tests/jest-superset/jest-repo/
-tests/jest-when/when.test.cjs
 __snapshots__
 __recordings__
 tempout.*

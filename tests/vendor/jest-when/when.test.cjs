@@ -165,7 +165,7 @@ describe('When', () => {
         // Original:
         // const currentFilePathPattern = /src(?:\\|\/)when\.test\.js:\d{3}(.|\s)*/
         // New:
-        const currentFilePathPattern = /tests(?:\\|\/)jest-when(?:\\|\/)when\.test\.cjs:\d{3}(.|\s)*/
+        const currentFilePathPattern = /tests(?:\\|\/)vendor(?:\\|\/)jest-when(?:\\|\/)when\.test\.cjs:\d{3}(.|\s)*/
         const numberOfMatches = errorLines.filter(line => currentFilePathPattern.test(line)).length
         expect(numberOfMatches).toBe(2)
       }

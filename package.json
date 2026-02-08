@@ -126,7 +126,7 @@
     "tape.js"
   ],
   "scripts": {
-    "test:_bundle": "EXODUS_TEST_IGNORE='tests/{{vendor/jest-extended,inband}/**,jest-when/when.test.*,jest/jest.resetModules.*,jest/mock/jest.mock.mocks-dir.test.js}' npm run test --",
+    "test:_bundle": "EXODUS_TEST_IGNORE='tests/{{vendor/jest-extended,inband}/**,vendor/jest-when/when.test.*,jest/jest.resetModules.*,jest/mock/jest.mock.mocks-dir.test.js}' npm run test --",
     "test": "npm run test:jest --",
     "test:all": "npm run test:simple && npm run test:jest && npm run test:tape && npm run test:native && npm run test:esbuild && npm run test:pure && npm run test:fetch && npm run test:jsdom && npm run test:bundle",
     "test:native": "EXODUS_TEST_IGNORE='{**/typescript/**,**/jest-repo/**/user.test.js}' ./bin/index.js --jest 'tests/**/*.test.{js,cjs,mjs}'",
@@ -176,7 +176,7 @@
     "playwright": "node ./bin/index.js --playwright",
     "esvu": "esvu",
     "jsvu": "jsvu",
-    "jest": "NODE_OPTIONS=--experimental-vm-modules jest tests/jest/ tests/jest-when/",
+    "jest": "NODE_OPTIONS=--experimental-vm-modules jest tests/jest/ tests/vendor/jest-when/",
     "lint": "prettier --list-different . && eslint .",
     "lint:fix": "prettier --write . && eslint --fix ."
   },
