@@ -133,7 +133,7 @@
     "test:typescript": "node ./bin/index.js --jest --typescript tests/typescript.test.ts",
     "test:jest": "node ./bin/index.js --jest --esbuild=ts,sum.test.js",
     "test:esbuild": "node ./bin/index.js --jest --esbuild",
-    "test:tape": "node ./bin/index.js 'tests/tape/tests/*.js' tests/tape.test.js",
+    "test:tape": "node ./bin/index.js 'tests/vendor/tape/tests/*.js' tests/tape.test.js",
     "test:simple": "node ./bin/index.js 'tests/*.test.js'",
     "test:pure": "EXODUS_TEST_ENGINE=node:pure npm run test --",
     "test:bundle": "EXODUS_TEST_ENGINE=node:bundle npm run test:_bundle --",

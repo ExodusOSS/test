@@ -2,7 +2,6 @@ coverage
 playground
 pnpm-lock.yaml
 tests/vendor/
-tests/tape/
 __snapshots__
 __recordings__
 tempout.*

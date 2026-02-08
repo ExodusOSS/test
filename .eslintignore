@@ -1,7 +1,6 @@
 coverage
 playground
 tests/vendor/
-tests/tape/
 __snapshots__
 __recordings__
 tempout.*
