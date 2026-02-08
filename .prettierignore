@@ -3,7 +3,6 @@ playground
 pnpm-lock.yaml
 tests/vendor/
 tests/tape/
-tests/jest-superset/jest-repo/
 __snapshots__
 __recordings__
 tempout.*
