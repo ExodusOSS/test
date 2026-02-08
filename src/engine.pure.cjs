@@ -45,6 +45,7 @@ class Context {
   #fullName
   #assert
   #hooks
+  #mock
 
   constructor(parent, name, options = {}) {
     if (!name || typeof name !== 'string') name = '<anonymous>'
@@ -79,6 +80,11 @@ class Context {
     }
 
     return this.#assert
+  }
+
+  get mock() {
+    if (!this.#mock) this.#mock = new MockTracker()
+    return this.#mock
   }
 
   async addHook(type, fn) {
@@ -388,10 +394,18 @@ class MockTimers {
   }
 }
 
-const mock = {
-  module: mockModule,
-  timers: new MockTimers(),
-  fn: (original = () => {}, implementation = original) => {
+class MockTracker {
+  get module() {
+    return mockModule
+  }
+
+  #timers
+  get timers() {
+    if (!this.#timers) this.#timers = new MockTimers()
+    return this.#timers
+  }
+
+  fn(original = () => {}, implementation = original) {
     let impl = implementation
     const _mock = {
       calls: [],
@@ -467,9 +481,10 @@ const mock = {
         return Object.getOwnPropertyDescriptor(target, key)
       },
     })
-  },
+  }
 }
 
+const mock = new MockTracker()
 const beforeEach = (fn) => context.addHook('beforeEach', fn)
 const afterEach = (fn) => context.addHook('afterEach', fn)
 const before = (fn) => context.addHook('before', fn)
