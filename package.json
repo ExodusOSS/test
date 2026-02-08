@@ -176,7 +176,7 @@
     "playwright": "node ./bin/index.js --playwright",
     "esvu": "esvu",
     "jsvu": "jsvu",
-    "jest": "NODE_OPTIONS=--experimental-vm-modules jest tests/jest/ tests/vendor/jest-when/",
+    "jest": "NODE_OPTIONS=--experimental-vm-modules jest tests/jest/ tests/vendor/jest-repo/ tests/vendor/jest-when/",
     "lint": "prettier --list-different . && eslint .",
     "lint:fix": "prettier --write . && eslint --fix ."
   },

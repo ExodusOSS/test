@@ -2,7 +2,6 @@ coverage
 playground
 tests/vendor/
 tests/tape/
-tests/jest/jest-repo/
 tests/jest-superset/jest-repo/
 __snapshots__
 __recordings__
