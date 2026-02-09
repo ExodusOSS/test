@@ -39,6 +39,7 @@ const ENGINES = new Map(
     'deno:test': { binary: 'deno', binaryArgs: denoT, loader: '--preload', ts: 'auto' },
     'deno:pure': { binary: 'deno', binaryArgs: denoA, pure: true, loader: '--preload', ts: 'auto' },
     'deno:bundle': { binary: 'deno', binaryArgs: ['run'], target: 'deno1', ...bundleOpts },
+    'workerd:bundle': { binary: 'workerd', binaryArgs: ['test'], ...bundleOpts },
     // Barebone engines
     'v8:bundle': { binary: 'd8', binaryArgs: ['--expose-gc'], ...bareboneOpts },
     'jsc:bundle': { binary: 'jsc', target: 'safari13', ...bareboneOpts },
@@ -58,7 +59,6 @@ const ENGINES = new Map(
     'porffor:bundle': { binary: 'porffor', ...bareboneOpts }, // blocked on https://github.com/CanadaHonk/porffor/issues/176
     // Special case: running a browser from CLI like a bundle
     'servo:bundle': { binary: 'servo', binaryArgs: ['--headless'], ...bundleOpts, html: true },
-    'workerd:bundle': { binary: 'workerd', binaryArgs: ['test'], ...bundleOpts, workerd: true },
     // Browser engines
     'chrome:puppeteer': { binary: 'chrome', browsers: 'puppeteer', ...bundleOpts },
     'firefox:puppeteer': { binary: 'firefox', browsers: 'puppeteer', ...bundleOpts },
@@ -708,7 +708,7 @@ if (options.pure) {
       await writeFile(bundled.fileHtml, `<script src="${bundled.file}"></script>`)
     }
 
-    if (bundled && options.workerd) {
+    if (bundled && options.platform === 'workerd') {
       bundled.fileWrapper = `${bundled.file}.wrapper.js`
       bundled.fileConfig = `${bundled.file}.capnp`
       assert(/^[a-z0-9/_.-]+\.js$/iu.test(bundled.file), bundled.file)
