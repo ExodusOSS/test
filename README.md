@@ -45,10 +45,11 @@ See [documentation](https://exodusoss.github.io/test/).
 
 ## Features
 
+- Zero learning curve: runs your existing tests
+- Runs anywhere (including Hermes, the [React Native](https://reactnative.dev/) JavaScript engine)
 - Native ESM, including in Jest tests
 - Esbuild on the fly for old faux-ESM interop (enable via `--esbuild`)
 - TypeScript support
-- Runs anywhere (including Hermes, the [React Native](https://reactnative.dev/) JavaScript engine)
 - Use snapshots to cross-compare between runtimes, browsers and barebones (including Hermes)
 - Testsuite-agnostic — can run any file as long as it sets exit code based on test results
 - Built-in [Jest](https://jestjs.io) compatibility (with `--jest`), including `jest.*` global
@@ -66,8 +67,8 @@ See [documentation](https://exodusoss.github.io/test/).
 - JSDOM env support
 - Hanging tests error by default (unlike `jest`)
 - Babel support, picks up your Babel config (enable via `--babel`)
-- Unlike `bun:test`, it runs test files in isolated contexts \
-  Bun leaks globals / side effects between test files ([ref](https://github.com/oven-sh/bun/issues/6024)),
+- Unlike `bun:test`, it runs test files in isolated contexts on Bun. \
+  Without this, Bun leaks globals / side effects between test files ([ref](https://github.com/oven-sh/bun/issues/6024)),
   and has incompatible `test()` lifecycle / order
 
 ## Getting started
