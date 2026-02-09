@@ -32,7 +32,7 @@ It can run your existing tests on [all runtimes and also browsers](#engines), wi
 [![GraalJS](https://img.shields.io/badge/GraalJS-C74634?style=for-the-badge)](https://github.com/oracle/graaljs)
 [![Boa](https://img.shields.io/badge/Boa-F3FF00?style=for-the-badge)](https://github.com/boa-dev/boa)
 [![Nova](https://img.shields.io/badge/Nova-FF810A?style=for-the-badge)](https://github.com/trynova/nova)
-[![Escargot](https://img.shields.io/badge/Escargot-1428A0?style=for-the-badge)](https://github.com/Samsung/escargot)
+[![Escargot](https://img.shields.io/badge/Escargot-1428A0?style=for-the-badge&logo=Samsung)](https://github.com/Samsung/escargot)
 [![engine262](https://img.shields.io/badge/engine262-f0db4f?style=for-the-badge&logo=javascript&logoColor=000)](https://github.com/engine262/engine262)
 
 Compatible with tests written in:
