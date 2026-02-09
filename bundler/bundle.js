@@ -72,6 +72,9 @@ const loadPipeline = [
           String.raw`/[^%.[\]]+|\[(?:(-?\d+(?:\.\d+)?)|(["'])((?:(?!\2)[^\\]|\\.)*?)\2)\]|(?=(?:\.|\[\])(?:\.|\[\]|%$))/`,
           String.raw`/[^%.\[\]]+|\[(?:(-?\d+(?:\.\d+)?)|(["'])((?:[^\\"']|\\.)*?)["'])\]/`
         )
+      } else if (filepath.endsWith('node_modules/pretty-format/build/index.js')) {
+        // https://github.com/trynova/nova/issues/933
+        res = res.replace('/[$()*+.?[\\\\\\]^{|}]/g', '/[$()*+.?\\[\\\\\\]^{|}]/g')
       } else if (
         filepath.endsWith('/node_modules/assert/build/internal/assert/assertion_error.js')
       ) {
