@@ -31,6 +31,7 @@ It can run your existing tests on [all runtimes and also browsers](#engines), wi
 [![XS](https://img.shields.io/badge/XS-0B307A?style=flat-square)](https://github.com/Moddable-OpenSource/moddable)
 [![GraalJS](https://img.shields.io/badge/GraalJS-C74634?style=flat-square)](https://github.com/oracle/graaljs)
 [![Boa](https://img.shields.io/badge/Boa-F3FF00?style=flat-square)](https://github.com/boa-dev/boa)
+[![Nova](https://img.shields.io/badge/Nova-FF810A?style=flat-square)](https://github.com/trynova/nova)
 [![Escargot](https://img.shields.io/badge/Escargot-1428A0?style=flat-square)](https://github.com/Samsung/escargot)
 [![engine262](https://img.shields.io/badge/engine262-f0db4f?style=flat-square&logo=javascript&logoColor=000)](https://github.com/engine262/engine262)
 
@@ -178,6 +179,7 @@ Use `--engine` (or `EXODUS_TEST_ENGINE=`) to specify one of:
   - `graaljs:bundle` — [GraalJS](https://github.com/oracle/graaljs)
   - `escargot:bundle` — [Escargot](https://github.com/Samsung/escargot)
   - `boa:bundle` — [Boa](https://github.com/boa-dev/boa)
+  - `nova:bundle` — [Nova](https://github.com/trynova/nova) (note that Nova itself is a Work In Progress)
   - `engine262:bundle` - [engine262](https://github.com/engine262/engine262), the per-spec implementation of ECMA-262
     (install with [esvu](https://npmjs.com/package/esvu))
 
