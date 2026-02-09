@@ -12,28 +12,28 @@ A runner for `node:test`, `jest`, and `tape` test suites on top of `node:test` (
 
 It can run your existing tests on [all runtimes and also browsers](#engines), with snapshots and module mocks:
 
-[![Node.js](https://img.shields.io/badge/Node.js-338750?style=flat-square&logo=Node.js&logoColor=FFF)](https://nodejs.org/api/test.html)
-[![Deno](https://img.shields.io/badge/Deno-121417?style=flat-square&logo=Deno&logoColor=FFF)](https://deno.com/)
-[![Bun](https://img.shields.io/badge/Bun-F472B6?style=flat-square&logo=Bun&logoColor=FFF)](https://bun.sh/)
-[![Electron](https://img.shields.io/badge/Electron-2F3242?style=flat-square&logo=Electron&logoColor=A2ECFB)](http://electronjs.org/)
-[![workerd](https://img.shields.io/badge/workerd-F38020?style=flat-square&logo=cloudflareworkers&logoColor=FFF)](https://github.com/cloudflare/workerd)\
-[![Chrome](https://img.shields.io/badge/Chrome-4285F4?style=flat-square&logo=GoogleChrome&logoColor=FFF)](https://www.chromium.org/Home/)
-[![WebKit](https://img.shields.io/badge/WebKit-006CFF?style=flat-square&logo=Safari&logoColor=FFF)](http://webkit.org/)
-[![Firefox](https://img.shields.io/badge/Firefox-FF7139?style=flat-square&logo=Firefox&logoColor=FFF)](https://github.com/mozilla-firefox)
-[![Brave](https://img.shields.io/badge/Brave-F0F0F0?style=flat-square&logo=Brave)](https://github.com/brave)
-[![Microsoft Edge](https://img.shields.io/badge/Edge-0078D7?style=flat-square)](https://github.com/microsoftedge)
-[![Servo](https://img.shields.io/badge/Servo-009D9A?style=flat-square)](https://servo.org/)\
-[![Hermes](https://img.shields.io/badge/Hermes-282C34?style=flat-square&logo=React)](https://hermesengine.dev)
-[![V8](https://img.shields.io/badge/V8-4285F4?style=flat-square&logo=V8&logoColor=white)](https://v8.dev/docs/d8)
-[![JavaScriptCore](https://img.shields.io/badge/JavaScriptCore-006CFF?style=flat-square)](https://docs.webkit.org/Deep%20Dive/JSC/JavaScriptCore.html)
-[![SpiderMonkey](https://img.shields.io/badge/SpiderMonkey-FFD681?style=flat-square)](https://spidermonkey.dev/)
-[![QuickJS](https://img.shields.io/badge/QuickJS-E58200?style=flat-square)](https://github.com/quickjs-ng/quickjs)
-[![XS](https://img.shields.io/badge/XS-0B307A?style=flat-square)](https://github.com/Moddable-OpenSource/moddable)
-[![GraalJS](https://img.shields.io/badge/GraalJS-C74634?style=flat-square)](https://github.com/oracle/graaljs)
-[![Boa](https://img.shields.io/badge/Boa-F3FF00?style=flat-square)](https://github.com/boa-dev/boa)
-[![Nova](https://img.shields.io/badge/Nova-FF810A?style=flat-square)](https://github.com/trynova/nova)
-[![Escargot](https://img.shields.io/badge/Escargot-1428A0?style=flat-square)](https://github.com/Samsung/escargot)
-[![engine262](https://img.shields.io/badge/engine262-f0db4f?style=flat-square&logo=javascript&logoColor=000)](https://github.com/engine262/engine262)
+[![Node.js](https://img.shields.io/badge/Node.js-338750?style=for-the-badge&logo=Node.js&logoColor=FFF)](https://nodejs.org/api/test.html)
+[![Deno](https://img.shields.io/badge/Deno-121417?style=for-the-badge&logo=Deno&logoColor=FFF)](https://deno.com/)
+[![Bun](https://img.shields.io/badge/Bun-F472B6?style=for-the-badge&logo=Bun&logoColor=FFF)](https://bun.sh/)
+[![Electron](https://img.shields.io/badge/Electron-2F3242?style=for-the-badge&logo=Electron&logoColor=A2ECFB)](http://electronjs.org/)
+[![workerd](https://img.shields.io/badge/workerd-F38020?style=for-the-badge&logo=cloudflareworkers&logoColor=FFF)](https://github.com/cloudflare/workerd)\
+[![Chrome](https://img.shields.io/badge/Chrome-4285F4?style=for-the-badge&logo=GoogleChrome&logoColor=FFF)](https://www.chromium.org/Home/)
+[![WebKit](https://img.shields.io/badge/WebKit-006CFF?style=for-the-badge&logo=Safari&logoColor=FFF)](http://webkit.org/)
+[![Firefox](https://img.shields.io/badge/Firefox-FF7139?style=for-the-badge&logo=Firefox&logoColor=FFF)](https://github.com/mozilla-firefox)
+[![Brave](https://img.shields.io/badge/Brave-F0F0F0?style=for-the-badge&logo=Brave)](https://github.com/brave)
+[![Microsoft Edge](https://img.shields.io/badge/Edge-0078D7?style=for-the-badge)](https://github.com/microsoftedge)
+[![Servo](https://img.shields.io/badge/Servo-009D9A?style=for-the-badge)](https://servo.org/)\
+[![Hermes](https://img.shields.io/badge/Hermes-282C34?style=for-the-badge&logo=React)](https://hermesengine.dev)
+[![V8](https://img.shields.io/badge/V8-4285F4?style=for-the-badge&logo=V8&logoColor=white)](https://v8.dev/docs/d8)
+[![JavaScriptCore](https://img.shields.io/badge/JavaScriptCore-006CFF?style=for-the-badge)](https://docs.webkit.org/Deep%20Dive/JSC/JavaScriptCore.html)
+[![SpiderMonkey](https://img.shields.io/badge/SpiderMonkey-FFD681?style=for-the-badge)](https://spidermonkey.dev/)\
+[![QuickJS](https://img.shields.io/badge/QuickJS-E58200?style=for-the-badge)](https://github.com/quickjs-ng/quickjs)
+[![XS](https://img.shields.io/badge/XS-0B307A?style=for-the-badge)](https://github.com/Moddable-OpenSource/moddable)
+[![GraalJS](https://img.shields.io/badge/GraalJS-C74634?style=for-the-badge)](https://github.com/oracle/graaljs)
+[![Boa](https://img.shields.io/badge/Boa-F3FF00?style=for-the-badge)](https://github.com/boa-dev/boa)
+[![Nova](https://img.shields.io/badge/Nova-FF810A?style=for-the-badge)](https://github.com/trynova/nova)
+[![Escargot](https://img.shields.io/badge/Escargot-1428A0?style=for-the-badge)](https://github.com/Samsung/escargot)
+[![engine262](https://img.shields.io/badge/engine262-f0db4f?style=for-the-badge&logo=javascript&logoColor=000)](https://github.com/engine262/engine262)
 
 Compatible with tests written in:
 
