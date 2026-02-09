@@ -187,9 +187,9 @@
     "c8": "^9.1.0",
     "expect": "^30.2.0",
     "fast-glob": "^3.2.11",
-    "playwright-core": "^1.52.0",
+    "playwright-core": "^1.58.2",
     "pretty-format": "^30.2.0",
-    "puppeteer-core": "^24.14.0",
+    "puppeteer-core": "^24.37.2",
     "tsx": "^4.21.0"
   },
   "devDependencies": {
