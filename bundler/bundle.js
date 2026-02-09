@@ -75,14 +75,6 @@ const loadPipeline = [
       } else if (filepath.endsWith('node_modules/pretty-format/build/index.js')) {
         // https://github.com/trynova/nova/issues/933
         res = res.replace('/[$()*+.?[\\\\\\]^{|}]/g', '/[$()*+.?\\[\\\\\\]^{|}]/g')
-      } else if (
-        filepath.endsWith('/node_modules/assert/build/internal/assert/assertion_error.js')
-      ) {
-        // https://github.com/trynova/nova/issues/943
-        res = res.replace(
-          '{\n      _this = _super.call(this, String(message));\n    }',
-          '{\n      const msg = String(message); _this = _super.call(this, String(message)); _this.message = msg;\n    }'
-        )
       }
     }
 
@@ -554,9 +546,6 @@ export const build = async (...files) => {
   } else if (options.platform === 'jerryscript') {
     config.supported['class-private-field'] = false
     // config.minify = true // breaks on SyntaxError, FIXME
-  } else if (options.platform === 'nova') {
-    // See https://github.com/trynova/nova/issues/942
-    config.supported['class-private-field'] = false
   }
 
   let shouldInstallMocks = false
