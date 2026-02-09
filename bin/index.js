@@ -72,7 +72,7 @@ const ENGINES = new Map(
   })
 )
 const bareOk = ['v8', 'd8', 'spidermonkey', 'quickjs', 'xs', 'hermes', 'shermes']
-const bareNotrack = ['jsc', 'escargot', 'boa', 'graaljs', 'jerryscript', 'engine262', 'servo']
+const bareNotrack = ['jsc', 'escargot', 'boa', 'graaljs', 'jerryscript', 'engine262']
 const bareIncomplete = ['ladybird-js', 'nova', 'duktape']
 
 const getEnvFlag = (name) => {
@@ -663,7 +663,8 @@ async function launch(binary, args, opts = {}, buffering = false) {
   }
 
   const barebones = [...bareOk, ...bareNotrack, ...bareIncomplete]
-  assertBinary(binary, ['node', 'bun', 'deno', 'electron', 'workerd', 'jerry', 'duk', ...barebones])
+  const bins = ['node', 'bun', 'deno', 'electron', 'workerd', 'servo', 'jerry', 'duk', ...barebones]
+  assertBinary(binary, bins)
   if (binary === c8 && process.platform === 'win32') {
     ;[binary, args] = ['node', [binary, ...args]]
   }
