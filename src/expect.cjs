@@ -180,3 +180,6 @@ function createExpect() {
 
 exports.expect = createExpect()
 exports.loadExpect = loadExpect
+
+// https://github.com/trynova/nova/issues/935
+if (process.env.EXODUS_TEST_PLATFORM === 'nova') exports.expect = require('expect').expect
