@@ -1,8 +1,8 @@
 import assert from 'node:assert/strict'
 
 // from strip-color, patched for unicode just in case
-// eslint-disable-next-line no-control-regex
-const stripColor = (str) => str.replace(/\x1B[[(?);]{0,2}(;?\d)*./gu, '')
+// eslint-disable-next-line no-control-regex, no-useless-escape
+const stripColor = (str) => str.replace(/\x1B[\[(?);]{0,2}(;?\d)*./gu, '')
 
 test('methods are overridable', () => {
   const f = jest.fn(() => 1)
