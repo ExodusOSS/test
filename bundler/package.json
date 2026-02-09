@@ -54,30 +54,30 @@
     "modules/ws.cjs"
   ],
   "dependencies": {
-    "@exodus/bytes": "^1.11.0",
+    "@exodus/bytes": "^1.12.0",
     "@ungap/url-search-params": "^0.2.2",
     "assert": "^2.1.0",
     "browserify-zlib": "^0.2.0",
     "buffer": "^6.0.3",
     "constants-browserify": "^1.0.0",
-    "esbuild": "~0.27.2",
+    "esbuild": "~0.27.3",
     "events": "^3.3.0",
     "os-browserify": "^0.3.0",
     "path-browserify": "^1.0.1",
     "querystring-es3": "^0.2.1",
     "stream-browserify": "^3.0.0",
     "timers-browserify": "^2.0.12",
-    "url": "^0.11.0",
+    "url": "^0.11.4",
     "util": "^0.12.5"
   },
   "optionalDependencies": {
     "@babel/core": "^7.0.0",
     "@babel/plugin-transform-block-scoping": "^7.0.0",
     "@babel/plugin-transform-classes": "^7.0.0",
-    "flow-remove-types": "^2.242.0"
+    "flow-remove-types": "^2.299.0"
   },
   "peerDependencies": {
-    "crypto-browserify": "^3.12.0"
+    "crypto-browserify": "^3.12.1"
   },
   "peerDependenciesMeta": {
     "crypto-browserify": {
