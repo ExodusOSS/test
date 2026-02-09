@@ -542,6 +542,9 @@ export const build = async (...files) => {
   } else if (options.platform === 'jerryscript') {
     config.supported['class-private-field'] = false
     // config.minify = true // breaks on SyntaxError, FIXME
+  } else if (options.platform === 'nova') {
+    // See https://github.com/trynova/nova/issues/942
+    config.supported['class-private-field'] = false
   }
 
   let shouldInstallMocks = false
