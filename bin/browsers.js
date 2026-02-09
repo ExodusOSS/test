@@ -75,7 +75,13 @@ export async function run(runner, args, { binary, devtools, dropNetwork, timeout
   const [stdout, stderr] = [[], []]
 
   assert(Object.hasOwn(launchers, runner), 'Unexpected runner')
-  if (!launched[runner]) launched[runner] = launchers[runner]({ binary, devtools: !!devtools })
+  try {
+    if (!launched[runner]) launched[runner] = launchers[runner]({ binary, devtools: !!devtools })
+  } catch {
+    // Try a second time, this sometime times out
+    if (!launched[runner]) launched[runner] = launchers[runner]({ binary, devtools: !!devtools })
+  }
+
   const { page, context } = await newPage(runner, await launched[runner], { binary, dropNetwork })
 
   if (throttle) {
