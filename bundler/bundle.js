@@ -65,15 +65,22 @@ const loadPipeline = [
       } else if (filepath.endsWith('/node_modules/buffer/index.js')) {
         res = res.replace('.substr(i * 2, 2)', '.substring(i * 2, i * 2 + 2)')
       }
-    } else if (
-      options.platform === 'nova' &&
-      filepath.endsWith('/node_modules/get-intrinsic/index.js')
-    ) {
-      // See https://github.com/trynova/nova/issues/933. Hacky, but should cover usage
-      res = res.replace(
-        String.raw`/[^%.[\]]+|\[(?:(-?\d+(?:\.\d+)?)|(["'])((?:(?!\2)[^\\]|\\.)*?)\2)\]|(?=(?:\.|\[\])(?:\.|\[\]|%$))/`,
-        String.raw`/[^%.\[\]]+|\[(?:(-?\d+(?:\.\d+)?)|(["'])((?:[^\\"']|\\.)*?)["'])\]/`
-      )
+    } else if (options.platform === 'nova') {
+      if (filepath.endsWith('/node_modules/get-intrinsic/index.js')) {
+        // See https://github.com/trynova/nova/issues/933. Hacky, but should cover usage
+        res = res.replace(
+          String.raw`/[^%.[\]]+|\[(?:(-?\d+(?:\.\d+)?)|(["'])((?:(?!\2)[^\\]|\\.)*?)\2)\]|(?=(?:\.|\[\])(?:\.|\[\]|%$))/`,
+          String.raw`/[^%.\[\]]+|\[(?:(-?\d+(?:\.\d+)?)|(["'])((?:[^\\"']|\\.)*?)["'])\]/`
+        )
+      } else if (
+        filepath.endsWith('/node_modules/assert/build/internal/assert/assertion_error.js')
+      ) {
+        // https://github.com/trynova/nova/issues/943
+        res = res.replace(
+          '{\n      _this = _super.call(this, String(message));\n    }',
+          '{\n      const msg = String(message); _this = _super.call(this, String(message)); _this.message = msg;\n    }'
+        )
+      }
     }
 
     // Unneded polyfills
