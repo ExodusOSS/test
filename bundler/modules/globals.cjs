@@ -17,17 +17,25 @@ for (const k of consoleKeys) if (!console[k]) console[k] = console.log // Spider
 // In barebone, we don't want console.log({x:10}) to print "[Object object]"", we want "{ x: 10 }"
 if (process.env.EXODUS_TEST_IS_BROWSER || process.env.EXODUS_TEST_IS_BAREBONE) {
   const utilFormat = require('exodus-test:util-format')
-  if (globalThis.print) globalThis.print = (...args) => print(utilFormat(...args))
-  for (const type of consoleKeys) {
-    if (!Object.hasOwn(console, type)) continue
-    const orig = console[type].bind(console)
-    console[type] = (...args) => {
+  const wrap =
+    (orig) =>
+    (...args) => {
       try {
         orig(utilFormat(...args))
       } catch {
-        orig(...args) // fallback if format fails
+        // fallback if format fails
+        if (process.env.EXODUS_TEST_IS_BROWSER) {
+          orig(...args)
+        } else {
+          orig([...args].join(' '))
+        }
       }
     }
+
+  if (globalThis.print) globalThis.print = wrap(print)
+  for (const type of consoleKeys) {
+    if (!Object.hasOwn(console, type)) continue
+    console[type] = wrap(console[type].bind(console))
   }
 }
 
