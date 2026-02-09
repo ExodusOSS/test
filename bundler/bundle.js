@@ -435,8 +435,8 @@ export const build = async (...files) => {
         : JSON.stringify(x, null, 1).replaceAll(/^ *(".+")(,?)$/gmu, (_, s, c) => `${wrap(s)}${c}`)
   }
 
-  const isNative =
-    process.env.EXODUS_TEST_IS_BAREBONE || process.env.EXODUS_TEST_PLATFORM === 'workerd'
+  const isBrowser = process.env.EXODUS_TEST_IS_BROWSER // browsers, electron renderer, servo
+  const isNative = process.env.EXODUS_TEST_IS_BAREBONE
   const config = {
     logLevel: 'silent',
     stdin: {
@@ -446,8 +446,8 @@ export const build = async (...files) => {
     bundle: true,
     outdir: options.outdir,
     entryNames: filename,
-    platform: isNative ? 'neutral' : 'browser',
-    conditions: isNative ? ['react-native'] : ['browser'],
+    platform: isBrowser ? 'browser' : 'neutral',
+    conditions: isBrowser ? ['browser'] : isNative ? ['react-native'] : [],
     mainFields: ['browser', 'module', 'main'], // FIXME: Removing 'browser' breaks some pkgs
     define: {
       'process.browser': stringify(true),
