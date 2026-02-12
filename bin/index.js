@@ -615,9 +615,9 @@ const makeTitle = () => {
   let title = options.browsers === 'puppeteer' ? findBinary(options.binary) : options.binary
   if (options.browsers === 'playwright') return `${title} (Playwright-managed)`
   if (basename(title) === title) return title
-  const dir = { '~': `${process.cwd()}/`, '.': `${homedir()}/` }
-  if (title.startsWith(dir['~']) && dir['~'].length > 1) title = `./${title.slice(dir['~'].length)}`
-  if (title.startsWith(dir['.']) && dir['.'].length > 1) title = `~/${title.slice(dir['.'].length)}`
+  const dir = { '.': `${process.cwd()}/`, '~': `${homedir()}/` }
+  if (title.startsWith(dir['.']) && dir['.'].length > 1) title = `./${title.slice(dir['.'].length)}`
+  if (title.startsWith(dir['~']) && dir['~'].length > 1) title = `~/${title.slice(dir['~'].length)}`
   return /\s/u.test(title) ? JSON.stringify(title) : title
 }
 
