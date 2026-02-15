@@ -211,7 +211,7 @@
     "jsvu": "^3.0.3",
     "prettier": "^3.0.3",
     "typedoc": "^0.28.16",
-    "workerd": "^1.20260207.0"
+    "workerd": "^1.20260214.0"
   },
   "peerDependencies": {
     "@babel/register": "^7.0.0",
