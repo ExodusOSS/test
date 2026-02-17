@@ -263,7 +263,7 @@ export const build = async (...files) => {
     if (ignoreFrom.test(filepath.replaceAll('\\', '/'))) return source
     if (!options.jest && !/@(exodus\/test\/jest|jest\/globals)/u.test(source)) return source
     haveJestAPIs.expect ||= /(^|[^#])\bexpect([(.]|$)/mu.test(source)
-    haveJestAPIs.exodus ||= /jest\.exodus/u.test(source)
+    haveJestAPIs.exodus ||= /(jest\.exodus|@exodus\/test\/expect)/u.test(source)
     return source
   })
 
