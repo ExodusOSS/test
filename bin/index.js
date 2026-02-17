@@ -743,7 +743,7 @@ const mainWorker :Workerd.Worker = (
       await writeFile(bundled.fileConfig, configContent)
     }
 
-    const file = buildFile ? (bundled.fileConfig ?? bundled.fileHtml ?? bundled.file) : inputFile
+    const file = buildFile ? bundled.fileConfig ?? bundled.fileHtml ?? bundled.file : inputFile
     const failedBare = 'EXODUS_TEST_FAILED_EXIT_CODE_1'
     const cleanOut = (out, ok) => {
       if (options.engine === 'ladybird-js:bundle') {
