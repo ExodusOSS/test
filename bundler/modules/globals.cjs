@@ -37,6 +37,9 @@ if (process.env.EXODUS_TEST_IS_BROWSER || process.env.EXODUS_TEST_IS_BAREBONE) {
     if (!Object.hasOwn(console, type)) continue
     console[type] = wrap(console[type].bind(console))
   }
+
+  // Poor polyfill for console.table that at least prints the results instead of loosing them
+  console.table = (...args) => console.log(JSON.stringify(args, undefined, 2))
 }
 
 if (!console.time || !console.timeEnd) {
