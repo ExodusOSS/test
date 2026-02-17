@@ -21,7 +21,7 @@ let gcWarned = false
 export async function benchmark(name, options, fn) {
   if (typeof options === 'function') [fn, options] = [options, undefined]
   if (options?.skip) return
-  const { args, timeout = 1000 } = options ?? {}
+  const { args, timeout = 1000, warmup = 0 } = options ?? {}
 
   // This will pause us for a bit, but we don't care - having a non-busy process is more important
   await new Promise((resolve) => setTimeout(resolve, 0))
@@ -32,6 +32,15 @@ export async function benchmark(name, options, fn) {
   if (!gc && !gcWarned) {
     gcWarned = true
     console.log('Warning: no gc() available\n')
+  }
+
+  // Warmup iterations
+  if (warmup > 0) {
+    for (let i = 0; i < warmup; i++) {
+      const arg = args ? args[i % args.length] : i
+      const val = fn(arg)
+      if (val instanceof Promise) await val
+    }
   }
 
   let min, max
