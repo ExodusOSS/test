@@ -116,3 +116,77 @@ test('benchmark warmup with zero value', async () => {
     console.log = originalLog
   }
 })
+
+test('benchmark with print: false option', async () => {
+  let callCount = 0
+  const fn = () => {
+    callCount++
+  }
+
+  // Capture console.log output
+  const originalLog = console.log
+  let logged = ''
+  console.log = (msg) => {
+    logged += msg + '\n'
+  }
+
+  try {
+    await benchmark('test no print', { print: false, timeout: 10 }, fn)
+
+    // Check that no benchmark output was logged
+    assert.strictEqual(logged, '', 'Expected no output when print: false')
+    // But the benchmark should still run
+    assert(callCount > 0, `Expected callCount > 0, got ${callCount}`)
+  } finally {
+    console.log = originalLog
+  }
+})
+
+test('benchmark with print: true option (explicit)', async () => {
+  let callCount = 0
+  const fn = () => {
+    callCount++
+  }
+
+  // Capture console.log output
+  const originalLog = console.log
+  let logged = ''
+  console.log = (msg) => {
+    logged += msg + '\n'
+  }
+
+  try {
+    await benchmark('test with print', { print: true, timeout: 10 }, fn)
+
+    // Check that benchmark output was logged
+    assert(logged.includes('test with print'), 'Expected benchmark output when print: true')
+    assert(callCount > 0, `Expected callCount > 0, got ${callCount}`)
+  } finally {
+    console.log = originalLog
+  }
+})
+
+test('benchmark with default print option (should print)', async () => {
+  let callCount = 0
+  const fn = () => {
+    callCount++
+  }
+
+  // Capture console.log output
+  const originalLog = console.log
+  let logged = ''
+  console.log = (msg) => {
+    logged += msg + '\n'
+  }
+
+  try {
+    // Not specifying print option should default to true
+    await benchmark('test default print', { timeout: 10 }, fn)
+
+    // Check that benchmark output was logged by default
+    assert(logged.includes('test default print'), 'Expected benchmark output by default')
+    assert(callCount > 0, `Expected callCount > 0, got ${callCount}`)
+  } finally {
+    console.log = originalLog
+  }
+})
