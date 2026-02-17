@@ -21,7 +21,7 @@ let gcWarned = false
 export async function benchmark(name, options, fn) {
   if (typeof options === 'function') [fn, options] = [options, undefined]
   if (options?.skip) return
-  const { args, timeout = 1000, warmup = 0 } = options ?? {}
+  const { args, timeout = 1000, warmup = 0, print = true } = options ?? {}
 
   // This will pause us for a bit, but we don't care - having a non-busy process is more important
   await new Promise((resolve) => setTimeout(resolve, 0))
@@ -65,7 +65,7 @@ export async function benchmark(name, options, fn) {
   const rps = (1e9 * count) / Number(total) // Loss in precision to doubles on very fast ops, but this is better than mean rounding
   let res = `${name} x ${fRps(rps)} ops/sec @ ${fTime(mean)}/op`
   if (fTime(min) !== fTime(max)) res += ` (${fTime(min)}..${fTime(max)})`
-  console.log(res)
+  if (print) console.log(res)
 
   if (gc) for (let i = 0; i < 4; i++) gc()
   return { rps, total, count, mean, min, max }

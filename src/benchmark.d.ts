@@ -22,6 +22,8 @@ export interface BenchmarkOptions {
   skip?: boolean
   /** Number of warmup iterations to run before the benchmark (default: 0) */
   warmup?: number
+  /** Print benchmark results to console (default: true) */
+  print?: boolean
 }
 
 /**
