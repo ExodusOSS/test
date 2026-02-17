@@ -20,6 +20,8 @@ export interface BenchmarkOptions {
   timeout?: number
   /** Skip this benchmark */
   skip?: boolean
+  /** Number of warmup iterations to run before the benchmark (default: 0) */
+  warmup?: number
 }
 
 /**
