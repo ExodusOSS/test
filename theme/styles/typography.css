@@ -8,8 +8,7 @@
     font-family: system-ui, 'Roboto', 'Segoe UI', sans-serif;
   }
 
-  .tsd-typography > p:has(> a[href="https://exodusoss.github.io/test/"])
-  {
+  .tsd-typography > p:has(> a[href='https://exodusoss.github.io/test/']) {
     display: none;
   }
 }

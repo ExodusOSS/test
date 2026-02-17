@@ -17,10 +17,10 @@ test('benchmark with warmup option', async () => {
 
   try {
     await benchmark('test warmup', { warmup: 5, timeout: 10 }, fn)
-    
+
     // At least 5 warmup calls should have been made plus some benchmark calls
     assert(callCount > 5, `Expected callCount > 5, got ${callCount}`)
-    
+
     // Check that benchmark output was logged
     assert(logged.includes('test warmup'), 'Expected benchmark output')
   } finally {
@@ -40,7 +40,7 @@ test('benchmark without warmup option', async () => {
 
   try {
     await benchmark('test no warmup', { timeout: 10 }, fn)
-    
+
     // Only benchmark calls should have been made (no warmup)
     assert(callCount > 0, `Expected callCount > 0, got ${callCount}`)
   } finally {
@@ -61,7 +61,7 @@ test('benchmark warmup with args', async () => {
   try {
     const args = ['a', 'b', 'c']
     await benchmark('test warmup with args', { args, warmup: 7, timeout: 10 }, fn)
-    
+
     // Check that warmup used the args in the correct order (cycling through)
     // First 7 calls are warmup: a, b, c, a, b, c, a
     assert.strictEqual(callArgs[0], 'a')
@@ -89,7 +89,7 @@ test('benchmark warmup with async function', async () => {
 
   try {
     await benchmark('test async warmup', { warmup: 3, timeout: 10 }, fn)
-    
+
     // At least 3 warmup calls should have been made plus some benchmark calls
     assert(callCount > 3, `Expected callCount > 3, got ${callCount}`)
   } finally {
@@ -109,7 +109,7 @@ test('benchmark warmup with zero value', async () => {
 
   try {
     await benchmark('test zero warmup', { warmup: 0, timeout: 10 }, fn)
-    
+
     // Only benchmark calls should have been made (no warmup)
     assert(callCount > 0, `Expected callCount > 0, got ${callCount}`)
   } finally {
