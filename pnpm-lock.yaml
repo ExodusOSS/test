@@ -81,7 +81,7 @@ importers:
         specifier: ^1.0.0-rc.11
         version: 1.0.0-rc.11
       '@exodus/test-bundler':
-        specifier: 1.0.0-rc.16
+        specifier: 1.0.0-rc.17
         version: link:bundler
       c8:
         specifier: ^9.1.0
