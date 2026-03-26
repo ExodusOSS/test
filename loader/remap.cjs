@@ -6,7 +6,9 @@ const resolveFile = (f) => require.resolve(f.endsWith('tape.js') ? `${f.slice(0,
 
 function resolve(specifier, context, nextResolve) {
   if (!remap.has(specifier)) return nextResolve(specifier)
-  return { url: pathToFileURL(resolveFile(remap.get(specifier))).toString(), shortCircuit: true }
+  const remapped = resolveFile(remap.get(specifier))
+  const format = remapped.endsWith('.cjs') ? 'commonjs' : 'module'
+  return { url: pathToFileURL(remapped).toString(), shortCircuit: true, format }
 }
 
 if (nodeModule.registerHooks) {
