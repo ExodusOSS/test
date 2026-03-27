@@ -12,8 +12,6 @@ lockfileIncludeTarballUrl: true
 
 onlyBuiltDependencies:
   - electron
-  - esbuild
-  - workerd
 
 overrides:
   eslint>espree: ^10.4.0
