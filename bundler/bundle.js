@@ -3,15 +3,68 @@ import fsPromises, { readFile, writeFile, readdir } from 'node:fs/promises'
 import { existsSync } from 'node:fs'
 import { fileURLToPath, pathToFileURL } from 'node:url'
 import { basename, dirname, extname, resolve, join, relative } from 'node:path'
-import { createRequire } from 'node:module'
+import nodeModule, { createRequire } from 'node:module'
 import { randomUUID as uuid, randomBytes } from 'node:crypto'
 import * as esbuild from 'esbuild'
 
 const require = createRequire(import.meta.url)
 const resolveRequire = (query) => require.resolve(query)
-const cjsMockRegex = /\.exodus-test-mock\.cjs$/u
+const cjsMockRegex = /\.exodus-test-mock\.cjs$/
 const cjsMockFallback = `throw new Error('Mocking loaded ESM modules in not possible in bundles')`
 let resolveSrc, globLib
+
+const packageJSONs = new Map()
+
+function findPackageJSON(file) {
+  if (packageJSONs.has(file)) return packageJSONs.get(file)
+
+  assert.equal(resolve(file), file) // must be absolute and not end with a '/'
+
+  if (nodeModule.findPackageJSON) {
+    const res = nodeModule.findPackageJSON(pathToFileURL(file)) ?? null
+    packageJSONs.set(file, res)
+    return res
+  }
+
+  // does not go into /package.json if file is a dir
+  for (let dir = dirname(file); dir; ) {
+    const res = join(dir, 'package.json')
+    if (existsSync(res)) {
+      packageJSONs.set(file, res)
+      return res
+    }
+
+    const parent = dirname(dir)
+    if (!parent || parent === dir) break
+    dir = parent
+  }
+
+  packageJSONs.set(file, null)
+  return null
+}
+
+const reactNativeMaps = new Map()
+
+async function mapReactNative(context) {
+  const pkg = findPackageJSON(context)
+  if (!pkg) return [null]
+  if (reactNativeMaps.has(pkg)) return reactNativeMaps.get(pkg)
+  const { browser, 'react-native': rn } = JSON.parse(await readFile(pkg, 'utf8'))
+  const res = { map: null, main: null, dir: dirname(pkg) }
+
+  // Do not return pkg["main"] string as it's already resolved by esbuild, no need to overwrite, also pkg["main"] shouldn't be a map
+  for (const prop of [browser, rn]) {
+    if (!prop) continue
+    if (typeof prop === 'string') {
+      res.main = prop
+    } else {
+      res.map = { ...res.map, ...prop }
+    }
+  }
+
+  reactNativeMaps.set(pkg, res)
+  return res
+}
 
 const emptyToUndefined = (x) => (x.length > 0 ? x : undefined) // optimize out define if there are none
 const readSnapshots = async (files, resolvers) => {
@@ -435,14 +488,21 @@ export const build = async (...files) => {
         : JSON.stringify(x, null, 1).replaceAll(/^ *(".+")(,?)$/gmu, (_, s, c) => `${wrap(s)}${c}`)
   }
 
-  const conditions = []
-  if (process.env.EXODUS_TEST_PLATFORM === 'workerd') {
-    conditions.push('workerd')
-  } else if (process.env.EXODUS_TEST_IS_BROWSER) {
+  const conditions = [] // 'require' and 'import' are built-in
+  const mainFields = ['module', 'main']
+  if (process.env.EXODUS_TEST_IS_BROWSER) {
     // browsers, electron renderer, servo
     conditions.push('browser')
+    mainFields.unshift('browser')
   } else if (process.env.EXODUS_TEST_IS_BAREBONE) {
-    conditions.push('react-native')
+    conditions.push('react-native') // does not set browser, see https://metrobundler.dev/docs/configuration/#unstable_conditionnames-experimental
+    // FIXME: mainFields = react-native is unsupported by esbuild: https://github.com/evanw/esbuild/issues/4427
+    // To not follow just browser here, we resolve that manually in onResolve plugin
+    // mainFields.unshift('react-native', 'browser') // https://metrobundler.dev/docs/configuration/#resolvermainfields
+  } else {
+    // TODO: sort out deno:bundle, node:bundle, workerd:bundle etc
+    mainFields.unshift('browser') // FIXME: Removing 'browser' breaks some pkgs
+    if (process.env.EXODUS_TEST_PLATFORM === 'workerd') conditions.push('workerd')
   }
 
   const config = {
@@ -456,7 +516,7 @@ export const build = async (...files) => {
     entryNames: filename,
     platform: process.env.EXODUS_TEST_IS_BROWSER ? 'browser' : 'neutral',
     conditions,
-    mainFields: ['browser', 'module', 'main'], // FIXME: Removing 'browser' breaks some pkgs
+    mainFields,
     define: {
       'process.browser': stringify(true),
       'process.emitWarning': 'undefined',
@@ -515,16 +575,57 @@ export const build = async (...files) => {
     plugins: [
       {
         name: 'exodus-test.bundle',
-        setup({ onResolve, onLoad }) {
-          onResolve({ filter: /\.[cm]?[jt]sx?$/ }, (args) => {
-            if (shouldInstallMocks && cjsMockRegex.test(args.path)) {
-              return { path: args.path, namespace: 'file' }
+        setup({ onResolve, onLoad, resolve: esbuildResolve }) {
+          onResolve(
+            { filter: process.env.EXODUS_TEST_IS_BAREBONE ? /./ : cjsMockRegex, namespace: 'file' },
+            async (args) => {
+              let { path, ...opts } = args
+              if (shouldInstallMocks && cjsMockRegex.test(path)) return { path, namespace: 'file' }
+
+              // This whole hack is needed because of https://github.com/evanw/esbuild/issues/4427
+              if (process.env.EXODUS_TEST_IS_BAREBONE) {
+                // Modules are mapped pre-resolve against importer
+                if (!/^[./]/u.test(path)) {
+                  const { map } = await mapReactNative(args.importer)
+                  if (map && Object.hasOwn(map, path)) {
+                    if (map[path] === false) {
+                      // Unsupported, see https://github.com/evanw/esbuild/issues/4426
+                      // TODO
+                    } else if (typeof map[path] === 'string') {
+                      path = map[path]
+                    }
+                  }
+                }
+
+                const r = await esbuildResolve(path, { ...opts, namespace: 'exodus-test.bundle' })
+
+                // Errors can only default to usual resolution to support e.g. optional dynamic require()
+                if (!r.path || r.errors.length > 0 || r.warnings.length > 0 || r.external) return
+
+                // Resolved files are mapped post-resolve against their package
+                const { map, main, dir } = await mapReactNative(r.path)
+
+                // Only maps the entry point, check if we are using the entry point
+                // TODO: also check for dir import to a package.json?
+                if (main && !path.includes('/')) r.path = resolve(dir, main)
+
+                // TODO: check if this can conflict with main
+                if (map) {
+                  for (const [key, value] of Object.entries(map)) {
+                    if (!value || typeof value !== 'string') continue // e.g. false
+                    if (r.path !== resolve(dir, key)) continue
+                    r.path = resolve(dir, value)
+                    break
+                  }
+                }
+
+                return r
+              }
             }
-          })
+          )
           onLoad({ filter: /\.[cm]?[jt]sx?$/, namespace: 'file' }, async (args) => {
             let filepath = args.path
-            // Resolve .native versions
-            // TODO: maybe follow package.json for this
+            // Load .native versions where available (past onResolve)
             if (process.env.EXODUS_TEST_IS_BAREBONE) {
               const maybeNative = filepath.replace(/(\.[cm]?[jt]sx?)$/u, '.native$1')
               if (existsSync(maybeNative)) filepath = maybeNative
