@@ -2,6 +2,11 @@ packages:
   - .
   - bundler
 
+allowBuilds:
+  electron: true
+  esbuild: false
+  workerd: false
+
 enableGlobalVirtualStore: false
 
 ignoreWorkspaceRootCheck: true
@@ -10,11 +15,8 @@ linkWorkspacePackages: true
 
 lockfileIncludeTarballUrl: true
 
-onlyBuiltDependencies:
-  - electron
-
 overrides:
-  eslint>espree: ^10.4.0
   '@eslint/eslintrc>espree': ^10.4.0
+  eslint>espree: ^10.4.0
 
 preferWorkspacePackages: true

@@ -199,7 +199,7 @@
     "@types/jest-when": "^3.5.2",
     "@types/node": "^24.0.11",
     "@typescript-eslint/eslint-plugin": "^7.15.0",
-    "electron": "^39.4.0",
+    "electron": "^41.1.0",
     "eslint": "^8.44.0",
     "esvu": "^1.2.16",
     "jest": "^29.7.0",
@@ -211,7 +211,7 @@
     "jsvu": "^3.0.3",
     "prettier": "^3.0.3",
     "typedoc": "^0.28.16",
-    "workerd": "^1.20260214.0"
+    "workerd": "^1.20260317.1"
   },
   "peerDependencies": {
     "@babel/register": "^7.0.0",
@@ -233,5 +233,5 @@
       "optional": true
     }
   },
-  "packageManager": "pnpm@10.12.1+sha256.889bac470ec93ccc3764488a19d6ba8f9c648ad5e50a9a6e4be3768a5de387a3"
+  "packageManager": "pnpm@10.33.0+sha512.10568bb4a6afb58c9eb3630da90cc9516417abebd3fabbe6739f0ae795728da1491e9db5a544c76ad8eb7570f5c4bb3d6c637b2cb41bfdcdb47fa823c8649319"
 }
