@@ -1,5 +1,6 @@
 const config = {
   testMatch: [`**/?(*.)+(spec|test).?([cm])[jt]s?(x)`], // From bin/index.js defaults
+  testPathIgnorePatterns: ['/node_modules/', '/playground/'],
   setupFiles: [
     '<rootDir>/tests/jest/setup.cjs',
     '<rootDir>/tests/jest/setup-files/setup.cjs',
