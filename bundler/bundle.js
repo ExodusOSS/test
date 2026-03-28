@@ -14,6 +14,8 @@ const cjsMockFallback = `throw new Error('Mocking loaded ESM modules in not poss
 let resolveSrc, globLib
 
 const packageJSONs = new Map()
+const reactNativeMaps = new Map()
+const reactNativeResolves = new Map()
 
 function findPackageJSON(file) {
   if (packageJSONs.has(file)) return packageJSONs.get(file)
@@ -42,8 +44,6 @@ function findPackageJSON(file) {
   packageJSONs.set(file, null)
   return null
 }
-
-const reactNativeMaps = new Map()
 
 async function mapReactNative(context) {
   const pkg = findPackageJSON(context)
@@ -584,6 +584,9 @@ export const build = async (...files) => {
 
               // This whole hack is needed because of https://github.com/evanw/esbuild/issues/4427
               if (process.env.EXODUS_TEST_IS_BAREBONE) {
+                const key = JSON.stringify(args)
+                if (reactNativeResolves.has(key)) return reactNativeResolves.get(key)
+
                 // Modules are mapped pre-resolve against importer
                 if (!/^[./]/u.test(path)) {
                   const { map } = await mapReactNative(args.importer)
@@ -600,7 +603,10 @@ export const build = async (...files) => {
                 const r = await esbuildResolve(path, { ...opts, namespace: 'exodus-test.bundle' })
 
                 // Errors can only default to usual resolution to support e.g. optional dynamic require()
-                if (!r.path || r.errors.length > 0 || r.warnings.length > 0 || r.external) return
+                if (!r.path || r.errors.length > 0 || r.warnings.length > 0 || r.external) {
+                  reactNativeResolves.set(key, undefined)
+                  return
+                }
 
                 // Resolved files are mapped post-resolve against their package
                 const { map, main, dir } = await mapReactNative(r.path)
@@ -619,6 +625,7 @@ export const build = async (...files) => {
                   }
                 }
 
+                reactNativeResolves.set(key, r)
                 return r
               }
             }
