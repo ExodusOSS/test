@@ -96,7 +96,9 @@ function findBinaryOnce(name) {
       addPaths('darwin', '/Applications/Safari.app/Contents/MacOS/Safari')
       break
     case 'servo':
+      addPaths('darwin', '/Applications/Servo.app/Contents/MacOS/servoshell')
       addPaths('darwin', '/Applications/Servo.app/Contents/MacOS/servo')
+      addPaths('linux', '/usr/bin/servoshell')
       addPaths('linux', '/usr/bin/servo')
       break
     default:

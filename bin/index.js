@@ -663,7 +663,8 @@ async function launch(binary, args, opts = {}, buffering = false) {
   }
 
   const barebones = [...bareOk, ...bareNotrack, ...bareIncomplete]
-  const bins = ['node', 'bun', 'deno', 'electron', 'workerd', 'servo', 'jerry', 'duk', ...barebones]
+  const bins = ['node', 'bun', 'deno', 'electron', 'workerd', 'servo', 'servoshell', 'jerry', 'duk']
+  bins.push(...barebones)
   assertBinary(binary, bins)
   if (binary === c8 && process.platform === 'win32') {
     ;[binary, args] = ['node', [binary, ...args]]
