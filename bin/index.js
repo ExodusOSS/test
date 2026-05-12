@@ -93,6 +93,7 @@ function parseOptions() {
     typescript: false,
     flow: false,
     esbuild: false,
+    oxc: false,
     babel: false,
     coverage: getEnvFlag('EXODUS_TEST_COVERAGE'),
     coverageEngine: process.platform === 'win32' ? 'node' : 'c8', // c8 or node. TODO: can we use c8 on win?
@@ -166,6 +167,9 @@ function parseOptions() {
         break
       case '--esbuild':
         options.esbuild = args[0] instanceof OptionValue ? String(args.shift()) : '*'
+        break
+      case '--oxc':
+        options.oxc = args[0] instanceof OptionValue ? String(args.shift()) : '*'
         break
       case '--babel':
         options.babel = true
@@ -453,6 +457,8 @@ if (options.concurrency) {
   options.concurrency = concurrency
 }
 
+assert(!options.esbuild || !options.oxc, 'Options --esbuild and --oxc are mutually exclusive')
+
 if (options.esbuild && !options.bundle) {
   setEnv('EXODUS_TEST_ESBUILD', options.esbuild)
   if (options.loader === '--import') {
@@ -465,15 +471,29 @@ if (options.esbuild && !options.bundle) {
     console.error(`Error: ${engineName} does not support --esbuild option`)
     process.exit(1)
   }
+} else if (options.oxc) {
+  setEnv('EXODUS_TEST_OXC', options.oxc)
+  if (options.loader === '--import') {
+    const optional = options.oxc === '*' ? '' : '.optional'
+    args.push('--import', import.meta.resolve(`../loader/oxc${optional}.js`))
+  } else if (options.flagEngine === false) {
+    // Engine is set via env, --oxc set via flag. Allow but warn
+    console.warn(`Warning: ${engineName} does not support --oxc option`)
+  } else {
+    console.error(`Error: ${engineName} does not support --oxc option`)
+    process.exit(1)
+  }
 }
 
 if (options.babel) {
   assert(!options.esbuild, 'Options --babel and --esbuild are mutually exclusive')
+  assert(!options.oxc, 'Options --babel and --oxc are mutually exclusive')
   args.push('-r', import.meta.resolve('../loader/babel.cjs'))
 }
 
 if (options.typescript) {
   assert(!options.esbuild, 'Options --typescript and --esbuild are mutually exclusive')
+  assert(!options.oxc, 'Options --typescript and --oxc are mutually exclusive')
   assert(!options.babel, 'Options --typescript and --babel are mutually exclusive')
 
   if (options.ts === 'flag') {
@@ -552,9 +572,9 @@ if (options.debug.files) {
 }
 
 const tsTests = files.filter((file) => /\.[mc]?tsx?$/u.test(file))
-const tsSupport = options.ts === 'auto' || options.esbuild || options.typescript || options.babel
+const tsSupport = options.ts === 'auto' || options.esbuild || options.oxc || options.typescript || options.babel
 if (tsTests.length > 0 && !tsSupport) {
-  console.error(`Some tests require --typescript or --esbuild flag:\n  ${tsTests.join('\n  ')}`)
+  console.error(`Some tests require --typescript, --esbuild or --oxc flag:\n  ${tsTests.join('\n  ')}`)
   process.exit(1)
 } else if (!allfiles.some((file) => /\.[cm]?ts$/.test(file)) && options.typescript) {
   console.warn(`Flag --typescript has been used, but there were no TypeScript tests found!`)
