@@ -4,6 +4,7 @@ import { relative, resolve, normalize } from 'node:path'
 import { spec as SpecReporter } from 'node:test/reporters'
 import { fileURLToPath } from 'node:url'
 import { color, haveColors, dim } from './color.js'
+import { resolveAnnotationFile } from './github.js'
 
 const { CI, GITHUB_WORKSPACE, LERNA_PACKAGE_NAME } = process.env
 
@@ -159,7 +160,12 @@ export default async function nodeTestReporterExodus(source) {
         if (path.length > 0) assert(path.pop() === data.name) // afterAll can generate failures too, with an empty path
         if (!data.todo) failedFiles.add(file)
         if (!notPrintedError(data.details.error)) {
-          const { body, loc } = extractError(data, relative(cwd, data.file || data.name)) // might be different from current file if in subimport
+          const errorFile = resolveAnnotationFile(data.file || data.name, {
+            cwd,
+            CI,
+            GITHUB_WORKSPACE,
+          })
+          const { body, loc } = extractError(data, errorFile) // might be different from current file if in subimport
           if (!data.todo && CI && loc.line != null && loc.col != null) {
             print(`::error ${serializeGitHub(Object.entries(loc))}::${escapeGitHub(body)}`)
           } else if (body) {
