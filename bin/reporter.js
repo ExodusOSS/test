@@ -106,6 +106,14 @@ export default async function nodeTestReporterExodus(source) {
   const log = []
   const buffered = groupCI || quiet
   const print = (msg) => (buffered ? log.push(msg) : console.log(msg))
+  const dumpDiagnostics = () => {
+    if (!quiet || failedFiles.size > 0) {
+      for (const line of diagnostic) console.log(line)
+    }
+
+    diagnostic.length = 0
+  }
+
   const dump = () => {
     const ok = !failedFiles.has(file)
     if (quiet && ok) {
@@ -125,6 +133,14 @@ export default async function nodeTestReporterExodus(source) {
   let file
   const diagnostic = []
   const delayed = []
+  const resetWatchCycle = () => {
+    if (file !== undefined) dump()
+    dumpDiagnostics()
+    delayed.length = 0
+    failedFiles.clear()
+    file = undefined
+  }
+
   const isTopLevelTest = ({ nesting, line, column, name, file }) =>
     nesting === 0 && line === 1 && column === 1 && file.endsWith(name) && resolve(name) === file // some events have data.file resolved, some not)
   const processNewFile = (data) => {
@@ -186,6 +202,7 @@ export default async function nodeTestReporterExodus(source) {
         break
       case 'test:watch:drained':
         assert(!groupCI, 'Can not mix --watch with CI grouping')
+        if (quiet) resetWatchCycle()
         console.log(color(`ℹ waiting for changes as we are in --watch mode`, 'blue'))
         break
       case 'test:diagnostic':
@@ -209,9 +226,7 @@ export default async function nodeTestReporterExodus(source) {
     for (const line of delayed) console.log(line)
   }
 
-  if (!quiet || failedFiles.size > 0) {
-    for (const line of diagnostic) console.log(line)
-  }
+  dumpDiagnostics()
 
   summary([...files], [...failedFiles])
 }
