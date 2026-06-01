@@ -26,7 +26,7 @@ export const format = (chunk) => {
 
 const formatTime = (ms) => (ms ? color(` (${ms}ms)`, dim) : '')
 const formatSuffix = (d) => `${formatTime(d.details.duration_ms)}${d.todo ? ' # TODO' : ''}`
-const isSummaryDiagnostic = (message) =>
+const isNodeTestSummaryDiagnostic = (message) =>
   /^(suites|tests|pass|fail|cancelled|skipped|todo) \d+$/.test(message) ||
   /^duration_ms \d+(?:\.\d+)?$/.test(message)
 
@@ -207,7 +207,7 @@ export default async function nodeTestReporterExodus(source) {
         break
       case 'test:diagnostic':
         if (/^suites \d+$/.test(data.message)) break // we count suites = files
-        if (quiet && isSummaryDiagnostic(data.message)) break // summary() prints the result
+        if (quiet && isNodeTestSummaryDiagnostic(data.message)) break // summary() prints the result
         diagnostic.push(color(`ℹ ${data.message}`, 'blue'))
         break
       case 'test:stderr':
