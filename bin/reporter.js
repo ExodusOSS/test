@@ -133,7 +133,7 @@ export default async function nodeTestReporterExodus(source) {
   let file
   const diagnostic = []
   const delayed = []
-  const resetWatchCycle = () => {
+  const finishWatchCycle = () => {
     if (file !== undefined) dump()
     dumpDiagnostics()
     delayed.length = 0
@@ -202,7 +202,7 @@ export default async function nodeTestReporterExodus(source) {
         break
       case 'test:watch:drained':
         assert(!groupCI, 'Can not mix --watch with CI grouping')
-        if (quiet) resetWatchCycle()
+        if (quiet) finishWatchCycle()
         console.log(color(`ℹ waiting for changes as we are in --watch mode`, 'blue'))
         break
       case 'test:diagnostic':
