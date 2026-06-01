@@ -97,7 +97,7 @@ function parseOptions() {
     coverage: getEnvFlag('EXODUS_TEST_COVERAGE'),
     coverageEngine: process.platform === 'win32' ? 'node' : 'c8', // c8 or node. TODO: can we use c8 on win?
     watch: false,
-    quiet: getEnvFlag('EXODUS_TEST_QUIET'),
+    quiet: false,
     only: false,
     passWithNoTests: false,
     writeSnapshots: false,
@@ -285,12 +285,6 @@ const setEnv = (name, value) => {
   process.env[name] = value === undefined ? '' : value
 }
 
-// `enabled` is already the resolved flag (parseOptions folds in the env value), so it wins over
-// any pre-existing env — an explicit `--quiet` must not env-conflict with `EXODUS_TEST_QUIET=0`.
-const setEnvFlag = (name, enabled) => {
-  process.env[name] = enabled ? '1' : process.env[name] === '0' ? '0' : ''
-}
-
 const { options, patterns } = parseOptions()
 
 const engineName = `${options.engine} engine` // used for warnings to user
@@ -305,7 +299,7 @@ setEnv('EXODUS_TEST_ENGINE', options.engine) // e.g. 'hermes:bundle', 'node:bund
 setEnv('EXODUS_TEST_PLATFORM', options.binary === 'shermes' ? 'hermes' : options.binary) // e.g. 'hermes', 'node'
 setEnv('EXODUS_TEST_TIMEOUT', options.testTimeout)
 setEnv('EXODUS_TEST_DEVTOOLS', options.devtools ? '1' : '')
-setEnvFlag('EXODUS_TEST_QUIET', options.quiet)
+process.env.EXODUS_TEST_QUIET = options.quiet ? '1' : '' // internal signal for the reporter
 setEnv('EXODUS_TEST_IS_BROWSER', isBrowserLike ? '1' : '')
 setEnv('EXODUS_TEST_IS_BAREBONE', options.barebone ? '1' : '')
 setEnv('EXODUS_TEST_ENVIRONMENT', options.bundle ? 'bundle' : '') // perhaps switch to _IS_BUNDLED?
