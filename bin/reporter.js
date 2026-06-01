@@ -33,6 +33,7 @@ const inbandFileAbsolute = fileURLToPath(import.meta.resolve('./inband.js'))
 const inbandFile = relative(cwd, inbandFileAbsolute)
 
 const groupCI = CI && !process.execArgv.includes('--watch') && !LERNA_PACKAGE_NAME // lerna+nx groups already
+const quiet = process.env.EXODUS_TEST_QUIET === '1'
 export const timeLabel = color('Total time', dim)
 const filename = (f) => (f === inbandFile || f === inbandFileAbsolute ? 'In-band tests' : f)
 export const head = groupCI ? () => {} : (file) => console.log(color(`# ${filename(file)}`, 'bold'))
@@ -100,9 +101,16 @@ export default async function nodeTestReporterExodus(source) {
   })
 
   const log = []
-  const print = (msg) => (groupCI ? log.push(msg) : console.log(msg))
+  const buffered = groupCI || quiet
+  const print = (msg) => (buffered ? log.push(msg) : console.log(msg))
   const dump = () => {
-    middle(file, !failedFiles.has(file))
+    const ok = !failedFiles.has(file)
+    if (quiet && ok) {
+      log.length = 0
+      return
+    }
+
+    middle(file, ok)
     for (const line of log) console.log(line)
     log.length = 0
     tail()
@@ -123,7 +131,9 @@ export default async function nodeTestReporterExodus(source) {
     if (file !== undefined) dump()
     file = newFile
     assert(files.has(file), 'Cound not determine file')
-    head(file)
+    // quiet (non-CI): buffer the header so it only prints for failing suites (under CI, middle() emits it)
+    if (quiet && !groupCI) log.push(color(`# ${filename(file)}`, 'bold'))
+    else head(file)
   }
 
   const pathstr = (p) => (p[0]?.startsWith(INBAND_PREFIX) ? p.slice(1) : p).join(' > ')
@@ -149,8 +159,11 @@ export default async function nodeTestReporterExodus(source) {
         while (delayed.length > 0) print(delayed.shift())
         break
       case 'test:pass':
-        const label = data.skip ? color('⏭ SKIP ', dim) : color('✔ PASS ', 'green')
-        if (!pskip(path)) print(`${label}${pathstr(path)}${formatSuffix(data)}`)
+        if (!quiet) {
+          const label = data.skip ? color('⏭ SKIP ', dim) : color('✔ PASS ', 'green')
+          if (!pskip(path)) print(`${label}${pathstr(path)}${formatSuffix(data)}`)
+        }
+
         assert(path.pop() === data.name)
         break
       case 'test:fail':
@@ -188,7 +201,10 @@ export default async function nodeTestReporterExodus(source) {
   }
 
   dump()
-  for (const line of delayed) console.log(line)
-  for (const line of diagnostic) console.log(line)
+  if (!quiet) {
+    for (const line of delayed) console.log(line)
+    for (const line of diagnostic) console.log(line)
+  }
+
   summary([...files], [...failedFiles])
 }

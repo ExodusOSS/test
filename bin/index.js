@@ -97,6 +97,7 @@ function parseOptions() {
     coverage: getEnvFlag('EXODUS_TEST_COVERAGE'),
     coverageEngine: process.platform === 'win32' ? 'node' : 'c8', // c8 or node. TODO: can we use c8 on win?
     watch: false,
+    quiet: getEnvFlag('EXODUS_TEST_QUIET'),
     only: false,
     passWithNoTests: false,
     writeSnapshots: false,
@@ -184,6 +185,9 @@ function parseOptions() {
         break
       case '--watch':
         options.watch = true
+        break
+      case '--quiet':
+        options.quiet = true
         break
       case '--test-only':
       case '--only':
@@ -295,6 +299,7 @@ setEnv('EXODUS_TEST_ENGINE', options.engine) // e.g. 'hermes:bundle', 'node:bund
 setEnv('EXODUS_TEST_PLATFORM', options.binary === 'shermes' ? 'hermes' : options.binary) // e.g. 'hermes', 'node'
 setEnv('EXODUS_TEST_TIMEOUT', options.testTimeout)
 setEnv('EXODUS_TEST_DEVTOOLS', options.devtools ? '1' : '')
+setEnv('EXODUS_TEST_QUIET', options.quiet ? '1' : '')
 setEnv('EXODUS_TEST_IS_BROWSER', isBrowserLike ? '1' : '')
 setEnv('EXODUS_TEST_IS_BAREBONE', options.barebone ? '1' : '')
 setEnv('EXODUS_TEST_ENVIRONMENT', options.bundle ? 'bundle' : '') // perhaps switch to _IS_BUNDLED?
@@ -810,12 +815,13 @@ const mainWorker :Workerd.Worker = (
   const tasks = files.map((file) => ({ file, task: runConcurrent(file) }))
   console.time(timeLabel)
   for (const { file, task } of tasks) {
-    head(file)
     const { ok, output, ms } = await task
+    if (!ok) failures.push(file)
+    if (options.quiet && ok) continue // quiet mode: only surface failing suites
+    head(file)
     middle(file, ok, ms)
     for (const chunk of output.filter((x) => x.trim())) console.log(format(chunk).trimEnd())
     tail(file)
-    if (!ok) failures.push(file)
   }
 
   if (failures.length > 0) process.exitCode = 1
