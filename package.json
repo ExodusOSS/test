@@ -68,6 +68,7 @@
     "bin/electron.js",
     "bin/electron.preload.cjs",
     "bin/find-binary.js",
+    "bin/github.js",
     "bin/inband.js",
     "bin/reporter.js",
     "loader/babel.cjs",
