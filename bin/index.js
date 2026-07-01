@@ -810,13 +810,16 @@ const mainWorker :Workerd.Worker = (
   }
 
   const { format, head, middle, tail, timeLabel, summary } = await import('./reporter.js')
-  const filterQuietOutput = (chunk) =>
-    options.quiet
-      ? chunk
+  const identity = (value) => value
+  const passOrSkipLine = /^(✔ PASS|⏭ SKIP) /u
+  // In quiet mode, drop passing/skipped lines from a suite's captured output (failures are kept).
+  const filterQuietOutput = options.quiet
+    ? (chunk) =>
+        chunk
           .split('\n')
-          .filter((line) => !/^(✔ PASS|⏭ SKIP) /u.test(line))
+          .filter((line) => !passOrSkipLine.test(line))
           .join('\n')
-      : chunk
+    : identity
 
   const failures = []
   const tasks = files.map((file) => ({ file, task: runConcurrent(file) }))
