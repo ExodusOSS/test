@@ -2,7 +2,7 @@ let expect
 let assertionsDelta = 0
 const extend = []
 const set = []
-const mockContexts = new WeakMap()
+const mockContexts = require('./jest.fn.context.cjs')
 
 function fixupAssertions() {
   if (assertionsDelta === 0) return
@@ -187,7 +187,6 @@ function createExpect() {
 
 exports.expect = createExpect()
 exports.loadExpect = loadExpect
-exports.registerMockContext = (state, context) => mockContexts.set(state, context)
 
 // https://github.com/trynova/nova/issues/935
 if (process.env.EXODUS_TEST_PLATFORM === 'nova') exports.expect = require('expect').expect
