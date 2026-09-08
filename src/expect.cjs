@@ -2,6 +2,7 @@ let expect
 let assertionsDelta = 0
 const extend = []
 const set = []
+const mockContexts = new WeakMap()
 
 function fixupAssertions() {
   if (assertionsDelta === 0) return
@@ -34,6 +35,12 @@ function loadExpect(loadReason) {
 
 const areNumeric = (...args) => args.every((a) => typeof a === 'number' || typeof a === 'bigint')
 
+const mockCallCount = (x) => {
+  const state = x.mock
+  const context = mockContexts.get(state)
+  return context ? context.callCount() : state?.calls?.length
+}
+
 const matchers = {
   __proto__: null,
   toBe: (x, y) => Object.is(x, y),
@@ -54,8 +61,8 @@ const matchers = {
   toBeGreaterThanOrEqual: (x, c) => areNumeric(x, c) && x >= c,
   toBeLessThan: (x, c) => areNumeric(x, c) && x < c,
   toBeLessThanOrEqual: (x, c) => areNumeric(x, c) && x <= c,
-  toHaveBeenCalled: (x) => x?._isMockFunction && x?.mock?.calls?.length > 0,
-  toHaveBeenCalledTimes: (x, c) => x?._isMockFunction && x?.mock?.calls?.length === c,
+  toHaveBeenCalled: (x) => x?._isMockFunction && mockCallCount(x) > 0,
+  toHaveBeenCalledTimes: (x, c) => x?._isMockFunction && mockCallCount(x) === c,
   toBeCalled: (...a) => matchers.toHaveBeenCalled(...a),
   toBeCalledTimes: (...a) => matchers.toHaveBeenCalledTimes(...a),
   toHaveBeenCalledOnce: (x) => matchers.toHaveBeenCalledTimes(x, 1),
@@ -180,6 +187,7 @@ function createExpect() {
 
 exports.expect = createExpect()
 exports.loadExpect = loadExpect
+exports.registerMockContext = (state, context) => mockContexts.set(state, context)
 
 // https://github.com/trynova/nova/issues/935
 if (process.env.EXODUS_TEST_PLATFORM === 'nova') exports.expect = require('expect').expect

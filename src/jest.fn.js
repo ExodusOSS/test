@@ -1,4 +1,5 @@
 import { mock, assert } from './engine.js'
+import { registerMockContext } from './expect.cjs'
 
 const registry = new Set()
 let callId = 0
@@ -111,6 +112,7 @@ export const jestfn = (baseimpl, parent, property) => {
       return fnmock.calls.at(-1)?.arguments
     },
   }
+  registerMockContext(jestfnmock, fnmock)
 
   const fnProxyGet = (obj, key) => {
     const wrap =
