@@ -102,6 +102,7 @@
     "src/jest.config.js",
     "src/jest.config.fs.js",
     "src/jest.environment.js",
+    "src/jest.fn.context.cjs",
     "src/jest.fn.js",
     "src/jest.mock.js",
     "src/jest.setup.js",
