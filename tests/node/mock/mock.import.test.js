@@ -26,7 +26,10 @@ describe('mocking a builtin module from esm', { skip: !mock.module }, () => {
   })
 })
 
-describe('mocking a module from esm', { skip: !mock.module }, () => {
+// Deno (as of 2.9.7) exposes namedExports only via the default export for non-builtin modules
+const brokenNamedExports = Boolean(globalThis.Deno)
+
+describe('mocking a module from esm', { skip: !mock.module || brokenNamedExports }, () => {
   test('should do a mock, import', async () => {
     mock.module('c8', {
       defaultExport: { x: 20 },
