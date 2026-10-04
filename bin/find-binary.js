@@ -69,6 +69,8 @@ function findBinaryOnce(name) {
       return require('electron')
     case 'workerd':
       return require.resolve('workerd/bin/workerd')
+    case 'quickjs-wasi':
+      return require.resolve('quickjs-wasi/quickjs.wasm') // not an executable, see bin/quickjs-wasi.js
     case 'porffor':
       return require.resolve('porffor/porf')
     case 'jerryscript':
