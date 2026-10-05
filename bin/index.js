@@ -50,6 +50,7 @@ const ENGINES = new Map(
     'duktape:bundle': { binary: 'duk', ...bareboneOpts },
     'engine262:bundle': { binary: 'engine262', ...bareboneOpts },
     'quickjs:bundle': { binary: 'quickjs', binaryArgs: ['--std'], ...bareboneOpts },
+    'quickjs-wasi:bundle': { binary: 'quickjs-wasi', ...bareboneOpts },
     'xs:bundle': { binary: 'xs', ...bareboneOpts },
     'graaljs:bundle': { binary: 'graaljs', ...bareboneOpts },
     'escargot:bundle': { binary: 'escargot', ...bareboneOpts },
@@ -71,7 +72,7 @@ const ENGINES = new Map(
     'msedge:playwright': { binary: 'msedge', browsers: 'playwright', ...bundleOpts },
   })
 )
-const bareOk = ['v8', 'd8', 'spidermonkey', 'quickjs', 'xs', 'hermes', 'shermes']
+const bareOk = ['v8', 'd8', 'spidermonkey', 'quickjs', 'quickjs-wasi', 'xs', 'hermes', 'shermes']
 const bareNotrack = ['jsc', 'escargot', 'boa', 'graaljs', 'jerryscript', 'engine262']
 const bareIncomplete = ['ladybird-js', 'nova', 'duktape']
 
@@ -292,7 +293,8 @@ Object.assign(options, engineOptions)
 options.platform = options.binary // binary can be overriden by c8 or electron
 const isBrowserLike = options.browsers || options.electron || options.html
 setEnv('EXODUS_TEST_ENGINE', options.engine) // e.g. 'hermes:bundle', 'node:bundle', 'node:test', 'node:pure'
-setEnv('EXODUS_TEST_PLATFORM', options.binary === 'shermes' ? 'hermes' : options.binary) // e.g. 'hermes', 'node'
+const platformAliases = { __proto__: null, shermes: 'hermes', 'quickjs-wasi': 'quickjs' } // same engine
+setEnv('EXODUS_TEST_PLATFORM', platformAliases[options.binary] ?? options.binary) // e.g. 'hermes', 'node'
 setEnv('EXODUS_TEST_TIMEOUT', options.testTimeout)
 setEnv('EXODUS_TEST_DEVTOOLS', options.devtools ? '1' : '')
 setEnv('EXODUS_TEST_IS_BROWSER', isBrowserLike ? '1' : '')
@@ -660,6 +662,12 @@ async function launch(binary, args, opts = {}, buffering = false) {
     const { timeout } = opts
     const { browsers: runner, devtools, dropNetwork, throttle } = options
     return browsers.run(runner, args, { binary, devtools, dropNetwork, timeout, throttle })
+  }
+
+  if (options.platform === 'quickjs-wasi') {
+    // quickjs.wasm is not an executable, it is run on Node.js by our host script
+    args = [fileURLToPath(import.meta.resolve('./quickjs-wasi.js')), ...args]
+    binary = process.execPath
   }
 
   const barebones = [...bareOk, ...bareNotrack, ...bareIncomplete]
