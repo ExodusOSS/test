@@ -176,6 +176,8 @@ Use `--engine` (or `EXODUS_TEST_ENGINE=`) to specify one of:
   - `hermes:bundle` — [Hermes](https://hermesengine.dev) (React Native JavaScript engine)
   - `spidermonkey:bundle` — [SpiderMonkey](https://spidermonkey.dev/) (Firefox/Gecko JavaScript engine)
   - `quickjs:bundle` — [QuickJS](https://github.com/quickjs-ng/quickjs)
+  - `quickjs-wasi:bundle` — [QuickJS](https://github.com/quickjs-ng/quickjs) compiled to WebAssembly, runs on Node.js
+    (via [`quickjs-wasi`](https://github.com/vercel-labs/quickjs-wasi), installed as an optional dependency)
   - `xs:bundle` — [Moddable XS](https://github.com/Moddable-OpenSource/moddable)
   - `graaljs:bundle` — [GraalJS](https://github.com/oracle/graaljs)
   - `escargot:bundle` — [Escargot](https://github.com/Samsung/escargot)

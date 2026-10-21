@@ -69,6 +69,7 @@
     "bin/electron.preload.cjs",
     "bin/find-binary.js",
     "bin/inband.js",
+    "bin/quickjs-wasi.js",
     "bin/reporter.js",
     "loader/babel.cjs",
     "loader/deno-import-map.json",
@@ -164,6 +165,7 @@
     "test:servo": "EXODUS_TEST_ENGINE=servo:bundle npm run test:_bundle --",
     "test:engine262": "EXODUS_TEST_ENGINE=engine262:bundle npm run test:_bundle --",
     "test:quickjs": "EXODUS_TEST_ENGINE=quickjs:bundle npm run test:_bundle --",
+    "test:quickjs-wasi": "EXODUS_TEST_ENGINE=quickjs-wasi:bundle npm run test:_bundle --",
     "test:xs": "EXODUS_TEST_ENGINE=xs:bundle npm run test:_bundle --",
     "test:graaljs": "EXODUS_TEST_ENGINE=graaljs:bundle npm run test:_bundle --",
     "test:escargot": "EXODUS_TEST_ENGINE=escargot:bundle npm run test:_bundle --",
@@ -191,6 +193,7 @@
     "playwright-core": "^1.58.2",
     "pretty-format": "^30.2.0",
     "puppeteer-core": "^24.37.2",
+    "quickjs-wasi": "^3.6.2",
     "tsx": "^4.21.0"
   },
   "devDependencies": {
