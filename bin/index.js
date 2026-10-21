@@ -665,7 +665,6 @@ async function launch(binary, args, opts = {}, buffering = false) {
   }
 
   if (options.platform === 'quickjs-wasi') {
-    // quickjs.wasm is not an executable, it is run on Node.js by our host script
     args = [fileURLToPath(import.meta.resolve('./quickjs-wasi.js')), ...args]
     binary = process.execPath
   }
