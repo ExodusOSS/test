@@ -202,6 +202,8 @@ Use `--engine` (or `EXODUS_TEST_ENGINE=`) to specify one of:
 
 - `--watch` — operate in watch mode and re-run tests on file changes
 
+- `--quiet` — only report failing tests. The final summary is still printed
+
 - `--only` — only run the tests marked with `test.only`
 
 - `--passWithNoTests` — do not error when no test files were found
