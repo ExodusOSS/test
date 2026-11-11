@@ -172,7 +172,7 @@
     "test:jerryscript": "EXODUS_TEST_ENGINE=jerryscript:bundle npm run test:_bundle -- --bundle-entropy-size 128",
     "test:fetch": "node ./bin/index.js --jest --drop-network --engine node:pure 'tests/replay/*.test.js'",
     "test:jsdom": "EXODUS_TEST_JEST_CONFIG='{\"testMatch\":[\"**/*.jsdom-test.js\"],\"testEnvironment\":\"jsdom\", \"rootDir\": \".\"}' ./bin/index.js --jest",
-    "test:global-setup": "EXODUS_TEST_JEST_CONFIG='{\"testMatch\":[\"**/*.global-setup-test.js\"],\"globalSetup\":\"./tests/jest/global-setup/global-setup.cjs\", \"rootDir\": \".\"}' ./bin/index.js --jest",
+    "test:global-setup": "EXODUS_TEST_JEST_CONFIG='{\"testMatch\":[\"**/*.global-setup-test.js\"],\"globalSetup\":\"<rootDir>/tests/jest/global-setup/global-setup.cjs\",\"globalTeardown\":\"./tests/jest/global-setup/global-teardown.cjs\", \"rootDir\": \".\"}' ./bin/index.js --jest",
     "coverage": "node ./bin/index.js --jest --esbuild --coverage",
     "typedoc": "typedoc && mkdir -p doc/assets && cp -r theme/styles doc/assets/",
     "playwright": "node ./bin/index.js --playwright",

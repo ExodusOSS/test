@@ -139,8 +139,11 @@ export async function loadJestConfig(...args) {
   const cleanFile = (file) => file.replace(/^<rootDir>\//g, './') // require is already relative to rootDir
   if (needPreset(rawConfig) || rawConfig?.globalSetup || rawConfig?.globalTeardown) {
     // relative to root dir only at top level, presets shouldn't use <rootDir>
-    // preset is optional here, we could have entered this branch just because of globalSetup/Teardown
-    if (rawConfig.preset) rawConfig.preset = cleanFile(rawConfig.preset)
+    // each is optional here, we could have entered this branch just because of one of them
+    for (const key of ['preset', 'globalSetup', 'globalTeardown']) {
+      if (rawConfig[key]) rawConfig[key] = cleanFile(rawConfig[key])
+    }
+
     if (process.env.EXODUS_TEST_ENVIRONMENT === 'bundle') {
       throw new Error('jest preset and globalSetup/Teardown not yet supported in bundles')
     } else {
