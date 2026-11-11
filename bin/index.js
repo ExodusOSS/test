@@ -110,6 +110,7 @@ function parseOptions() {
     require: [],
     testNamePattern: [],
     testTimeout: undefined,
+    fileTimeout: undefined,
     reporter: undefined,
   }
 
@@ -253,6 +254,9 @@ function parseOptions() {
       case '--testTimeout':
         options.testTimeout = Number(args.shift())
         break
+      case '--file-timeout':
+        options.fileTimeout = Number(args.shift())
+        break
       case '--reporter':
       case '--test-reporter':
         options.reporter = String(args.shift())
@@ -340,7 +344,9 @@ if (options.pure) {
   args.push('--expose-internals') // this is unoptimal and hopefully temporary, see rationale in src/dark.cjs
 } else if (options.engine === 'deno:test') {
   assert(!options.jest, 'deno:test engine does not support --jest yet')
+  assert(options.fileTimeout === undefined, engineFlagError('file-timeout'))
 } else if (options.engine === 'bun:test') {
+  assert(options.fileTimeout === undefined, engineFlagError('file-timeout'))
   args.push('test')
   throw new Error('bun:test is unavailable because Bun test runner has many bugs and does not work')
 } else {
@@ -431,6 +437,19 @@ if (options.jest) {
       await method() // globalSetup
     }
   }
+}
+
+const testTimeout = options.testTimeout || jestConfig?.testTimeout || 5000
+if (options.fileTimeout === undefined) {
+  options.fileTimeout = testTimeout * 50 // fallback for hangs, tests can adjust their own timeouts
+} else {
+  const valid = Number.isSafeInteger(options.fileTimeout) && options.fileTimeout > testTimeout
+  assert(valid, `--file-timeout should be an integer greater than testTimeout (${testTimeout}ms)`)
+}
+
+if (['node:test', 'electron-as-node:test'].includes(options.engine) && !options.devtools) {
+  setEnv('EXODUS_TEST_FILE_TIMEOUT', String(options.fileTimeout))
+  args.push('--import', import.meta.resolve('../loader/file-timeout.js'))
 }
 
 const cpus = availableParallelism()
@@ -759,9 +778,7 @@ const mainWorker :Workerd.Worker = (
       return out || (ok ? `✔ PASS ${file}` : `✖ FAIL ${file}`)
     }
 
-    // Timeout is fallback if timeout in script hangs, 50x as it can be adjusted per-script inside them
-    // Do we want to extract timeouts from script code instead? Also, hermes might be slower, so makes sense to increase
-    const timeout = (options.testTimeout || jestConfig?.testTimeout || 5000) * 50
+    const timeout = options.fileTimeout
     const start = process.hrtime.bigint()
     try {
       const fullArgs = [...(options.binaryArgs ?? []), ...args, file]
@@ -777,7 +794,8 @@ const mainWorker :Workerd.Worker = (
       if (code === null) {
         assert(signal)
         const message = `  ${signal}${killed ? ' (killed)' : ''}`
-        const comment = killed && signal === 'SIGTERM' ? '  Most likely due to timeout reached' : ''
+        const comment =
+          killed && signal === 'SIGTERM' ? `  File timeout of ${timeout}ms reached` : ''
         return { ok: false, output: [stdout, stderr, message, comment], ms }
       }
 
