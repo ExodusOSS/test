@@ -210,6 +210,10 @@ Use `--engine` (or `EXODUS_TEST_ENGINE=`) to specify one of:
 
 - `--test-force-exit` — force exit after tests are done
 
+- `--file-timeout <ms>` — kill a test file still running after this many ms and mark it as failed
+  (default: 50x `testTimeout`, must be greater than `testTimeout`).
+  Not supported on `deno:test` and `bun:test`, disabled on `node:test` with `--inspect*`
+
 - `--engine` — specify one of [Engines](#engines) to run on
 
 ## Reporter samples

@@ -75,6 +75,7 @@
     "loader/deno-import-map.pure.json",
     "loader/esbuild.js",
     "loader/esbuild.optional.js",
+    "loader/file-timeout.js",
     "loader/flow.js",
     "loader/jest.js",
     "loader/remap.cjs",
@@ -127,7 +128,7 @@
     "tape.js"
   ],
   "scripts": {
-    "test:_bundle": "EXODUS_TEST_IGNORE='tests/{{vendor/jest-extended,inband}/**,vendor/jest-when/when.test.*,jest/jest.resetModules.*,jest/mock/jest.mock.mocks-dir.test.js}' npm run test --",
+    "test:_bundle": "EXODUS_TEST_IGNORE='tests/{{vendor/jest-extended,inband,cli}/**,vendor/jest-when/when.test.*,jest/jest.resetModules.*,jest/mock/jest.mock.mocks-dir.test.js}' npm run test --",
     "test": "npm run test:jest --",
     "test:all": "npm run test:simple && npm run test:jest && npm run test:tape && npm run test:native && npm run test:esbuild && npm run test:pure && npm run test:fetch && npm run test:jsdom && npm run test:bundle",
     "test:native": "EXODUS_TEST_IGNORE='**/jest.transformed/**/*' ./bin/index.js --jest 'tests/**/*.test.{js,cjs,mjs}'",
