@@ -21,4 +21,9 @@ describe('typescript', () => {
   test('sum works', () => {
     expect(sum(20, 22)).toBe(42)
   })
+
+  test('non-ASCII in stripped types', () => {
+    const greet = (name: 'Grüße' | '你好' | '😀'): string => name
+    expect(greet('你好')).toBe('你好')
+  })
 })
