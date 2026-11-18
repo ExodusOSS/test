@@ -23,7 +23,9 @@ export async function load(url, context, nextLoad) {
   if (shouldProcessUrl(url)) {
     const sourceBuf = await readFile(new URL(url))
     if (!isUtf8(sourceBuf)) throw new Error('invalid utf-8')
-    const source = sourceBuf.toString('utf8')
+    const decoded = sourceBuf.toString('utf8')
+    // Node drops a byte order mark when reading a module, and so does stripping
+    const source = decoded.startsWith('\uFEFF') ? decoded.slice(1) : decoded
     const transformed = stripTypeScriptTypes(source, { mode: 'strip' })
     if (source.length !== transformed.length) throw new Error('length mismatch')
     // eslint-disable-next-line unicorn/no-for-loop
