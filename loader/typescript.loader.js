@@ -1,3 +1,4 @@
+import { isUtf8 } from 'node:buffer'
 import { readFile } from 'node:fs/promises'
 import { stripTypeScriptTypes } from 'node:module' // 22.13.0+
 import { fileURLToPath } from 'node:url'
@@ -20,7 +21,9 @@ const { URL } = globalThis
 
 export async function load(url, context, nextLoad) {
   if (shouldProcessUrl(url)) {
-    const source = await readFile(new URL(url), 'utf8')
+    const sourceBuf = await readFile(new URL(url))
+    if (!isUtf8(sourceBuf)) throw new Error('invalid utf-8')
+    const source = sourceBuf.toString('utf8')
     const transformed = stripTypeScriptTypes(source, { mode: 'strip' })
     if (source.length !== transformed.length) throw new Error('length mismatch')
     // eslint-disable-next-line unicorn/no-for-loop
