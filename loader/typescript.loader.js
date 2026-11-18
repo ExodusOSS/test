@@ -13,8 +13,7 @@ function shouldProcessUrl(s) {
   }
 }
 
-// What stripping writes for each UTF-16 unit it erases is a blank: up to amaro 1.1, one of as many UTF-8 bytes
-// (a space, a no-break space, an en space; a space and a byte order mark for four), and from amaro 1.2 a space
+// amaro < 1.2 writes blanks of the same UTF-8 length, 1.2+ writes spaces
 const blanks = new Set([' ', '\u00A0', '\u2002', '\uFEFF'])
 
 const { URL } = globalThis
@@ -23,10 +22,10 @@ export async function load(url, context, nextLoad) {
   if (shouldProcessUrl(url)) {
     const source = await readFile(new URL(url), 'utf8')
     const transformed = stripTypeScriptTypes(source, { mode: 'strip' })
-    if (source.length !== transformed.length) throw new Error('length mismatch') // in units, kept either way
+    if (source.length !== transformed.length) throw new Error('length mismatch')
     // eslint-disable-next-line unicorn/no-for-loop
     for (let i = 0; i < transformed.length; i++) {
-      // should match either the source or a blank or semicolon: https://github.com/swc-project/swc/issues/9331
+      // should match either the source or blanks or semicolon: https://github.com/swc-project/swc/issues/9331
       const val = transformed[i]
       if (val !== source[i] && !blanks.has(val) && val !== ';') throw new Error('result mismatch')
     }
